@@ -19,225 +19,395 @@ from transformers import get_scheduler
 from huggingface_hub import Repository, get_full_repo_name
 from transformers import AutoModelForMaskedLM
 from transformers import default_data_collator
+import collections
+import numpy as np
+import pandas as pd
 import math
 import time
-
-start_time = time.time()
-
+import argparse
+import os
 
 # In[2]:
 
+start_time= time.time()
 
-ds_train = load_dataset("code_search_net", "java", split="train")
-ds_test = load_dataset("code_search_net", "java", split="test")
-ds_valid = load_dataset("code_search_net", "java", split="validation")
-raw_datasets = DatasetDict(
-    {
-        "train": ds_train.shuffle().select(range(12000)), # "train": ds_train,  # .shuffle().select(range(50000)),
-        "test": ds_test.shuffle().select(range(1500)),
-        "valid": ds_valid.shuffle().select(range(1500)) # "valid": ds_valid,  # .shuffle().select(range(500))
-    }
+codesearchnet_dataset = load_dataset("code_search_net", "java")
+codesearchnet_dataset
+
+
+# In[3]:
+
+
+sample = codesearchnet_dataset["train"].shuffle(seed=42).select(range(3))
+
+for row in sample:
+    print(f"\n'>>> code: {row['whole_func_string']}'")
+
+
+# In[4]:
+
+
+# use bert model checkpoint tokenizer
+model_checkpoint = "microsoft/codebert-base-mlm"
+tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+
+
+
+# In[6]:
+
+
+def tokenize_function(examples):
+    result = tokenizer(examples["whole_func_string"])
+    if tokenizer.is_fast:
+        result["word_ids"] = [result.word_ids(i) for i in range(len(result["input_ids"]))]
+    return result
+
+
+# Use batched=True to activate fast multithreading!
+tokenized_datasets = codesearchnet_dataset.map(
+    tokenize_function, batched=True, remove_columns=['repository_name', 'func_path_in_repository', 'func_name', 'whole_func_string', 'language', 'func_code_string', 'func_code_tokens', 'func_documentation_string', 'func_documentation_tokens', 'split_name', 'func_code_url']
 )
-raw_datasets
+tokenized_datasets
+
+
+# In[7]:
+
+
+tokenized_samples = tokenized_datasets["train"][:3]
+
+for idx, sample in enumerate(tokenized_samples["input_ids"]):
+    print(f"'>>> code {idx} length: {len(sample)}'")
+
+
+# In[8]:
+
+
+concatenated_examples = {
+    k: sum(tokenized_samples[k], []) for k in tokenized_samples.keys()
+}
+total_length = len(concatenated_examples["input_ids"])
+print(f"'>>> Concatenated code length: {total_length}'")
 
 
 # In[9]:
 
 
-print(raw_datasets["test"][0]["whole_func_string"])
+chunk_size = 128
+chunks = {
+    k: [t[i : i + chunk_size] for i in range(0, total_length, chunk_size)]
+    for k, t in concatenated_examples.items()
+}
+
+for chunk in chunks["input_ids"]:
+    print(f"'>>> Chunk length: {len(chunk)}'")
 
 
 # In[10]:
 
 
-for key in raw_datasets["train"][0]:
-    print(f"{key.upper()}: {raw_datasets['train'][0][key][:1000]}")
+def group_texts(examples):
+    # Concatenate all texts
+    concatenated_examples = {k: sum(examples[k], []) for k in examples.keys()}
+    # Compute length of concatenated texts
+    total_length = len(concatenated_examples[list(examples.keys())[0]])
+    # We drop the last chunk if it's smaller than chunk_size
+    total_length = (total_length // chunk_size) * chunk_size
+    # Split by chunks of max_len
+    result = {
+        k: [t[i : i + chunk_size] for i in range(0, total_length, chunk_size)]
+        for k, t in concatenated_examples.items()
+    }
+    # Create a new labels column
+    result["labels"] = result["input_ids"].copy()
+    return result
 
 
 # In[11]:
 
 
-# use bert model checkpoint tokenizer
-model_checkpoint = "distilbert-base-uncased"
-# word piece tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
-
-#define tokenize function to tokenize the dataset
-def tokenize_function(data):
-    result = tokenizer(data["whole_func_string"])
-    return result
-
-# batched is set to True to activate fast multithreading!
-tokenize_dataset = raw_datasets.map(tokenize_function, batched = True, remove_columns = raw_datasets["train"].column_names)
-
-print(f'[DBG] tokenized_dataset: {tokenize_dataset}')
-print(f'[DBG] len(tokenizer): {len(tokenizer)}')
-print(f'[DBG] tokenizer.bos_token_id: {tokenizer.bos_token_id}')
-print(f'[DBG] tokenizer.eos_token_id: {tokenizer.eos_token_id}')
+lm_datasets = tokenized_datasets.map(group_texts, batched=True)
+lm_datasets
 
 
 # In[12]:
 
 
-def concat_chunk_dataset(data):
-    chunk_size = 128
-    # concatenate texts
-    concatenated_sequences = {k: sum(data[k], []) for k in data.keys()}
-    #compute length of concatenated texts
-    total_concat_length = len(concatenated_sequences[list(data.keys())[0]])
-
-    # drop the last chunk if is smaller than the chunk size
-    total_length = (total_concat_length // chunk_size) * chunk_size
-
-    # split the concatenated sentences into chunks using the total length
-    result = {k: [t[i: i + chunk_size] for i in range(0, total_length, chunk_size)]
-    for k, t in concatenated_sequences.items()}
-
-    '''we create a new labels column which is a copy of the input_ids of the processed text data,the labels column serve as 
-    ground truth for our masked language model to learn from. '''
-    
-    result["labels"] = result["input_ids"].copy()
-
-    return result
-
-processed_dataset = tokenize_dataset.map(concat_chunk_dataset, batched = True)
+tokenizer.decode(lm_datasets["train"][1]["input_ids"])
 
 
 # In[13]:
 
 
-from transformers import DataCollatorForLanguageModeling
-
-''' Apply random masking once on the whole test data, then uses the default data collector to handle the test dataset in batches '''
-
-data_collator = DataCollatorForLanguageModeling(tokenizer = tokenizer, mlm_probability = 0.15)
-
-# Function to insert random mask
-def insert_random_mask(batch):
-    features = [dict(zip(batch, t)) for t in zip(*batch.values())]
-    masked_inputs = data_collator(features)
-    return {"masked_" + k: v.numpy() for k, v in masked_inputs.items()}
-
-# Map insert_random_mask function to test dataset
-eval_dataset = processed_dataset["test"].map(insert_random_mask,batched=True,remove_columns=processed_dataset["test"].column_names
-)
-
-# Rename columns
-eval_dataset = eval_dataset.rename_columns({
-    "masked_input_ids": "input_ids",
-    "masked_attention_mask": "attention_mask",
-    "masked_labels": "labels"
-})
+tokenizer.decode(lm_datasets["train"][1]["labels"])
 
 
 # In[14]:
 
 
-import os
+data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm_probability=0.15)
 
-# Disable tokenizers parallelism
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# In[15]:
+
+
+samples = [lm_datasets["train"][i] for i in range(2)]
+for sample in samples:
+    _ = sample.pop("word_ids")
+
+for chunk in data_collator(samples)["input_ids"]:
+    print(f"\n'>>> {tokenizer.decode(chunk)}'")
 
 
 # In[16]:
 
-
-def training_function():
-
-    # set batch size to 32, a larger bacth size when using a more powerful gpu
-    batch_size = 32
-
-    train_dataloader = DataLoader(processed_dataset["train"], shuffle=True, batch_size=batch_size, collate_fn=data_collator)
-    eval_dataloader = DataLoader(processed_dataset["test"], batch_size=batch_size, collate_fn=default_data_collator)
-
-    # initialize pretrained bert model
-    model = AutoModelForMaskedLM.from_pretrained(model_checkpoint)
-
-    # set the optimizer
-    optimizer = AdamW(model.parameters(), lr=5e-5)
-
-    # initialize accelerator for training
-    accelerator = Accelerator()
-    model, optimizer, train_dataloader, eval_dataloader = accelerator.prepare(model, optimizer, train_dataloader, eval_dataloader)
-
-    # set the number of epochs which is set to 30
-    num_train_epochs = 5
-    num_update_steps_per_epoch = len(train_dataloader)
-    num_training_steps = num_train_epochs * num_update_steps_per_epoch
-
-    # define the learning rate scheduler for training
-    lr_scheduler = get_scheduler("linear",optimizer=optimizer,num_warmup_steps=0,num_training_steps=num_training_steps)
+wwm_probability = 0.2
 
 
-    progress_bar = tqdm(range(num_training_steps))
+def whole_word_masking_data_collator(features):
+    for feature in features:
+        word_ids = feature.pop("word_ids")
 
-    # directory to save the models
-    output_dir = "MLP_TrainedModels"
+        # Create a map between words and corresponding token indices
+        mapping = collections.defaultdict(list)
+        current_word_index = -1
+        current_word = None
+        for idx, word_id in enumerate(word_ids):
+            if word_id is not None:
+                if word_id != current_word:
+                    current_word = word_id
+                    current_word_index += 1
+                mapping[current_word_index].append(idx)
 
-    for epoch in range(num_train_epochs):
-        # Training
-        model.train()
-        for batch in train_dataloader:
-            outputs = model(**batch)
-            loss = outputs.loss
-            accelerator.backward(loss)
-            optimizer.step()
-            lr_scheduler.step()
-            optimizer.zero_grad()
-            progress_bar.update(1)
+        # Randomly mask words
+        mask = np.random.binomial(1, wwm_probability, (len(mapping),))
+        input_ids = feature["input_ids"]
+        labels = feature["labels"]
+        new_labels = [-100] * len(labels)
+        for word_id in np.where(mask)[0]:
+            word_id = word_id.item()
+            for idx in mapping[word_id]:
+                new_labels[idx] = labels[idx]
+                input_ids[idx] = tokenizer.mask_token_id
+        feature["labels"] = new_labels
 
-        # Evaluation
-        model.eval()
-        losses = []
-        for step, batch in enumerate(eval_dataloader):
-            with torch.no_grad():
-                outputs = model(**batch)
-            loss = outputs.loss
-            losses.append(accelerator.gather(loss.repeat(batch_size)))
-
-        losses = torch.cat(losses)
-        losses = losses[: len(eval_dataset)]
-        print(losses)
-
-        # perplexity metric used for mask language model training
-        try:
-            perplexity = math.exp(torch.mean(losses))
-        except OverflowError:
-            perplexity = float("inf")
-        print(f">>> Epoch {epoch}: Perplexity: {perplexity}")
-
-        # Calculate probabilities
-        losses = losses.cpu().numpy()  # Convert losses to NumPy array
-        probabilities = torch.nn.functional.softmax(torch.tensor(losses), dim=0)
-
-        # Calculate entropy
-        entropy = -torch.sum(probabilities * torch.log(probabilities))
-        print(f">>> Epoch {epoch}: Entropy: {entropy}")
-
-        # Save model
-        accelerator.wait_for_everyone()
-        unwrapped_model = accelerator.unwrap_model(model)
-        unwrapped_model.save_pretrained(output_dir, save_function=accelerator.save)
-        if accelerator.is_main_process:
-            tokenizer.save_pretrained(output_dir)
-
-notebook_launcher(training_function, num_processes= 2)
+    return default_data_collator(features)
 
 
 # In[17]:
 
 
-model = "MLP_TrainedModels"
+samples = [lm_datasets["train"][i] for i in range(2)]
+batch = whole_word_masking_data_collator(samples)
 
-pred_model = pipeline("fill-mask", model = "MLP_TrainedModels")
+for chunk in batch["input_ids"]:
+    print(f"\n'>>> {tokenizer.decode(chunk)}'")
 
-text = "public FileWatcher register(final Path path, final Class<? extends FileEventHandler> handler) {\n    return [MASK](path, handler, EMPTY);\n  }"
+
+# In[ ]:
+
+
+import argparse
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description="Data Splitting")
+parser.add_argument("-train", type=int, help="Size of the training dataset")
+parser.add_argument("-test", type=int, help="Size of the test dataset")
+parser.add_argument("-valid", type=int, help="Size of the validation dataset")
+args = parser.parse_args()
+
+train_size = args.train
+test_size = args.test
+valid_size = args.valid
+
+
+# In[22]:
+
+
+# Split the dataset into train, validation, and test sets
+train_dataset = lm_datasets["train"].shuffle(seed=42).select(range(train_size))
+remaining_dataset = lm_datasets["train"].shuffle(seed=42).select(range(train_size, len(lm_datasets["train"])))
+valid_dataset = remaining_dataset.shuffle(seed=42).select(range(valid_size))
+test_dataset = remaining_dataset.shuffle(seed=42).select(range(valid_size, valid_size + test_size))
+
+# Print sizes of each split
+print(f"Train dataset size: {len(train_dataset)}")
+print(f"Validation dataset size: {len(valid_dataset)}")
+print(f"Test dataset size: {len(test_dataset)}")
+
+
+# In[24]:
+
+
+batch_size = 64
+# Show the training loss with every epoch
+logging_steps = len(train_dataset) // batch_size
+
+training_args = TrainingArguments(
+    output_dir="MLM_FinetunedModel",
+    overwrite_output_dir=True,
+    evaluation_strategy="epoch",
+    learning_rate=2e-5,
+    weight_decay=0.01,
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size,
+    push_to_hub=True,
+    fp16=True,
+    logging_steps=logging_steps,
+)
+
+
+# In[26]:
+
+trainer = Trainer(
+    model= AutoModelForMaskedLM.from_pretrained(model_checkpoint),
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=test_dataset,
+    data_collator=data_collator,
+    tokenizer=tokenizer,
+)
+
+
+# In[27]:
+
+os.environ['WANDB_NOTEBOOK_NAME'] = 'test copy.ipynb'
+os.environ['WANDB_MODE'] = 'disabled'
+
+
+# In[28]:
+
+# Evaluate the model
+eval_results = trainer.evaluate()
+
+# Calculate perplexity
+perplexity = math.exp(eval_results['eval_loss'])
+
+# Calculate loss
+loss = eval_results['eval_loss']
+
+# Calculate entropy
+
+eval_dataset_size = len(trainer.eval_dataset)
+
+entropy = eval_results['eval_loss']
+print(f">>> Entropy: {entropy:.4f}")
+
+print(f">>> Perplexity: {perplexity:.2f}")
+print(f">>> Loss: {loss:.2f}")
+
+# In[29]:
+
+
+trainer.train()
+
+
+# In[30]:
+
+# Evaluate the model
+eval_results = trainer.evaluate()
+
+# Calculate perplexity
+perplexity = math.exp(eval_results['eval_loss'])
+
+# Calculate loss
+loss = eval_results['eval_loss']
+
+# Calculate entropy
+
+entropy = eval_results['eval_loss']
+print(f">>> Entropy: {entropy:.4f}")
+
+print(f">>> Perplexity: {perplexity:.2f}")
+print(f">>> Loss: {loss:.2f}")
+
+# In[31]:
+
+
+trainer.push_to_hub()
+
+
+# In[32]:
+
+
+model = "MLM_FinetunedModel"
+
+pred_model = pipeline("fill-mask", model = "MLM_FinetunedModel")
+
+text = "public Evaluation create(SimpleNode node, Object source)\n    {\n        return <mask>(node, source, false);\n    }"
 
 preds = pred_model(text)
 print(preds)
 
+
+# In[ ]:
+
+model = "MLM_FinetunedModel"
+pred_model = pipeline("fill-mask", model=model)
+text = "public Evaluation create(SimpleNode node, Object source)\n    {\n        return <mask>(node, source, false);\n    }"
+
+# Get predictions
+preds = pred_model(text)
+print(preds)
+
+# Sort predictions by score in descending order
+sorted_preds = sorted(preds, key=lambda x: x['score'], reverse=True)
+print(sorted_preds)
+# Determine the rank of the correct answer
+correct_answer = preds[0]['token_str']
+print(correct_answer)
+correct_rank = next(i+1 for i, pred in enumerate(sorted_preds) if pred['token_str'] == correct_answer)
+print(correct_rank)
+
+# Compute the reciprocal ranks
+reciprocal_ranks = [1 / rank for rank in range(1, len(sorted_preds) + 1)]
+print(reciprocal_ranks)
+
+# Calculate Mean Reciprocal Rank
+mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
+
+print("Mean Reciprocal Rank (MRR):", mrr)
+
+
+# In[ ]:
+
+# Get the correct answer (assuming it's the first mask prediction)
+correct_answer = preds[0]['token_str']
+print(correct_answer)
+
+# Create a DataFrame from the predictions
+df = pd.DataFrame(preds)
+
+# Sort the DataFrame by score in descending order
+df_sorted = df.sort_values(by='score', ascending=False)
+print(df_sorted)
+
+# Reset the index of the sorted DataFrame
+df_sorted.reset_index(drop=True, inplace=True)
+
+# Determine the rank of the correct answer
+correct_rank = df_sorted.index[df_sorted['token_str'] == correct_answer].tolist()[0] + 1  # Add 1 to start ranks from 1
+print(correct_rank)
+
+# Calculate the reciprocal ranks
+df_sorted['rank'] = df_sorted.index + 1
+print(df_sorted['rank'])
+df_sorted['reciprocal_rank'] = 1 / df_sorted['rank']
+
+# Calculate Mean Reciprocal Rank (MRR)
+mrr = df_sorted['reciprocal_rank'].mean()
+
+print("Mean Reciprocal Rank (MRR):", mrr)
+
+
+# In[ ]:
+
 end_time= time.time()
 
-Total_time = end_time - start_time
 
-print(Total_time)
+elapsed_time = end_time - start_time
+
+# Convert elapsed time to minutes and seconds
+minutes = int(elapsed_time // 60)
+seconds = int(elapsed_time % 60)
+
+print("Elapsed time:", minutes, "minutes", seconds, "seconds")
