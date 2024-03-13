@@ -1,21 +1,21 @@
-This repository contains code for training a causal language model(causal-model-a.py), training a causal language model along with tokenizer training(casual-model-token.py) and training a masked language model(mask-model_training.py).
+**This repository contains code for training a causal language model(causal-model-a.py), training a causal language model along with tokenizer training(casual-model-token.py) and training a masked language model(mask-model_training.py).**
 
 The code snippets are mostly taken from Hugging face's "Training a causal language model from scratch" and  "Fine-tuning a masked language model". The model is trained on the CodeSearchNet dataset, specifically focusing on the Java programming language. The trained model can generate code snippets based on input prompts.
 
-Requirements
-Python 3.x
-PyTorch
-Transformers
-Hugging Face Datasets
-Accelerate
-tqdm
-huggingface_hub
+**Requirements**
+- Python 3.x
+- PyTorch
+- Transformers
+- Hugging Face Datasets
+- Accelerate
+- tqdm
+- huggingface_hub
 
-Setup
+**Setup**
 Install the required Python packages by running pip install -r requirements.txt.
 Ensure you have the necessary CUDA drivers and hardware for GPU acceleration if you intend to train the model on a GPU.
 
-Training a causal language model(causal-model-a.py):
+**Training a causal language model(causal-model-a.py):**
 
 Usage:
 Run the provided Python script causal-model-a.py to start training the model.
@@ -47,18 +47,19 @@ Inference: Once trained, the model can be used for code generation tasks. A pipe
 Credits:
 This project utilizes several open-source libraries and frameworks, including:
 
-Hugging Face Transformers: For tokenization, model configuration, and training utilities.
-Accelerate: For efficient distributed training across multiple GPUs. The code utilizes the Accelerate library to train the causal language model efficiently 
-CodeSearchNet Dataset: The dataset used for training the language model.
+- Hugging Face Transformers: For tokenization, model configuration, and training utilities.
+- Accelerate: For efficient distributed training across multiple GPUs. The code utilizes the Accelerate library to train the causal language model efficiently 
+- CodeSearchNet Dataset: The dataset used for training the language model.
 
-Training a causal language model along with tokenizer training:
+
+**Training a causal language model along with tokenizer training(casual-model-token.py):**
 
 Everything is similar except the part that a base tokenizer is trained on the dataset to generate a vocabulary tailored to the Java programming language.
 
 Usage:
 Run the provided Python script causal-model-token.py to start training the model.
 
-Masked Language Model Training:
+Masked Language Model Training (mask-model_training.py):
 
 This Python script trains and evaluates a masked language model using the CodeBERT model. It leverages the Hugging Face Transformers library for model loading, tokenization, and training. The script uses Hugging face's Trainer API.
 
