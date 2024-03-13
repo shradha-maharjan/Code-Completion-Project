@@ -30,7 +30,6 @@ Model Training: The GPT-2 language model is initialized and trained on the prepr
 
 Evaluation Metrics: Various evaluation metrics such as entropy, loss, perplexity, BLEU score, and ROUGE score are computed to assess the quality and performance of the trained model.
 
-
 Entropy: Entropy measures the uncertainty or randomness in the distribution of predicted probabilities. In the context of language modeling, it quantifies how predictable the model's output is. Lower entropy values indicate higher confidence in the model's predictions and less uncertainty.
 
 Loss: Loss represents the discrepancy between the model's predictions and the actual ground truth labels. Cross-entropy loss, a commonly used metric in language modeling tasks, is employed in this code to calculate the loss. Lower loss values indicate better alignment between the model's predictions and the ground truth.
@@ -61,16 +60,9 @@ Run the provided Python script causal-model-token.py to start training the model
 
 Masked Language Model Training:
 
-This Python script trains and evaluates a masked language model using the CodeBERT model. It leverages the Hugging Face Transformers library for model loading, tokenization, and training. The training and evaluation process is accelerated using the Accelerator from the accelerate library.
+This Python script trains and evaluates a masked language model using the CodeBERT model. It leverages the Hugging Face Transformers library for model loading, tokenization, and training. The script uses Hugging face's Trainer API.
 
-Requirements
-Python 3.x
-PyTorch
-Hugging Face Transformers
-accelerate
-
-To run the script, execute the following command:
-
+Usage:
 python your_script.py -train <train_size> -valid <valid_size> -test <test_size>
 
 Replace <train_size>, <valid_size>, and <test_size> with the desired sizes for the training, validation, and test datasets, respectively.
@@ -89,8 +81,6 @@ Model Initialization: The pretrained CodeBERT model for masked language modeling
 Training Loop: The script trains the model for a specified number of epochs using the training dataset. It utilizes an AdamW optimizer and a linear learning rate scheduler. The training progress is monitored using a progress bar.
 
 Evaluation: After each epoch, the model's performance is evaluated on the test dataset. The loss, perplexity, and entropy metrics are calculated and printed.
-
-Saving Models: The trained model is saved to the specified output directory using the save_pretrained method.
 
 Masked Language Model Prediction: The script uses the trained model to predict the masked token in a sample text. It calculates the Mean Reciprocal Rank (MRR) based on the scores obtained from the model predictions.
 
