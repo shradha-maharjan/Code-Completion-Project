@@ -27,7 +27,7 @@ import time
 import argparse
 import os
 import logging
-from prettytable import PrettyTable
+from prettytable import PrettyTablelogging.StreamHandler
 
 # In[2]:
 
