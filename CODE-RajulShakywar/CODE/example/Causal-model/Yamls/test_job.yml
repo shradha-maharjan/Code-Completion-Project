@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-casual-model-gp-engine-unoselab01
+spec:
+  template:
+    spec:
+      automountServiceAccountToken: false
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - us-central 
+      containers:
+          - name: job-casual-model-train-container
+            image: gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest
+            workingDir: /data
+            env:
+                - name: TORCH_NUM_JOBS
+                  value: "8"
+                - name: TORCH_NUM_EPOCHS
+                  value: "1"
+            command: ["python3", "/data/causal-model-a.py"]
+            # command: ["python3", "/data/test.py"]
+            volumeMounts:
+                - name: pvc-gp-engine-unoselab01
+                  mountPath: /data
+                - name: dshm
+                  mountPath: /dev/shm
+            resources:
+                limits:
+                  memory: 21Gi
+                  cpu: "8"
+                  nvidia.com/gpu: 1
+                requests:
+                  memory: 20Gi
+                  cpu: "8"    
+                  nvidia.com/gpu: 1
+      volumes:
+          - name: pvc-gp-engine-unoselab01
+            persistentVolumeClaim:
+                claimName: pvc-gp-engine-unoselab01
+          - name: dshm
+            emptyDir:
+              medium: Memory
+      affinity:
+        nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 1
+                    preference: 
+                      matchExpressions:
+                        - key: nvidia.com/gpu.product
+                          operator: In
+                          values:
+                            - NVIDIA-A100-80GB-PCIe-MIG-1g.10gb
+      restartPolicy: Never      
+  backoffLimit: 1
