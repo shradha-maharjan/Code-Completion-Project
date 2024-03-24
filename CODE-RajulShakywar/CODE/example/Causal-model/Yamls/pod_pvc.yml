@@ -28,6 +28,6 @@ spec:
     - mountPath: /data
       name: data-gp-engine-unoselab01
   volumes:
-    - name: data-gp-engine-unoselab01
-      persistentVolumeClaim:
-        claimName: pvc-gp-engine-unoselab01
+  - name: data-gp-engine-unoselab01
+    persistentVolumeClaim:
+      claimName: pvc-gp-engine-unoselab01

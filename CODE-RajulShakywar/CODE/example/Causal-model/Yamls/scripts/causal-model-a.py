@@ -3,75 +3,9 @@
 
 # # Training a causal language model from scratch (PyTorch)
 
-# Install the Transformers, Datasets, and Evaluate libraries to run this notebook.
-
-# In[10]:
-
-
-
-
-
-# import subprocess
-
-# Install required packages
-# subprocess.run(['pip', 'install', 'datasets', 'evaluate', 'transformers[sentencepiece]'])
-# subprocess.run(['pip', 'install', 'accelerate'])
-# Uncomment the following line to install TPU dependencies
-# subprocess.run(['pip', 'install', 'cloud-tpu-client==0.10', 'torch==1.9.0', 'https://storage.googleapis.com/tpu-pytorch/wheels/torch_xla-1.9-cp37-cp37m-linux_x86_64.whl'])
-
-# Install git-lfs
-# subprocess.run(['apt', 'install', 'git-lfs'])
-
-# Set up git config
-# subprocess.run(['git', 'config', '--global', 'user.email', '"rshakywar@unomaha.edu"'])
-# subprocess.run(['git', 'config', '--global', 'user.name', '"Rajul Shakywar"'])
-
-
-
-
-# get_ipython().system('pip install datasets evaluate transformers[sentencepiece]')
-# get_ipython().system('pip install accelerate')
-# To run the training on TPU, you will need to uncomment the following line:
-# !pip install cloud-tpu-client==0.10 torch==1.9.0 https://storage.googleapis.com/tpu-pytorch/wheels/torch_xla-1.9-cp37-cp37m-linux_x86_64.whl
-# get_ipython().system('apt install git-lfs')
-
-
-# You will need to setup git, adapt your email and name in the following cell.
-
-# In[12]:
-
-
-# get_ipython().system('git config --global user.email "rshakywar@unomaha.edu"')
-# get_ipython().system('git config --global user.name "Rajul Shakywar"')
-
-
-# You will also need to be logged in to the Hugging Face Hub. Execute the following and enter your credentials.
-
-# In[13]:
-
+print("--------Running causal-model job-------")
+# # Run each command
 import os
-
-# Define the shell commands
-commands = [
-    "apt update",
-    "apt install -y python3-pip",
-    "pip3 install tqdm",
-    "apt install -y git-lfs",
-    "python -m pip install scikit-learn transformers datasets sentencepiece sacremoses accelerate",
-    "pip3 install --upgrade huggingface_hub",
-    "pip3 install 'huggingface_hub[cli,torch]'",
-    "pip3 install ipywidgets",
-    "pip3 install numpy pandas matplotlib",
-    "pip3 install ipykernel",
-    "echo 'Installation completed'",
-]
-
-# Run each command
-for cmd in commands:
-    os.system(cmd)
-
-
-
 from collections import defaultdict
 from tqdm import tqdm
 from datasets import Dataset, load_dataset, DatasetDict
@@ -85,9 +19,11 @@ from torch.optim import AdamW
 from accelerate import Accelerator
 from transformers import get_scheduler
 from huggingface_hub import Repository, login, get_full_repo_name
+import os
 
 
 # In[ ]:
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # from huggingface_hub import login
 access_token_write = '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'
@@ -410,7 +346,9 @@ lr_scheduler = get_scheduler(
 
 
 # In[ ]:
-
+from huggingface_hub import Repository, login, get_full_repo_name
+access_token_write = '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'
+login(token = access_token_write)
 
 model_name = "codeparrot-ds-accelerate"
 repo_name = get_full_repo_name(model_name)
@@ -421,12 +359,22 @@ print(repo_name)
 
 # In[ ]:
 
-
 output_dir = "codeparrot-ds-accelerate"
-repo = Repository(output_dir, clone_from=repo_name)
 
-print("------------Repo---------")
-print(repo)
+import shutil
+
+if os.path.exists(output_dir):
+    print("-----Existing directory with same name..Deleting the directory-----")
+    # os.remove(output_dir)
+    shutil.rmtree(output_dir)
+    print("-----Deleted the directory-----")
+
+try:
+    repo = Repository(output_dir, clone_from=repo_name)
+    print(repo)
+    print("-----Repo is clonned successfully----")
+except Exception as error:
+    print("error",error)
 
 
 # In[ ]:
@@ -538,3 +486,6 @@ for epoch in range(num_train_epochs):
                     commit_message=f"Training in progress step {step}", blocking=False
                 )
 
+
+                
+print("--------Script successfully executed---------")

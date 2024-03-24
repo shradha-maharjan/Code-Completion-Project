@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: job-casual-model-gp-engine-unoselab01
 spec:
+  ttlSecondsAfterFinished: 86400 # a day
   template:
     spec:
       automountServiceAccountToken: false
@@ -10,52 +11,35 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: topology.kubernetes.io/region
-                operator: In
-                values:
-                - us-central 
+              - matchExpressions:
+                  - key: topology.kubernetes.io/region
+                    operator: In
+                    values:
+                      - us-central 
       containers:
-          - name: job-casual-model-train-container
-            image: gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest
-            workingDir: /data
-            env:
-                - name: TORCH_NUM_JOBS
-                  value: "8"
-                - name: TORCH_NUM_EPOCHS
-                  value: "1"
-            command: ["python3", "/data/causal-model-a.py"]
-            # command: ["python3", "/data/test.py"]
-            volumeMounts:
-                - name: pvc-gp-engine-unoselab01
-                  mountPath: /data
-                - name: dshm
-                  mountPath: /dev/shm
-            resources:
-                limits:
-                  memory: 21Gi
-                  cpu: "8"
-                  nvidia.com/gpu: 1
-                requests:
-                  memory: 20Gi
-                  cpu: "8"    
-                  nvidia.com/gpu: 1
+        - name: job-casual-model-train-container
+          image: gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest
+          workingDir: /data
+          # command: ["sh", "-c", "python3 /data/libraries-causal-model.py && python3 /data/causal-model-a.py"]
+          command: ["sh", "-c", "bash run_install.sh && python3 /data/causal-model-a.py"]
+          volumeMounts:
+            - name: pvc-gp-engine-unoselab01
+              mountPath: /data
+          resources:
+            limits:
+              memory: 21Gi
+              cpu: "8"
+              nvidia.com/gpu: 1
+            requests:
+              memory: 20Gi
+              cpu: "8"    
+              nvidia.com/gpu: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
       volumes:
-          - name: pvc-gp-engine-unoselab01
-            persistentVolumeClaim:
-                claimName: pvc-gp-engine-unoselab01
-          - name: dshm
-            emptyDir:
-              medium: Memory
-      affinity:
-        nodeAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                  - weight: 1
-                    preference: 
-                      matchExpressions:
-                        - key: nvidia.com/gpu.product
-                          operator: In
-                          values:
-                            - NVIDIA-A100-80GB-PCIe-MIG-1g.10gb
-      restartPolicy: Never      
+        - name: pvc-gp-engine-unoselab01
+          persistentVolumeClaim:
+            claimName: pvc-gp-engine-unoselab01
+      restartPolicy: Never
   backoffLimit: 1
