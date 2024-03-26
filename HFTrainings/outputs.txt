@@ -1,0 +1,56 @@
+public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\t<mask> n * factorial(n - 1);}
+public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num <mask> i == 0)\n\treturn false;}\n\treturn true;}
+public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i <mask> str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " <mask> prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+public ScriptEngine getEngineByName(String <mask>) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+public ScriptEngine getEngineByExtension(String extension) {\n\treturn <mask> (extensionAssociations, ScriptEngineFactory::getExtensions);}
+private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader <mask> null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+public void <mask> (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+public Bindings getBindings() {\n<mask> globalScope;}
+public void <mask> (key, Object value) {\n\tglobalScope.put(key, value);}
+public Object get(String key) {\n<mask> globalScope.get(key);}
+public ScriptEngine getEngineByName(String <mask> {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+public ScriptEngine getEngineByExtension(String <mask> {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, <mask> ScriptEngineFactory::getMimeTypes);}
+private static void reportException(String msg, <mask> exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+private static void debugPrint(Throwable exp) {\n\tif <mask> {\n\texp.printStackTrace();}}
+public List<ScriptEngineFactory> {getEngineFactories() <mask> List.copyOf(engineSpis);}
+public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, <mask> factory);}
+public void <mask> type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+public void registerEngineExtension(String <mask> ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, <mask> factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+private static final Comparator<ScriptEngineFactory> <mask> = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+public boolean containsKey(Object key) <mask> map.containsKey(key);}
+public boolean containsValue(Object <mask> {\n\treturn map.containsValue(value);}
+public Set<Map.Entry<String, Object>> entrySet() <mask> map.entrySet();}
+public Object get(Object key) <mask> map.get(key);}
+public Object eval() throws ScriptException <mask> eval(getEngine().getContext());}
+public void <mask> key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn != null) {\n\tnn.put(key, value);}}
+public Object eval(Reader <mask> throws ScriptException {\n\treturn eval(reader, context);}
+public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope != null && globalScope.containsKey(name)) {\n\treturn <mask> GLOBAL_SCOPE);}\n\t\n\treturn null;}
+private void checkName(String name) <mask> (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+public List<Integer> <mask> {\n\treturn scopes;}
+public Object remove(Object <mask> {\n\tcheckKey(key);\n\treturn map.remove(key);}
+public int size() <mask> map.size();}
+public void setReader(Reader reader) <mask> = reader;}
+public void <mask> writer) {\n\tthis.writer = writer;}
+public Writer getErrorWriter() <mask> errorWriter;}
+public void setErrorWriter(Writer <mask> {\n\tthis.errorWriter = writer;}
+public BaseEntry(CatalogEntryType type) <mask> = Objects.requireNonNull(type);}
+public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type <mask> Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+public final void <mask> base) {\n\tbaseURI = verifyURI("base", null, base);}
+public CatalogEntry(String base, <mask> attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+public String match(String match) <mask> new UnsupportedOperationException("Unsupported operation.");}
+public Catalog getParent() <mask> this.parent;}
+public final void setDeferred(String value) {\n\tisDeferred <mask> DEFER_TRUE.equals(value);}
+public final void setResolve(String value) <mask> = NotFoundAction.getType(value);}
+public InputSource resolveEntity(String publicId, String systemId) {\n\treturn <mask> InputSource(new StringReader(""));}
+public Source <mask> href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString <mask> Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+public String getPublicIdStartString <mask> {\n\treturn publicIdStartString;}
+public String match(String publicId) <mask> match(publicId, 0);}
+public GroupEntry(String <mask> String... attributes) {\n\tthis(null, base, attributes);}
+private void resetOnStart() {\n\tif (this instanceof <mask> && !shouldKeepState) {\n\treset();}}
+public final void setPrefer(String value) <mask> = PreferType.PUBLIC.prefer(value);}
+public NextCatalog(String <mask> String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+public String match(String match) {\n\tthrow <mask> UnsupportedOperationException("Not supported.");}
