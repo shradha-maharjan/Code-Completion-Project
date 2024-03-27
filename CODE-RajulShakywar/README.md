@@ -45,3 +45,27 @@
 - `kubectl get pods`
 - `kubectl logs <pod-name> --tail=1`
 - `kubectl logs <pod-name> --tail=5`
+
+# Problem 1 # Running Causal-model python script as a kubernetes job 
+
+**I. Ensure that any existing resources are deleted if they are already running**
+- `kubectl delete pods --all && kubectl delete jobs --all`
+- `kubectl delete pvc --all`
+
+**II. Create a persistent volume claim (PVC)**
+- `kubectl apply -f .pvc.yml`
+- `kubectl get pvc`
+
+**III. Create pod with volume mount as a recent pvc**
+- `kubectl apply -f pod_pvc.yml`
+- `kubectl get pods`
+
+**IV. Copy run_install.sh script for dependencies installation and causal-model python script scripts to the volume mounted by pod once it starts running**
+- `!kubectl cp ./scripts/causal-model-a.py gp-engine-unoselab01-pod1:/data/causal-model-a.py`
+- `!kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh `
+
+**V. Create causal-model job as a root user with root user**
+- `!kubectl create -f ./causal_model_job.yml`
+
+**VI. Open k9s, select the namespace, job and monitor job container logs**
+- `k9s`
