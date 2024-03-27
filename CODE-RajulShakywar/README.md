@@ -64,8 +64,22 @@
 - `!kubectl cp ./scripts/causal-model-a.py gp-engine-unoselab01-pod1:/data/causal-model-a.py`
 - `!kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh `
 
-**V. Create causal-model job as a root user (configured in causal_model_job.yaml)**
+**VI._Note_ - We need to configure causal-model job with root permissions unless no File I/O opertation can be performed inside job container**
+
+**VII.Configure causal_model_job.yaml so that it runs the container with root permissions to perform write operations within container, run job container with infinite sleep (sleep infinity) bash command in causal_model_job.yaml**
 - `!kubectl create -f ./causal_model_job.yml`
 
-**VI. Open k9s, select the namespace, job and monitor job container logs**
+**VIII.Find the security context parameters of pod once job starts running**
+- `!kubectl exec job-casual-model-gp-engine-unoselab01`
+- `id`
+
+**IX.Find runAsUser parameter id and add security context configuration in causal_model_job.yaml**
+- `runAsUser: id`
+- `allowPrivilegeEscalation: false`
+
+**X.Delete existing job and create a new one with updated security context along with command for running run_install.sh and causal-model-a.py scripts**
+- `kubectl delete job <job-name>`
+- `!kubectl create -f ./causal_model_job.yml`
+
+**XI. Open k9s, select the namespace, job and monitor job container logs**
 - `k9s`
