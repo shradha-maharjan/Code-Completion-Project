@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # In[1]:
 
 
@@ -287,11 +284,9 @@ logger.info(f"Perplexity: {perplexity:.2f}")
 logger.info(f"Loss: {loss:.2f}")
 
 # Iterate through each masked text and its corresponding ground truth text
-pred_model = pipeline("fill-mask", model=model_checkpoint)
+pred_model = pipeline("fill-mask", model=model)
 
 # Path to the file containing masked texts and ground truth texts
-# masked_texts_file = "/home/user1-selab3/shradha_test/jsoninput/whole_func_strings2.txt"
-# ground_truth_file = "/home/user1-selab3/shradha_test/jsoninput/ground_truth.txt"
 masked_texts_file = "/home/user1-selab3/shradha_test/jsoninput/outputs.txt"
 ground_truth_file = "/home/user1-selab3/shradha_test/jsoninput/output_java.txt"
 
@@ -404,23 +399,6 @@ ranks = relevances_rank[relevances_rank.index.get_level_values('match_sequence')
 
 print(ranks)
 
-
-# In[40]:
-
-
-# # Filter results for rows where match_sequence is True
-# match_sequence_results = results[results['match_sequence'].notna()]
-
-# # Access the ranks corresponding to the match sequence
-# ranks = match_sequence_results['rank']
-
-# # Print the ranks
-# print(ranks)
-
-
-# In[40]:
-
-
 reciprocal_ranks = 1 / (ranks)
 reciprocal_ranks
 
@@ -429,79 +407,6 @@ reciprocal_ranks
 
 
 mean_reciprocal_rank = reciprocal_ranks.mean()
-
-logger.info(f"Mean Reciprocal Rank: {mean_reciprocal_rank:.2f}")
-
-
-# In[47]:
-
-
-# relevant_docs = results[results['score'] > 0.9]
-# relevant_docs
-
-
-# Function to return the sequence if it matches the ground truth sequence, or fill null otherwise
-def fill_sequence(row):
-    # Convert score to the desired format
-    score_formatted = '{:.2f}'.format(row['score'] * 100)  # Convert to percentage format with 2 decimal places
-    
-    if row['score'] > 0.0006:
-        return f"{score_formatted}%: {row['sequence']}"  # Include the score in the specified format
-    else:
-        return None
-
-# Apply the function to the 'sequence' column
-results['match_sequence'] = results.apply(fill_sequence, axis=1)
-
-# Display the results DataFrame
-results.head(10)
-
-
-# In[49]:
-
-
-results['match_sequence'].fillna('None', inplace=True)
-
-# Group by 'token_id' and 'match_sequence', taking the minimum rank
-relevances_rank = results.groupby(['token_id', 'match_sequence'])['rank'].min()
-
-print(relevances_rank)
-
-
-# In[66]:
-
-
-# # Filter results for rows where match_sequence is True
-# match_sequence_results = results[results['match_sequence'].notna()]
-# match_sequence_results.head(10)
-
-# Access the ranks corresponding to the match sequence
-# ranks = match_sequence_results['rank']
-# ranks.head(10)
-# Print the ranks
-#print(ranks)
-
-
-# In[50]:
-
-
-ranks = relevances_rank[relevances_rank.index.get_level_values('match_sequence') != 'None']
-
-print(ranks)
-
-
-# In[51]:
-
-
-reciprocal_ranks = 1 / (ranks)
-reciprocal_ranks
-
-
-# In[52]:
-
-
-mean_reciprocal_rank = reciprocal_ranks.mean()
-
 
 logger.info(f"Mean Reciprocal Rank: {mean_reciprocal_rank:.2f}")
 
