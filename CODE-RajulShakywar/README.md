@@ -64,7 +64,7 @@
 - `!kubectl cp ./scripts/causal-model-a.py gp-engine-unoselab01-pod1:/data/causal-model-a.py`
 - `!kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh `
 
-**V. Create causal-model job as a root user with root user**
+**V. Create causal-model job as a root user (configured in causal_model_job.yaml)**
 - `!kubectl create -f ./causal_model_job.yml`
 
 **VI. Open k9s, select the namespace, job and monitor job container logs**
