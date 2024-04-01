@@ -1,0 +1,1568 @@
+Sample 1
+Ground truth:
+public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\treturn n * factorial(n - 1);}
+Input:
+public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\t<mask> n * factorial(n - 1);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,509 - INFO -    Result 1: return, 0.9955, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\treturn n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 2:  return, 0.0033, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\t return n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 3: //, 0.0003, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\t// n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 4: Return, 0.0001, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tReturn n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 5: ++, 0.0001, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\t++ n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 6: if, 0.0000, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tif n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 7: double, 0.0000, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tdouble n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 8: print, 0.0000, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tprint n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 9: float, 0.0000, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tfloat n * factorial(n - 1);}
+
+2024-03-31 00:36:06,509 - INFO -    Result 10: find, 0.0000, public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\tfind n * factorial(n - 1);}
+
+2024-03-31 00:36:06,585 - INFO - -----
+Sample 2
+Ground truth:
+public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num % i == 0)\n\treturn false;}\n\treturn true;}
+Input:
+public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num <mask> i == 0)\n\treturn false;}\n\treturn true;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,585 - INFO -    Result 1:  %, 0.9798, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num % i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,585 - INFO -    Result 2:  -, 0.0085, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num - i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 3:  &, 0.0024, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num & i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 4:  *, 0.0022, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num * i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 5:  +, 0.0020, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num + i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 6:  /, 0.0015, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num / i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 7:  >>, 0.0008, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num >> i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 8: %, 0.0008, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num% i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 9:  <, 0.0003, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num < i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,586 - INFO -    Result 10:  //, 0.0002, public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num // i == 0)\n\treturn false;}\n\treturn true;}
+
+2024-03-31 00:36:06,661 - INFO - -----
+Sample 3
+Ground truth:
+public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i = str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+Input:
+public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i <mask> str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,661 - INFO -    Result 1:  =, 0.9998, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i = str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 2: =, 0.0002, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i= str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 3:  :=, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i := str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 4: =-, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i=- str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 5: ,, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i, str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 6: :, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i: str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 7: =", 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i=" str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 8: ;, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i; str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 9: >, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i> str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,661 - INFO -    Result 10: =(, 0.0000, public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i=( str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}
+
+2024-03-31 00:36:06,752 - INFO - -----
+Sample 4
+Ground truth:
+public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " is prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+Input:
+public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " <mask> prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,752 - INFO -    Result 1:  is, 0.7536, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " is prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 2:  Is, 0.0563, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " Is prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 3:  check, 0.0416, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " check prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 4:  Check, 0.0155, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " Check prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 5:  has, 0.0097, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " has prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 6:  ==, 0.0096, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " == prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 7: is, 0.0088, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + "is prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 8:  -, 0.0087, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " - prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 9:  =, 0.0076, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " = prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,752 - INFO -    Result 10:  valid, 0.0035, public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " valid prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}
+
+2024-03-31 00:36:06,819 - INFO - -----
+Sample 5
+Ground truth:
+public ScriptEngine getEngineByName(String shortName) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+Input:
+public ScriptEngine getEngineByName(String <mask>) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,819 - INFO -    Result 1:  name, 0.9720, public ScriptEngine getEngineByName(String name) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 2: Name, 0.0139, public ScriptEngine getEngineByName(StringName) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 3:  short, 0.0025, public ScriptEngine getEngineByName(String short) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 4: name, 0.0020, public ScriptEngine getEngineByName(Stringname) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 5:  string, 0.0010, public ScriptEngine getEngineByName(String string) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 6:  Name, 0.0007, public ScriptEngine getEngineByName(String Name) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 7:  s, 0.0004, public ScriptEngine getEngineByName(String s) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 8:  named, 0.0003, public ScriptEngine getEngineByName(String named) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 9:  id, 0.0002, public ScriptEngine getEngineByName(String id) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,819 - INFO -    Result 10:  null, 0.0002, public ScriptEngine getEngineByName(String null) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:06,884 - INFO - -----
+Sample 6
+Ground truth:
+public ScriptEngine getEngineByExtension(String extension) {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+Input:
+public ScriptEngine getEngineByExtension(String extension) {\n\treturn <mask> (extensionAssociations, ScriptEngineFactory::getExtensions);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,884 - INFO -    Result 1:  find, 0.1612, public ScriptEngine getEngineByExtension(String extension) {\n\treturn find (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 2:  get, 0.1359, public ScriptEngine getEngineByExtension(String extension) {\n\treturn get (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 3:  load, 0.1249, public ScriptEngine getEngineByExtension(String extension) {\n\treturn load (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 4:  engine, 0.0383, public ScriptEngine getEngineByExtension(String extension) {\n\treturn engine (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 5:  create, 0.0366, public ScriptEngine getEngineByExtension(String extension) {\n\treturn create (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 6:  resolve, 0.0292, public ScriptEngine getEngineByExtension(String extension) {\n\treturn resolve (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 7:  lookup, 0.0270, public ScriptEngine getEngineByExtension(String extension) {\n\treturn lookup (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 8:  execute, 0.0235, public ScriptEngine getEngineByExtension(String extension) {\n\treturn execute (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 9:  with, 0.0200, public ScriptEngine getEngineByExtension(String extension) {\n\treturn with (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,884 - INFO -    Result 10:  search, 0.0183, public ScriptEngine getEngineByExtension(String extension) {\n\treturn search (extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:06,957 - INFO - -----
+Sample 7
+Ground truth:
+private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader != null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+Input:
+private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader <mask> null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:06,957 - INFO -    Result 1: !=, 0.9981, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader!= null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 2:  ==, 0.0018, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader == null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 3:  >, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader > null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 4: ==, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader== null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 5:  not, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader not null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 6:  >=, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader >= null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 7: ., 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader. null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 8: !, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader! null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 9:  is, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader is null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:06,957 - INFO -    Result 10: =, 0.0000, private ServiceLoader<ScriptEngineFactory> getServiceLoader(final ClassLoader loader) {\n\tif (loader= null) {\n\treturn ServiceLoader.load(ScriptEngineFactory.class, loader);\n\t} else {\n\treturn ServiceLoader.loadInstalled(ScriptEngineFactory.class);}}
+
+2024-03-31 00:36:07,028 - INFO - -----
+Sample 8
+Ground truth:
+public void setBindings(Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+Input:
+public void <mask> (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,028 - INFO -    Result 1:  init, 0.1893, public void init (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,028 - INFO -    Result 2:  bind, 0.1675, public void bind (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,028 - INFO -    Result 3:  scope, 0.1618, public void scope (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 4:  initialize, 0.1229, public void initialize (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 5:  set, 0.0918, public void set (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 6:  register, 0.0503, public void register (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 7:  configure, 0.0159, public void configure (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 8:  add, 0.0153, public void add (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 9:  apply, 0.0107, public void apply (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,029 - INFO -    Result 10:  start, 0.0103, public void start (Bindings bindings) {\n\tif (bindings == null) {\n\tthrow new IllegalArgumentException("Global scope cannot be null.");}\n\t\n\tglobalScope = bindings;=}
+
+2024-03-31 00:36:07,084 - INFO - -----
+Sample 9
+Ground truth:
+public Bindings getBindings() {\n\treturn globalScope;}
+Input:
+public Bindings getBindings() {\n<mask> globalScope;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,084 - INFO -    Result 1: return, 0.5094, public Bindings getBindings() {\nreturn globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 2:  return, 0.4287, public Bindings getBindings() {\n return globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 3:  , 0.0171, public Bindings getBindings() {\n  globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 4: var, 0.0024, public Bindings getBindings() {\nvar globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 5: Return, 0.0022, public Bindings getBindings() {\nReturn globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 6: private, 0.0021, public Bindings getBindings() {\nprivate globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 7: final, 0.0020, public Bindings getBindings() {\nfinal globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 8: protected, 0.0018, public Bindings getBindings() {\nprotected globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 9:  //, 0.0013, public Bindings getBindings() {\n // globalScope;}
+
+2024-03-31 00:36:07,085 - INFO -    Result 10: //, 0.0010, public Bindings getBindings() {\n// globalScope;}
+
+2024-03-31 00:36:07,145 - INFO - -----
+Sample 10
+Ground truth:
+public void put(String key, Object value) {\n\tglobalScope.put(key, value);}
+Input:
+public void <mask> (key, Object value) {\n\tglobalScope.put(key, value);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,145 - INFO -    Result 1:  put, 0.9072, public void put (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 2:  set, 0.0619, public void set (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 3:  add, 0.0059, public void add (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 4:  register, 0.0053, public void register (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 5:  visit, 0.0027, public void visit (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 6:  define, 0.0015, public void define (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 7: put, 0.0010, public voidput (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 8:  push, 0.0009, public void push (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 9:  store, 0.0005, public void store (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,145 - INFO -    Result 10:  assign, 0.0005, public void assign (key, Object value) {\n\tglobalScope.put(key, value);}
+
+2024-03-31 00:36:07,209 - INFO - -----
+Sample 11
+Ground truth:
+public Object get(String key) {\n\treturn globalScope.get(key);}
+Input:
+public Object get(String key) {\n<mask> globalScope.get(key);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,210 - INFO -    Result 1: return, 0.5364, public Object get(String key) {\nreturn globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 2:  return, 0.4594, public Object get(String key) {\n return globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 3: Return, 0.0022, public Object get(String key) {\nReturn globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 4:  , 0.0006, public Object get(String key) {\n  globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 5: get, 0.0003, public Object get(String key) {\nget globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 6:  Return, 0.0001, public Object get(String key) {\n Return globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 7: Get, 0.0001, public Object get(String key) {\nGet globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 8: print, 0.0001, public Object get(String key) {\nprint globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 9: public, 0.0000, public Object get(String key) {\npublic globalScope.get(key);}
+
+2024-03-31 00:36:07,210 - INFO -    Result 10: Returns, 0.0000, public Object get(String key) {\nReturns globalScope.get(key);}
+
+2024-03-31 00:36:07,276 - INFO - -----
+Sample 12
+Ground truth:
+public ScriptEngine getEngineByName(String shortName) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+Input:
+public ScriptEngine getEngineByName(String <mask> {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,276 - INFO -    Result 1: ), 0.8619, public ScriptEngine getEngineByName(String) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 2:  name, 0.0650, public ScriptEngine getEngineByName(String name {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 3: ...), 0.0142, public ScriptEngine getEngineByName(String...) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 4: Name, 0.0132, public ScriptEngine getEngineByName(StringName {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 5: (), 0.0048, public ScriptEngine getEngineByName(String() {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 6: );, 0.0047, public ScriptEngine getEngineByName(String); {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 7: ?), 0.0045, public ScriptEngine getEngineByName(String?) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 8:  ), 0.0027, public ScriptEngine getEngineByName(String ) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 9: ()), 0.0024, public ScriptEngine getEngineByName(String()) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,276 - INFO -    Result 10: !), 0.0022, public ScriptEngine getEngineByName(String!) {\n\treturn getEngineBy(shortName, nameAssociations, ScriptEngineFactory::getNames);}
+
+2024-03-31 00:36:07,341 - INFO - -----
+Sample 13
+Ground truth:
+public ScriptEngine getEngineByExtension(String extension) {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+Input:
+public ScriptEngine getEngineByExtension(String <mask> {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,341 - INFO -    Result 1:  extension, 0.9780, public ScriptEngine getEngineByExtension(String extension {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 2: ), 0.0077, public ScriptEngine getEngineByExtension(String) {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 3:  Extension, 0.0041, public ScriptEngine getEngineByExtension(String Extension {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 4:  ext, 0.0035, public ScriptEngine getEngineByExtension(String ext {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 5: ension, 0.0016, public ScriptEngine getEngineByExtension(Stringension {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 6: ...), 0.0008, public ScriptEngine getEngineByExtension(String...) {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 7:  extensions, 0.0004, public ScriptEngine getEngineByExtension(String extensions {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 8:  ), 0.0003, public ScriptEngine getEngineByExtension(String ) {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 9:  suffix, 0.0003, public ScriptEngine getEngineByExtension(String suffix {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,341 - INFO -    Result 10:  string, 0.0002, public ScriptEngine getEngineByExtension(String string {\n\treturn getEngineBy(extension, extensionAssociations, ScriptEngineFactory::getExtensions);}
+
+2024-03-31 00:36:07,408 - INFO - -----
+Sample 14
+Ground truth:
+public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, mimeTypeAssociations, ScriptEngineFactory::getMimeTypes);}
+Input:
+public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, <mask> ScriptEngineFactory::getMimeTypes);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,408 - INFO -    Result 1:  //, 0.8099, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, // ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 2:  new, 0.0357, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, new ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 3:  , 0.0254, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType,  ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 4: !, 0.0251, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType,! ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 5:  \, 0.0146, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, \ ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 6: new, 0.0100, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType,new ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 7:  +, 0.0070, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, + ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 8:  final, 0.0048, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, final ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 9: ..., 0.0048, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType,... ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,408 - INFO -    Result 10:  return, 0.0032, public ScriptEngine getEngineByMimeType(String mimeType) {\n\treturn getEngineBy(mimeType, return ScriptEngineFactory::getMimeTypes);}
+
+2024-03-31 00:36:07,475 - INFO - -----
+Sample 15
+Ground truth:
+private static void reportException(String msg, Throwable exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+Input:
+private static void reportException(String msg, <mask> exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,475 - INFO -    Result 1:  Exception, 0.9877, private static void reportException(String msg, Exception exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 2: Exception, 0.0035, private static void reportException(String msg,Exception exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 3:  Error, 0.0033, private static void reportException(String msg, Error exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 4:  Expression, 0.0008, private static void reportException(String msg, Expression exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 5:  exception, 0.0008, private static void reportException(String msg, exception exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 6:  Failure, 0.0004, private static void reportException(String msg, Failure exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 7:  String, 0.0003, private static void reportException(String msg, String exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 8:  Element, 0.0003, private static void reportException(String msg, Element exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 9:  Throw, 0.0002, private static void reportException(String msg, Throw exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,475 - INFO -    Result 10:  Fault, 0.0002, private static void reportException(String msg, Fault exp) {\n\tSystem.err.println(msg + exp.getMessage());\n\tdebugPrint(exp);}
+
+2024-03-31 00:36:07,537 - INFO - -----
+Sample 16
+Ground truth:
+private static void debugPrint(Throwable exp) {\n\tif (DEBUG) {\n\texp.printStackTrace();}}
+Input:
+private static void debugPrint(Throwable exp) {\n\tif <mask> {\n\texp.printStackTrace();}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,537 - INFO -    Result 1:  exp, 0.8413, private static void debugPrint(Throwable exp) {\n\tif exp {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 2:  debug, 0.0566, private static void debugPrint(Throwable exp) {\n\tif debug {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 3:  DEBUG, 0.0081, private static void debugPrint(Throwable exp) {\n\tif DEBUG {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 4:  ex, 0.0058, private static void debugPrint(Throwable exp) {\n\tif ex {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 5:  Exception, 0.0039, private static void debugPrint(Throwable exp) {\n\tif Exception {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 6:  log, 0.0038, private static void debugPrint(Throwable exp) {\n\tif log {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 7:  exception, 0.0024, private static void debugPrint(Throwable exp) {\n\tif exception {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 8:  e, 0.0023, private static void debugPrint(Throwable exp) {\n\tif e {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 9:  , 0.0018, private static void debugPrint(Throwable exp) {\n\tif  {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,537 - INFO -    Result 10:  strict, 0.0017, private static void debugPrint(Throwable exp) {\n\tif strict {\n\texp.printStackTrace();}}
+
+2024-03-31 00:36:07,598 - INFO - -----
+Sample 17
+Ground truth:
+public List<ScriptEngineFactory> getEngineFactories() {\n\treturn List.copyOf(engineSpis);}
+Input:
+public List<ScriptEngineFactory> {getEngineFactories() <mask> List.copyOf(engineSpis);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,598 - INFO -    Result 1:  ->, 0.5039, public List<ScriptEngineFactory> {getEngineFactories() -> List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 2:  return, 0.3947, public List<ScriptEngineFactory> {getEngineFactories() return List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 3:  -, 0.0246, public List<ScriptEngineFactory> {getEngineFactories() - List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 4:  :, 0.0171, public List<ScriptEngineFactory> {getEngineFactories() : List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 5:  +, 0.0156, public List<ScriptEngineFactory> {getEngineFactories() + List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 6:  {, 0.0084, public List<ScriptEngineFactory> {getEngineFactories() { List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 7:  ==, 0.0034, public List<ScriptEngineFactory> {getEngineFactories() == List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 8:  throws, 0.0028, public List<ScriptEngineFactory> {getEngineFactories() throws List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 9: ?, 0.0027, public List<ScriptEngineFactory> {getEngineFactories()? List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,598 - INFO -    Result 10:  =, 0.0024, public List<ScriptEngineFactory> {getEngineFactories() = List.copyOf(engineSpis);}
+
+2024-03-31 00:36:07,662 - INFO - -----
+Sample 18
+Ground truth:
+public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, name, factory);}
+Input:
+public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, <mask> factory);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,662 - INFO -    Result 1:  &, 0.2463, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, & factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 2:  new, 0.1379, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, new factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 3:  , 0.1175, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations,  factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 4:  //, 0.1017, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, // factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 5:  +, 0.0685, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, + factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 6:  -, 0.0376, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, - factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 7:  ",, 0.0321, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, ", factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 8: ..., 0.0178, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations,... factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 9:  name, 0.0151, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, name factory);}
+
+2024-03-31 00:36:07,662 - INFO -    Result 10:  *, 0.0146, public void registerEngineName(String name, ScriptEngineFactory factory) {\n\tassociateFactory(nameAssociations, * factory);}
+
+2024-03-31 00:36:07,727 - INFO - -----
+Sample 19
+Ground truth:
+public void registerEngineMimeType(String type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+Input:
+public void <mask> type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,727 - INFO -    Result 1:  register, 0.2356, public void register type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 2:  add, 0.2063, public void add type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 3:  load, 0.0464, public void load type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 4:  create, 0.0456, public void create type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 5:  initialize, 0.0294, public void initialize type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 6:  associate, 0.0286, public void associate type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 7:  set, 0.0201, public void set type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 8:  compile, 0.0193, public void compile type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 9:  resolve, 0.0160, public void resolve type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,727 - INFO -    Result 10:  visit, 0.0154, public void visit type, ScriptEngineFactory factory) {\n\tassociateFactory(mimeTypeAssociations, type, factory);}
+
+2024-03-31 00:36:07,791 - INFO - -----
+Sample 20
+Ground truth:
+public void registerEngineExtension(String extension, ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+Input:
+public void registerEngineExtension(String <mask> ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,791 - INFO -    Result 1:  extension, 0.9843, public void registerEngineExtension(String extension ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 2: ,, 0.0025, public void registerEngineExtension(String, ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 3:  string, 0.0017, public void registerEngineExtension(String string ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 4:  Extension, 0.0015, public void registerEngineExtension(String Extension ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 5:  name, 0.0012, public void registerEngineExtension(String name ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 6:  ext, 0.0006, public void registerEngineExtension(String ext ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 7:  feature, 0.0006, public void registerEngineExtension(String feature ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 8:  extensions, 0.0004, public void registerEngineExtension(String extensions ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 9: :, 0.0004, public void registerEngineExtension(String: ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,791 - INFO -    Result 10: ension, 0.0004, public void registerEngineExtension(Stringension ScriptEngineFactory factory) {\n\tassociateFactory(extensionAssociations, extension, factory);}
+
+2024-03-31 00:36:07,862 - INFO - -----
+Sample 21
+Ground truth:
+private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, ScriptEngineFactory factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+Input:
+private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, <mask> factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,862 - INFO -    Result 1:  Object, 0.4776, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, Object factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,862 - INFO -    Result 2:  Factory, 0.2749, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, Factory factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,862 - INFO -    Result 3:  String, 0.1038, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, String factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,862 - INFO -    Result 4:  Function, 0.0494, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, Function factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,862 - INFO -    Result 5: Factory, 0.0206, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association,Factory factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,863 - INFO -    Result 6:  Class, 0.0115, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, Class factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,863 - INFO -    Result 7:  File, 0.0052, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, File factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,863 - INFO -    Result 8:  T, 0.0028, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, T factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,863 - INFO -    Result 9:  factory, 0.0025, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, factory factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,863 - INFO -    Result 10:  Configuration, 0.0020, private static void associateFactory(Map<String, ScriptEngineFactory> associations, String association, Configuration factory)\n\t{\n\tif (association == null || factory == null) throw new NullPointerException();\n\tassociations.put(association, factory);}
+
+2024-03-31 00:36:07,934 - INFO - -----
+Sample 22
+Ground truth:
+private static final Comparator<ScriptEngineFactory> COMPARATOR = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+Input:
+private static final Comparator<ScriptEngineFactory> <mask> = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,934 - INFO -    Result 1:  comp, 0.2796, private static final Comparator<ScriptEngineFactory> comp = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 2:  c, 0.0917, private static final Comparator<ScriptEngineFactory> c = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 3:  comparison, 0.0703, private static final Comparator<ScriptEngineFactory> comparison = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 4:  compar, 0.0616, private static final Comparator<ScriptEngineFactory> compar = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 5:  compare, 0.0606, private static final Comparator<ScriptEngineFactory> compare = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 6:  ordering, 0.0579, private static final Comparator<ScriptEngineFactory> ordering = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 7:  result, 0.0382, private static final Comparator<ScriptEngineFactory> result = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 8:  order, 0.0193, private static final Comparator<ScriptEngineFactory> order = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 9:  desc, 0.0182, private static final Comparator<ScriptEngineFactory> desc = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,934 - INFO -    Result 10:  sort, 0.0174, private static final Comparator<ScriptEngineFactory> sort = Comparator.comparing( \n\tScriptEngineFactory::getEngineName,\n\tComparator.nullsLast(Comparator.naturalOrder())\n\t);
+
+2024-03-31 00:36:07,992 - INFO - -----
+Sample 23
+Ground truth:
+public boolean containsKey(Object key) {\n\tcheckKey(key);\n\treturn map.containsKey(key);}
+Input:
+public boolean containsKey(Object key) <mask> map.containsKey(key);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:07,993 - INFO -    Result 1:  return, 0.8929, public boolean containsKey(Object key) return map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 2:  {, 0.0499, public boolean containsKey(Object key) { map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 3:  &&, 0.0323, public boolean containsKey(Object key) && map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 4:  ||, 0.0185, public boolean containsKey(Object key) || map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 5:  ->, 0.0018, public boolean containsKey(Object key) -> map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 6:  //, 0.0008, public boolean containsKey(Object key) // map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 7:  boolean, 0.0004, public boolean containsKey(Object key) boolean map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 8:  throw, 0.0003, public boolean containsKey(Object key) throw map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 9:  returns, 0.0003, public boolean containsKey(Object key) returns map.containsKey(key);}
+
+2024-03-31 00:36:07,993 - INFO -    Result 10: return, 0.0003, public boolean containsKey(Object key)return map.containsKey(key);}
+
+2024-03-31 00:36:08,051 - INFO - -----
+Sample 24
+Ground truth:
+public boolean containsValue(Object value) {\n\treturn map.containsValue(value);}
+Input:
+public boolean containsValue(Object <mask> {\n\treturn map.containsValue(value);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,052 - INFO -    Result 1:  value, 0.6220, public boolean containsValue(Object value {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 2: ), 0.3378, public boolean containsValue(Object) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 3: ...), 0.0102, public boolean containsValue(Object...) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 4: value, 0.0081, public boolean containsValue(Objectvalue {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 5: Value, 0.0042, public boolean containsValue(ObjectValue {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 6:  ), 0.0011, public boolean containsValue(Object ) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 7: )), 0.0010, public boolean containsValue(Object)) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 8: >), 0.0010, public boolean containsValue(Object>) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 9: );, 0.0009, public boolean containsValue(Object); {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,052 - INFO -    Result 10: !), 0.0009, public boolean containsValue(Object!) {\n\treturn map.containsValue(value);}
+
+2024-03-31 00:36:08,110 - INFO - -----
+Sample 25
+Ground truth:
+public Set<Map.Entry<String, Object>> entrySet() {\n\treturn map.entrySet();}
+Input:
+public Set<Map.Entry<String, Object>> entrySet() <mask> map.entrySet();}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,110 - INFO -    Result 1:  {, 0.9775, public Set<Map.Entry<String, Object>> entrySet() { map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 2:  return, 0.0115, public Set<Map.Entry<String, Object>> entrySet() return map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 3:  throws, 0.0035, public Set<Map.Entry<String, Object>> entrySet() throws map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 4: {, 0.0024, public Set<Map.Entry<String, Object>> entrySet(){ map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 5:  ->, 0.0011, public Set<Map.Entry<String, Object>> entrySet() -> map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 6:  {}, 0.0011, public Set<Map.Entry<String, Object>> entrySet() {} map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 7:  //, 0.0006, public Set<Map.Entry<String, Object>> entrySet() // map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 8:  {", 0.0005, public Set<Map.Entry<String, Object>> entrySet() {" map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 9:  ==, 0.0002, public Set<Map.Entry<String, Object>> entrySet() == map.entrySet();}
+
+2024-03-31 00:36:08,110 - INFO -    Result 10: return, 0.0002, public Set<Map.Entry<String, Object>> entrySet()return map.entrySet();}
+
+2024-03-31 00:36:08,168 - INFO - -----
+Sample 26
+Ground truth:
+public Object get(Object key) {\n\tcheckKey(key);\n\treturn map.get(key);}
+Input:
+public Object get(Object key) <mask> map.get(key);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,168 - INFO -    Result 1:  return, 0.8108, public Object get(Object key) return map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 2:  {, 0.1862, public Object get(Object key) { map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 3:  throw, 0.0007, public Object get(Object key) throw map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 4:  ->, 0.0004, public Object get(Object key) -> map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 5:  {}, 0.0003, public Object get(Object key) {} map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 6: return, 0.0001, public Object get(Object key)return map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 7:  throws, 0.0001, public Object get(Object key) throws map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 8:  //, 0.0001, public Object get(Object key) // map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 9: {, 0.0001, public Object get(Object key){ map.get(key);}
+
+2024-03-31 00:36:08,168 - INFO -    Result 10:  ||, 0.0001, public Object get(Object key) || map.get(key);}
+
+2024-03-31 00:36:08,227 - INFO - -----
+Sample 27
+Ground truth:
+public Object eval() throws ScriptException {\n\treturn eval(getEngine().getContext());}
+Input:
+public Object eval() throws ScriptException <mask> eval(getEngine().getContext());}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,227 - INFO -    Result 1:  {, 0.9680, public Object eval() throws ScriptException { eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 2: {, 0.0161, public Object eval() throws ScriptException{ eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 3: ,, 0.0073, public Object eval() throws ScriptException, eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 4: (){, 0.0053, public Object eval() throws ScriptException(){ eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 5:  return, 0.0011, public Object eval() throws ScriptException return eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 6:  {}, 0.0006, public Object eval() throws ScriptException {} eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 7: ){, 0.0004, public Object eval() throws ScriptException){ eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 8: (), 0.0002, public Object eval() throws ScriptException() eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 9: ;, 0.0001, public Object eval() throws ScriptException; eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,227 - INFO -    Result 10: :{, 0.0001, public Object eval() throws ScriptException:{ eval(getEngine().getContext());}
+
+2024-03-31 00:36:08,298 - INFO - -----
+Sample 28
+Ground truth:
+public void put(String key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn != null) {\n\tnn.put(key, value);}}
+Input:
+public void <mask> key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn != null) {\n\tnn.put(key, value);}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,298 - INFO -    Result 1:  put, 0.8445, public void put key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 2:  set, 0.1008, public void set key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 3:  add, 0.0250, public void add key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 4:  register, 0.0041, public void register key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 5:  void, 0.0026, public void void key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 6: put, 0.0015, public voidput key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,298 - INFO -    Result 7:  store, 0.0014, public void store key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,299 - INFO -    Result 8:  bind, 0.0011, public void bind key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,299 - INFO -    Result 9:  (, 0.0009, public void ( key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,299 - INFO -    Result 10:  map, 0.0008, public void map key, Object value) {\n\tBindings nn = getBindings(ScriptContext.ENGINE_SCOPE);\n\tif (nn!= null) {\n\tnn.put(key, value);}}
+
+2024-03-31 00:36:08,358 - INFO - -----
+Sample 29
+Ground truth:
+public Object eval(Reader reader) throws ScriptException {\n\treturn eval(reader, context);}
+Input:
+public Object eval(Reader <mask> throws ScriptException {\n\treturn eval(reader, context);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,358 - INFO -    Result 1: ), 0.9719, public Object eval(Reader) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 2: ()), 0.0100, public Object eval(Reader()) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 3: ...), 0.0095, public Object eval(Reader...) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 4:  ), 0.0027, public Object eval(Reader ) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 5: (), 0.0024, public Object eval(Reader() throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 6: )), 0.0011, public Object eval(Reader)) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 7: );, 0.0009, public Object eval(Reader); throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 8:  reader, 0.0003, public Object eval(Reader reader throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 9: "), 0.0002, public Object eval(Reader") throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,359 - INFO -    Result 10: >), 0.0001, public Object eval(Reader>) throws ScriptException {\n\treturn eval(reader, context);}
+
+2024-03-31 00:36:08,446 - INFO - -----
+Sample 30
+Ground truth:
+public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope != null && globalScope.containsKey(name)) {\n\treturn getAttribute(name, GLOBAL_SCOPE);}\n\t\n\treturn null;}
+Input:
+public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope != null && globalScope.containsKey(name)) {\n\treturn <mask> GLOBAL_SCOPE);}\n\t\n\treturn null;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,446 - INFO -    Result 1: ,, 0.3954, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn, GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 2:  (, 0.2096, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn ( GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 3: (, 0.1080, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn( GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 4:  ",, 0.0787, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn ", GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 5:  -, 0.0372, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn - GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 6:  //, 0.0243, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn // GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 7:  new, 0.0218, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn new GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 8: ;, 0.0108, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn; GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 9:  void, 0.0106, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn void GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,446 - INFO -    Result 10: ?,, 0.0103, public Object getAttribute(String name) {\n\tcheckName(name);\n\tif (engineScope.containsKey(name)) {\n\treturn getAttribute(name, ENGINE_SCOPE);\n\t} else if (globalScope!= null && globalScope.containsKey(name)) {\n\treturn?, GLOBAL_SCOPE);}\n\t\n\treturn null;}
+
+2024-03-31 00:36:08,511 - INFO - -----
+Sample 31
+Ground truth:
+private void checkName(String name) {\n\tObjects.requireNonNull(name);\n\tif (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+Input:
+private void checkName(String name) <mask> (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,511 - INFO -    Result 1:  if, 0.9979, private void checkName(String name) if (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 2:  throws, 0.0003, private void checkName(String name) throws (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 3: if, 0.0003, private void checkName(String name)if (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 4:  ||, 0.0003, private void checkName(String name) || (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 5:  boolean, 0.0002, private void checkName(String name) boolean (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 6:  //, 0.0002, private void checkName(String name) // (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 7:  while, 0.0001, private void checkName(String name) while (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 8:  If, 0.0001, private void checkName(String name) If (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 9:  {, 0.0001, private void checkName(String name) { (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,511 - INFO -    Result 10:  {}, 0.0001, private void checkName(String name) {} (name.isEmpty()) {\n\tthrow new IllegalArgumentException("name cannot be empty");}}
+
+2024-03-31 00:36:08,569 - INFO - -----
+Sample 32
+Ground truth:
+public List<Integer> getScopes() {\n\treturn scopes;}
+Input:
+public List<Integer> <mask> {\n\treturn scopes;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,569 - INFO -    Result 1:  scope, 0.5533, public List<Integer> scope {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 2:  values, 0.0412, public List<Integer> values {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 3:  all, 0.0211, public List<Integer> all {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 4:  get, 0.0135, public List<Integer> get {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 5: (), 0.0131, public List<Integer>() {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 6:  size, 0.0129, public List<Integer> size {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 7:  permissions, 0.0123, public List<Integer> permissions {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 8: scope, 0.0114, public List<Integer>scope {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 9:  elements, 0.0099, public List<Integer> elements {\n\treturn scopes;}
+
+2024-03-31 00:36:08,569 - INFO -    Result 10:  children, 0.0090, public List<Integer> children {\n\treturn scopes;}
+
+2024-03-31 00:36:08,631 - INFO - -----
+Sample 33
+Ground truth:
+public Object remove(Object key) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+Input:
+public Object remove(Object <mask> {\n\tcheckKey(key);\n\treturn map.remove(key);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,631 - INFO -    Result 1: ), 0.7889, public Object remove(Object) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 2:  key, 0.1915, public Object remove(Object key {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 3: ...), 0.0033, public Object remove(Object...) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 4: );, 0.0019, public Object remove(Object); {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 5: key, 0.0016, public Object remove(Objectkey {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 6: (), 0.0013, public Object remove(Object() {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 7: !), 0.0012, public Object remove(Object!) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 8: )), 0.0010, public Object remove(Object)) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 9:  ), 0.0009, public Object remove(Object ) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,631 - INFO -    Result 10: ()), 0.0007, public Object remove(Object()) {\n\tcheckKey(key);\n\treturn map.remove(key);}
+
+2024-03-31 00:36:08,695 - INFO - -----
+Sample 34
+Ground truth:
+public int size() {\n\treturn map.size();}
+Input:
+public int size() <mask> map.size();}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,695 - INFO -    Result 1:  return, 0.8115, public int size() return map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 2:  {, 0.0709, public int size() { map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 3:  =, 0.0397, public int size() = map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 4:  ==, 0.0173, public int size() == map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 5:  -, 0.0082, public int size() - map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 6:  +, 0.0077, public int size() + map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 7:  ->, 0.0056, public int size() -> map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 8: !=, 0.0044, public int size()!= map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 9:  extends, 0.0041, public int size() extends map.size();}
+
+2024-03-31 00:36:08,695 - INFO -    Result 10:  returns, 0.0019, public int size() returns map.size();}
+
+2024-03-31 00:36:08,757 - INFO - -----
+Sample 35
+Ground truth:
+public void setReader(Reader reader) {\n\tthis.reader = reader;}
+Input:
+public void setReader(Reader reader) <mask> = reader;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,757 - INFO -    Result 1:  reader, 0.7346, public void setReader(Reader reader) reader = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 2:  r, 0.0539, public void setReader(Reader reader) r = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 3:  writer, 0.0224, public void setReader(Reader reader) writer = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 4:  this, 0.0153, public void setReader(Reader reader) this = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 5:  value, 0.0101, public void setReader(Reader reader) value = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 6:  content, 0.0090, public void setReader(Reader reader) content = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 7:  rc, 0.0059, public void setReader(Reader reader) rc = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 8:  val, 0.0050, public void setReader(Reader reader) val = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 9:  super, 0.0046, public void setReader(Reader reader) super = reader;}
+
+2024-03-31 00:36:08,757 - INFO -    Result 10:  input, 0.0041, public void setReader(Reader reader) input = reader;}
+
+2024-03-31 00:36:08,814 - INFO - -----
+Sample 36
+Ground truth:
+public void setWriter(Writer writer) {\n\tthis.writer = writer;}
+Input:
+public void <mask> writer) {\n\tthis.writer = writer;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,814 - INFO -    Result 1:  Writer, 0.3154, public void Writer writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 2: Writer, 0.1997, public voidWriter writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 3:  writer, 0.0742, public void writer writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 4: (, 0.0557, public void( writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 5:  , 0.0363, public void  writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 6: ,, 0.0225, public void, writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 7:  (, 0.0175, public void ( writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 8:  set, 0.0145, public void set writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 9: writer, 0.0130, public voidwriter writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,814 - INFO -    Result 10: ..., 0.0114, public void... writer) {\n\tthis.writer = writer;}
+
+2024-03-31 00:36:08,872 - INFO - -----
+Sample 37
+Ground truth:
+public Writer getErrorWriter() {\n\treturn errorWriter;}
+Input:
+public Writer getErrorWriter() <mask> errorWriter;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,872 - INFO -    Result 1:  return, 0.7399, public Writer getErrorWriter() return errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 2:  {, 0.1753, public Writer getErrorWriter() { errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 3:  throws, 0.0338, public Writer getErrorWriter() throws errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 4:  String, 0.0066, public Writer getErrorWriter() String errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 5:  throw, 0.0058, public Writer getErrorWriter() throw errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 6:  ->, 0.0031, public Writer getErrorWriter() -> errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 7:  {}, 0.0028, public Writer getErrorWriter() {} errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 8:  boolean, 0.0023, public Writer getErrorWriter() boolean errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 9:  int, 0.0022, public Writer getErrorWriter() int errorWriter;}
+
+2024-03-31 00:36:08,872 - INFO -    Result 10:  //, 0.0018, public Writer getErrorWriter() // errorWriter;}
+
+2024-03-31 00:36:08,930 - INFO - -----
+Sample 38
+Ground truth:
+public void setErrorWriter(Writer writer) {\n\tthis.errorWriter = writer;}
+Input:
+public void setErrorWriter(Writer <mask> {\n\tthis.errorWriter = writer;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,930 - INFO -    Result 1: ), 0.9971, public void setErrorWriter(Writer) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 2: (), 0.0010, public void setErrorWriter(Writer() {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 3: ()), 0.0007, public void setErrorWriter(Writer()) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 4:  ), 0.0006, public void setErrorWriter(Writer ) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 5: ...), 0.0002, public void setErrorWriter(Writer...) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 6: );, 0.0001, public void setErrorWriter(Writer); {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 7: >), 0.0001, public void setErrorWriter(Writer>) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,930 - INFO -    Result 8: )), 0.0000, public void setErrorWriter(Writer)) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,931 - INFO -    Result 9: !), 0.0000, public void setErrorWriter(Writer!) {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,931 - INFO -    Result 10: ,, 0.0000, public void setErrorWriter(Writer, {\n\tthis.errorWriter = writer;}
+
+2024-03-31 00:36:08,990 - INFO - -----
+Sample 39
+Ground truth:
+public BaseEntry(CatalogEntryType type) {\n\tthis.type = Objects.requireNonNull(type);}
+Input:
+public BaseEntry(CatalogEntryType type) <mask> = Objects.requireNonNull(type);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:08,990 - INFO -    Result 1:  {, 0.7696, public BaseEntry(CatalogEntryType type) { = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 2:  type, 0.0771, public BaseEntry(CatalogEntryType type) type = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 3:  //, 0.0425, public BaseEntry(CatalogEntryType type) // = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 4: 
+, 0.0138, public BaseEntry(CatalogEntryType type)
+ = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 5:  , 0.0121, public BaseEntry(CatalogEntryType type)  = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 6:  {}, 0.0087, public BaseEntry(CatalogEntryType type) {} = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 7:  value, 0.0077, public BaseEntry(CatalogEntryType type) value = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 8: {, 0.0052, public BaseEntry(CatalogEntryType type){ = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 9:  result, 0.0047, public BaseEntry(CatalogEntryType type) result = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:08,990 - INFO -    Result 10: 	, 0.0033, public BaseEntry(CatalogEntryType type)	 = Objects.requireNonNull(type);}
+
+2024-03-31 00:36:09,057 - INFO - -----
+Sample 40
+Ground truth:
+public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type = Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+Input:
+public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type <mask> Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,057 - INFO -    Result 1:  =, 0.9999, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type = Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 2: =, 0.0001, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type= Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 3:  +=, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type += Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 4: :, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type: Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 5: ;, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type; Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 6: ., 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type. Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 7: ();, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type(); Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 8: (), 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type() Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 9:  ==, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type == Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,057 - INFO -    Result 10:  ->, 0.0000, public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type -> Objects.requireNonNull(type);\n\tsetBaseURI(base);}
+
+2024-03-31 00:36:09,118 - INFO - -----
+Sample 41
+Ground truth:
+public final void setBaseURI(String base) {\n\tbaseURI = verifyURI("base", null, base);}
+Input:
+public final void <mask> base) {\n\tbaseURI = verifyURI("base", null, base);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,118 - INFO -    Result 1:  URI, 0.2866, public final void URI base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 2:  String, 0.2689, public final void String base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 3: Base, 0.0445, public final voidBase base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 4:  base, 0.0309, public final void base base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 5: ..., 0.0291, public final void... base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 6: base, 0.0239, public final voidbase base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 7: ..., 0.0149, public final void... base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 8:  encode, 0.0126, public final void encode base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 9:  add, 0.0119, public final void add base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,118 - INFO -    Result 10: String, 0.0115, public final voidString base) {\n\tbaseURI = verifyURI("base", null, base);}
+
+2024-03-31 00:36:09,185 - INFO - -----
+Sample 42
+Ground truth:
+public CatalogEntry(String base, String... attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+Input:
+public CatalogEntry(String base, <mask> attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,185 - INFO -    Result 1:  String, 0.3788, public CatalogEntry(String base, String attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 2:  Attributes, 0.3573, public CatalogEntry(String base, Attributes attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 3:  Properties, 0.0663, public CatalogEntry(String base, Properties attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 4:  Object, 0.0644, public CatalogEntry(String base, Object attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 5:  Map, 0.0282, public CatalogEntry(String base, Map attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 6:  int, 0.0119, public CatalogEntry(String base, int attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 7: Attributes, 0.0108, public CatalogEntry(String base,Attributes attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 8:  Dictionary, 0.0065, public CatalogEntry(String base, Dictionary attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 9:  Set, 0.0061, public CatalogEntry(String base, Set attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,185 - INFO -    Result 10: String, 0.0060, public CatalogEntry(String base,String attributes) {\n\tsuper(base, attributes);\n\tsetType(CatalogEntryType.CATALOGENTRY);}
+
+2024-03-31 00:36:09,244 - INFO - -----
+Sample 43
+Ground truth:
+public String match(String match) {\n\tthrow new UnsupportedOperationException("Unsupported operation.");}
+Input:
+public String match(String match) <mask> new UnsupportedOperationException("Unsupported operation.");}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,244 - INFO -    Result 1:  throw, 0.9909, public String match(String match) throw new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 2:  throws, 0.0079, public String match(String match) throws new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 3:  {, 0.0003, public String match(String match) { new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 4:  return, 0.0002, public String match(String match) return new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 5:  Throw, 0.0002, public String match(String match) Throw new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 6:  fail, 0.0001, public String match(String match) fail new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 7:  :, 0.0000, public String match(String match) : new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 8:  raise, 0.0000, public String match(String match) raise new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 9:  =>, 0.0000, public String match(String match) => new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,244 - INFO -    Result 10: throw, 0.0000, public String match(String match)throw new UnsupportedOperationException("Unsupported operation.");}
+
+2024-03-31 00:36:09,301 - INFO - -----
+Sample 44
+Ground truth:
+public Catalog getParent() {\n\treturn this.parent;}
+Input:
+public Catalog getParent() <mask> this.parent;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,301 - INFO -    Result 1:  return, 0.4888, public Catalog getParent() return this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 2:  {, 0.4875, public Catalog getParent() { this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 3:  {}, 0.0062, public Catalog getParent() {} this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 4:  throws, 0.0010, public Catalog getParent() throws this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 5:  ->, 0.0010, public Catalog getParent() -> this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 6: ?, 0.0010, public Catalog getParent()? this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 7:  throw, 0.0007, public Catalog getParent() throw this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 8:  use, 0.0007, public Catalog getParent() use this.parent;}
+
+2024-03-31 00:36:09,301 - INFO -    Result 9:  //, 0.0007, public Catalog getParent() // this.parent;}
+
+2024-03-31 00:36:09,302 - INFO -    Result 10:  {", 0.0006, public Catalog getParent() {" this.parent;}
+
+2024-03-31 00:36:09,364 - INFO - -----
+Sample 45
+Ground truth:
+public final void setDeferred(String value) {\n\tisDeferred = DEFER_TRUE.equals(value);}
+Input:
+public final void setDeferred(String value) {\n\tisDeferred <mask> DEFER_TRUE.equals(value);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,364 - INFO -    Result 1:  =, 0.9672, public final void setDeferred(String value) {\n\tisDeferred = DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 2:  +=, 0.0093, public final void setDeferred(String value) {\n\tisDeferred += DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 3: =, 0.0069, public final void setDeferred(String value) {\n\tisDeferred= DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 4:  return, 0.0052, public final void setDeferred(String value) {\n\tisDeferred return DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 5: ., 0.0028, public final void setDeferred(String value) {\n\tisDeferred. DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 6:  &&, 0.0016, public final void setDeferred(String value) {\n\tisDeferred && DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 7: :, 0.0014, public final void setDeferred(String value) {\n\tisDeferred: DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 8:  ||, 0.0006, public final void setDeferred(String value) {\n\tisDeferred || DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 9:  +, 0.0005, public final void setDeferred(String value) {\n\tisDeferred + DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,364 - INFO -    Result 10:  , 0.0004, public final void setDeferred(String value) {\n\tisDeferred  DEFER_TRUE.equals(value);}
+
+2024-03-31 00:36:09,425 - INFO - -----
+Sample 46
+Ground truth:
+public final void setResolve(String value) {\n\tresolveType = NotFoundAction.getType(value);}
+Input:
+public final void setResolve(String value) <mask> = NotFoundAction.getType(value);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,425 - INFO -    Result 1:  type, 0.1916, public final void setResolve(String value) type = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 2:  resolve, 0.1851, public final void setResolve(String value) resolve = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 3:  value, 0.1491, public final void setResolve(String value) value = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 4:  action, 0.1251, public final void setResolve(String value) action = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 5:  {, 0.0452, public final void setResolve(String value) { = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 6:  result, 0.0275, public final void setResolve(String value) result = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 7:  res, 0.0174, public final void setResolve(String value) res = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 8:  , 0.0129, public final void setResolve(String value)  = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 9:  //, 0.0126, public final void setResolve(String value) // = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,425 - INFO -    Result 10:  return, 0.0117, public final void setResolve(String value) return = NotFoundAction.getType(value);}
+
+2024-03-31 00:36:09,493 - INFO - -----
+Sample 47
+Ground truth:
+public InputSource resolveEntity(String publicId, String systemId) {\n\treturn new InputSource(new StringReader(""));}
+Input:
+public InputSource resolveEntity(String publicId, String systemId) {\n\treturn <mask> InputSource(new StringReader(""));}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,493 - INFO -    Result 1:  new, 0.9997, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn new InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 2: new, 0.0002, public InputSource resolveEntity(String publicId, String systemId) {\n\treturnnew InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 3:  @, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn @ InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 4:  static, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn static InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 5:  get, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn get InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 6:  an, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn an InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 7: New, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturnNew InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 8:  create, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn create InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 9:  public, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn public InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,494 - INFO -    Result 10:  New, 0.0000, public InputSource resolveEntity(String publicId, String systemId) {\n\treturn New InputSource(new StringReader(""));}
+
+2024-03-31 00:36:09,561 - INFO - -----
+Sample 48
+Ground truth:
+public Source resolve(String href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+Input:
+public Source <mask> href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,561 - INFO -    Result 1: (, 0.5751, public Source( href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 2: (), 0.1208, public Source() href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 3: Builder, 0.1077, public SourceBuilder href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 4:  , 0.0418, public Source  href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 5: [], 0.0157, public Source[] href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 6: <, 0.0136, public Source< href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 7: >(, 0.0108, public Source>( href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 8: >, 0.0108, public Source> href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 9:  String, 0.0088, public Source String href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,561 - INFO -    Result 10: Base, 0.0062, public SourceBase href, String base) \n\tthrows TransformerException {\n\treturn new SAXSource(new InputSource(new StringReader("")));}
+
+2024-03-31 00:36:09,637 - INFO - -----
+Sample 49
+Ground truth:
+public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString = Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+Input:
+public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString <mask> Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,637 - INFO -    Result 1:  =, 0.9999, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString = Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 2:  +=, 0.0001, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString += Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 3: =, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString= Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 4: ., 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString. Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 5: :, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString: Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 6:  ==, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString == Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 7:  ->, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString -> Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 8: ,, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString, Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 9:  -=, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString -= Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,637 - INFO -    Result 10: ={, 0.0000, public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString={ Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}
+
+2024-03-31 00:36:09,698 - INFO - -----
+Sample 50
+Ground truth:
+public String getPublicIdStartString () {\n\treturn publicIdStartString;}
+Input:
+public String getPublicIdStartString <mask> {\n\treturn publicIdStartString;}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,698 - INFO -    Result 1: (), 0.9922, public String getPublicIdStartString() {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 2:  (), 0.0073, public String getPublicIdStartString () {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 3: ()), 0.0003, public String getPublicIdStartString()) {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 4:  , 0.0001, public String getPublicIdStartString  {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 5:  ($), 0.0000, public String getPublicIdStartString ($) {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 6: ), 0.0000, public String getPublicIdStartString) {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 7: [], 0.0000, public String getPublicIdStartString[] {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 8: (),, 0.0000, public String getPublicIdStartString(), {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 9: ();, 0.0000, public String getPublicIdStartString(); {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,698 - INFO -    Result 10: ():, 0.0000, public String getPublicIdStartString(): {\n\treturn publicIdStartString;}
+
+2024-03-31 00:36:09,762 - INFO - -----
+Sample 51
+Ground truth:
+public String match(String publicId) {\n\treturn match(publicId, 0);}
+Input:
+public String match(String publicId) <mask> match(publicId, 0);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,762 - INFO -    Result 1:  {, 0.9932, public String match(String publicId) { match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 2:  return, 0.0050, public String match(String publicId) return match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 3:  {}, 0.0010, public String match(String publicId) {} match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 4: {, 0.0002, public String match(String publicId){ match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 5:  {", 0.0002, public String match(String publicId) {" match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 6:  throws, 0.0001, public String match(String publicId) throws match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 7:  throw, 0.0001, public String match(String publicId) throw match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 8:  //, 0.0000, public String match(String publicId) // match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 9:  ||, 0.0000, public String match(String publicId) || match(publicId, 0);}
+
+2024-03-31 00:36:09,762 - INFO -    Result 10:  ->, 0.0000, public String match(String publicId) -> match(publicId, 0);}
+
+2024-03-31 00:36:09,823 - INFO - -----
+Sample 52
+Ground truth:
+public GroupEntry(String base, String... attributes) {\n\tthis(null, base, attributes);}
+Input:
+public GroupEntry(String <mask> String... attributes) {\n\tthis(null, base, attributes);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,823 - INFO -    Result 1: ..., 0.5281, public GroupEntry(String... String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 2: ,, 0.3065, public GroupEntry(String, String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 3: [], 0.1198, public GroupEntry(String[] String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 4: ..., 0.0138, public GroupEntry(String... String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 5:  base, 0.0091, public GroupEntry(String base String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 6: .., 0.0031, public GroupEntry(String.. String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 7:  [], 0.0025, public GroupEntry(String [] String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 8: >, 0.0025, public GroupEntry(String> String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 9: (), 0.0012, public GroupEntry(String() String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,823 - INFO -    Result 10: ., 0.0010, public GroupEntry(String. String... attributes) {\n\tthis(null, base, attributes);}
+
+2024-03-31 00:36:09,886 - INFO - -----
+Sample 53
+Ground truth:
+private void resetOnStart() {\n\tif (this instanceof Catalog  && !shouldKeepState) {\n\treset();}}
+Input:
+private void resetOnStart() {\n\tif (this instanceof <mask> && !shouldKeepState) {\n\treset();}}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,886 - INFO -    Result 1:  State, 0.3429, private void resetOnStart() {\n\tif (this instanceof State &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 2:  Model, 0.0454, private void resetOnStart() {\n\tif (this instanceof Model &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 3:  Object, 0.0232, private void resetOnStart() {\n\tif (this instanceof Object &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 4:  Context, 0.0155, private void resetOnStart() {\n\tif (this instanceof Context &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 5:  View, 0.0137, private void resetOnStart() {\n\tif (this instanceof View &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 6:  Thread, 0.0127, private void resetOnStart() {\n\tif (this instanceof Thread &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 7:  Transition, 0.0120, private void resetOnStart() {\n\tif (this instanceof Transition &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 8:  Record, 0.0113, private void resetOnStart() {\n\tif (this instanceof Record &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 9:  Controller, 0.0098, private void resetOnStart() {\n\tif (this instanceof Controller &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,886 - INFO -    Result 10:  Command, 0.0095, private void resetOnStart() {\n\tif (this instanceof Command &&!shouldKeepState) {\n\treset();}}
+
+2024-03-31 00:36:09,950 - INFO - -----
+Sample 54
+Ground truth:
+public final void setPrefer(String value) {\n\tisPreferPublic = PreferType.PUBLIC.prefer(value);}
+Input:
+public final void setPrefer(String value) <mask> = PreferType.PUBLIC.prefer(value);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:09,950 - INFO -    Result 1:  {, 0.7182, public final void setPrefer(String value) { = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 2:  , 0.0742, public final void setPrefer(String value)  = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 3:  //, 0.0300, public final void setPrefer(String value) // = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 4:  value, 0.0204, public final void setPrefer(String value) value = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 5:  {", 0.0186, public final void setPrefer(String value) {" = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 6:  prefer, 0.0126, public final void setPrefer(String value) prefer = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 7:  result, 0.0104, public final void setPrefer(String value) result = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 8: 
+, 0.0085, public final void setPrefer(String value)
+ = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 9:  {}, 0.0078, public final void setPrefer(String value) {} = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:09,950 - INFO -    Result 10: {, 0.0066, public final void setPrefer(String value){ = PreferType.PUBLIC.prefer(value);}
+
+2024-03-31 00:36:10,017 - INFO - -----
+Sample 55
+Ground truth:
+public NextCatalog(String base, String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+Input:
+public NextCatalog(String <mask> String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:10,017 - INFO -    Result 1:  base, 0.8437, public NextCatalog(String base String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 2: ,, 0.0890, public NextCatalog(String, String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 3: Base, 0.0082, public NextCatalog(StringBase String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 4: ..., 0.0069, public NextCatalog(String... String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 5: base, 0.0055, public NextCatalog(Stringbase String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 6: ;, 0.0038, public NextCatalog(String; String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 7:  type, 0.0032, public NextCatalog(String type String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 8: :, 0.0027, public NextCatalog(String: String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,017 - INFO -    Result 9:  name, 0.0024, public NextCatalog(String name String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,018 - INFO -    Result 10: ..., 0.0024, public NextCatalog(String... String catalog) {\n\tsuper(CatalogEntryType.NEXTCATALOG, base);\n\tsetCatalog(catalog);}
+
+2024-03-31 00:36:10,079 - INFO - -----
+Sample 56
+Ground truth:
+public String match(String match) {\n\tthrow new UnsupportedOperationException("Not supported.");}
+Input:
+public String match(String match) {\n\tthrow <mask> UnsupportedOperationException("Not supported.");}
+Predicted results (sorted by probability scores):
+2024-03-31 00:36:10,079 - INFO -    Result 1:  new, 0.9999, public String match(String match) {\n\tthrow new UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,079 - INFO -    Result 2: new, 0.0000, public String match(String match) {\n\tthrownew UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 3:  @, 0.0000, public String match(String match) {\n\tthrow @ UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 4:  New, 0.0000, public String match(String match) {\n\tthrow New UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 5:  throw, 0.0000, public String match(String match) {\n\tthrow throw UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 6: New, 0.0000, public String match(String match) {\n\tthrowNew UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 7:  an, 0.0000, public String match(String match) {\n\tthrow an UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 8:  (, 0.0000, public String match(String match) {\n\tthrow ( UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 9:  , 0.0000, public String match(String match) {\n\tthrow  UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,080 - INFO -    Result 10:  the, 0.0000, public String match(String match) {\n\tthrow the UnsupportedOperationException("Not supported.");}
+
+2024-03-31 00:36:10,081 - INFO - 
+Predictions DataFrame:
+2024-03-31 00:36:10,081 - INFO -      token_id  rank         score  token token_str                                           sequence
+0           1     1  9.954997e-01  30921    return  public static int factorial(int n) {\n\tif (n ...
+1           1     2  3.323176e-03    671    return  public static int factorial(int n) {\n\tif (n ...
+2           1     3  2.639035e-04  42326        //  public static int factorial(int n) {\n\tif (n ...
+3           1     4  1.238116e-04  42555    Return  public static int factorial(int n) {\n\tif (n ...
+4           1     5  6.768999e-05  42964        ++  public static int factorial(int n) {\n\tif (n ...
+..        ...   ...           ...    ...       ...                                                ...
+555        56     6  1.589004e-06   4030       New  public String match(String match) {\n\tthrowNe...
+556        56     7  1.532888e-06     41        an  public String match(String match) {\n\tthrow a...
+557        56     8  1.479383e-06     36         (  public String match(String match) {\n\tthrow (...
+558        56     9  1.281533e-06   1437            public String match(String match) {\n\tthrow  ...
+559        56    10  6.709451e-07      5       the  public String match(String match) {\n\tthrow t...
+
+[560 rows x 6 columns]
+2024-03-31 00:36:10,092 - INFO - 0      public static int factorial(int n) {\n\tif (n ...
+1                                                   None
+2                                                   None
+3                                                   None
+4                                                   None
+                             ...                        
+555                                                 None
+556                                                 None
+557                                                 None
+558                                                 None
+559                                                 None
+Name: match_sequence, Length: 560, dtype: object
+2024-03-31 00:36:10,093 - INFO - token_id  match_sequence                                                                                                                                                                     
+1         None                                                                                                                                                                                   2
+          public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\treturn n * factorial(n - 1);}\n                                                                            1
+2         None                                                                                                                                                                                   2
+          public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num % i == 0)\n\treturn false;}\n\treturn true;}\n    1
+3         None                                                                                                                                                                                   2
+                                                                                                                                                                                                ..
+52        None                                                                                                                                                                                   1
+53        None                                                                                                                                                                                   1
+54        None                                                                                                                                                                                   1
+55        None                                                                                                                                                                                   1
+56        None                                                                                                                                                                                   1
+Name: rank, Length: 65, dtype: int64
+2024-03-31 00:36:10,094 - INFO - token_id  match_sequence                                                                                                                                                                                                                                                                                                                                                                                                    
+1         public static int factorial(int n) {\n\tif (n == 0)\n\treturn 1;\n\telse\n\treturn n * factorial(n - 1);}\n                                                                                                                                                                                                                                                                                                           1
+2         public static boolean isPrime(int num) {\n\tif (num <= 1)\n\treturn false;\n\tfor (int i = 2; i <= Math.sqrt(num); i++) {\n\tif (num % i == 0)\n\treturn false;}\n\treturn true;}\n                                                                                                                                                                                                                                   1
+3         public static String reverseString(String str) {\n\tStringBuilder reversed = new StringBuilder();\n\tfor (int i = str.length() - 1; i >= 0; i--) {\n\treversed.append(str.charAt(i));}\n\treturn reversed.toString();}\n                                                                                                                                                                                              1
+4         public static void main(String[] args) { {\n\tint num = 5;\n\tSystem.out.println("Factorial of " + num + " is: " + factorial(num));\n\t\n\tint checkPrime = 17;\n\tSystem.out.println(checkPrime + " is prime: " + isPrime(checkPrime));\n\t\n\tString original = "Hello World!";\n\tSystem.out.println("Original string: " + original);\n\tSystem.out.println("Reversed string: " + reverseString(original));}}\n    1
+40        public BaseEntry(CatalogEntryType type, String base) {\n\tthis.type = Objects.requireNonNull(type);\n\tsetBaseURI(base);}\n                                                                                                                                                                                                                                                                                           1
+45        public final void setDeferred(String value) {\n\tisDeferred = DEFER_TRUE.equals(value);}\n                                                                                                                                                                                                                                                                                                                            1
+47        public InputSource resolveEntity(String publicId, String systemId) {\n\treturn new InputSource(new StringReader(""));}\n                                                                                                                                                                                                                                                                                              1
+49        public void setSystemIdStartString (String systemIdStartString) {\n\tCatalogMessages.reportNPEOnNull("systemIdStartString", systemIdStartString);\n\tthis.systemIdStartString = Normalizer.normalizeURI(systemIdStartString);\n\tsetMatchId(this.systemIdStartString);}\n                                                                                                                                             1
+50        public String getPublicIdStartString () {\n\treturn publicIdStartString;}\n                                                                                                                                                                                                                                                                                                                                           2
+Name: rank, dtype: int64
+2024-03-31 00:36:10,095 - INFO - Mean Reciprocal Rank: 0.94
