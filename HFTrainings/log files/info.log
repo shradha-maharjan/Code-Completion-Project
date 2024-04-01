@@ -1,0 +1,299 @@
+[2024-03-31 00:16:13,702 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:16:13,926 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/datasets/code_search_net HTTP/1.1" 200 7728
+[2024-03-31 00:16:13,932 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 00:16:14,200 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 00:16:14,206 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): datasets-server.huggingface.co:443
+[2024-03-31 00:16:14,509 | connectionpool.py | line 546] - DEBUG: https://datasets-server.huggingface.co:443 "GET /parquet?dataset=code_search_net HTTP/1.1" 200 None
+[2024-03-31 00:16:14,514 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 00:16:14,769 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 00:16:14,776 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:16:15,056 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/code_search_net.py HTTP/1.1" 200 0
+[2024-03-31 00:16:15,063 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:16:15,227 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/dataset_infos.json HTTP/1.1" 404 0
+[2024-03-31 00:16:15,232 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:16:15,374 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/README.md HTTP/1.1" 200 0
+[2024-03-31 00:16:15,435 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139789663305488 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 00:16:15,435 | _api.py | line 257] - DEBUG: Lock 139789663305488 acquired on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 00:16:15,436 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 00:16:15,436 | _api.py | line 286] - DEBUG: Attempting to release lock 139789663305488 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 00:16:15,436 | _api.py | line 289] - DEBUG: Lock 139789663305488 released on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 00:16:15,460 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139790089579280 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 00:16:15,460 | _api.py | line 257] - DEBUG: Lock 139790089579280 acquired on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 00:16:15,461 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 00:16:15,461 | _api.py | line 286] - DEBUG: Attempting to release lock 139790089579280 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 00:16:15,461 | _api.py | line 289] - DEBUG: Lock 139790089579280 released on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 00:16:15,544 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+[2024-03-31 00:16:15,845 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpfq2uy1d6
+[2024-03-31 00:16:23,225 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpiulh7bf_
+[2024-03-31 00:17:07,247 | MLM_wholewordmask_train.py | line 137] - DEBUG: Configurations:
++---------------+-------+
+| Configuration | Value |
++---------------+-------+
+| train_size    | 8000  |
+| test_size     | 1000  |
++---------------+-------+
+[2024-03-31 00:17:07,275 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmp51hmjk0c
+[2024-03-31 00:17:07,279 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmp7ak6q3yn
+[2024-03-31 00:17:07,574 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmphp59l4ou
+[2024-03-31 00:17:07,729 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 00:17:07,779 | repository.py | line 678] - WARNING: Cloning https://huggingface.co/shradha01/MLM_FinetunedModel_accel into local empty directory.
+[2024-03-31 00:20:43,090 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 00:20:43,149 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:20:43,166 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 00:20:43,365 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 00:20:43,379 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 00:21:28,055 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 1.005361557006836
+[2024-03-31 00:21:28,055 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 1.005361557006836
+[2024-03-31 00:21:28,066 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.7328953742980957
+[2024-03-31 00:21:28,066 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.7328953742980957
+[2024-03-31 00:21:28,075 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 6.915225982666016
+[2024-03-31 00:21:28,075 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 6.915225982666016
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9990270733833313
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9990270733833313
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.7156383991241455
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.7156383991241455
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 6.916419506072998
+[2024-03-31 00:22:42,370 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 6.916419506072998
+[2024-03-31 00:23:56,779 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.9692693948745728
+[2024-03-31 00:23:56,779 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.9692693948745728
+[2024-03-31 00:23:56,780 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.6360180377960205
+[2024-03-31 00:23:56,780 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.6360180377960205
+[2024-03-31 00:23:56,780 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 6.920621871948242
+[2024-03-31 00:23:56,780 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 6.920621871948242
+[2024-03-31 00:25:11,213 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.9529492855072021
+[2024-03-31 00:25:11,213 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.9529492855072021
+[2024-03-31 00:25:11,213 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.5933470726013184
+[2024-03-31 00:25:11,213 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.5933470726013184
+[2024-03-31 00:25:11,214 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 6.917974472045898
+[2024-03-31 00:25:11,214 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 6.917974472045898
+[2024-03-31 00:26:25,813 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.9388210773468018
+[2024-03-31 00:26:25,813 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.9388210773468018
+[2024-03-31 00:26:25,814 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.5569653511047363
+[2024-03-31 00:26:25,814 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.5569653511047363
+[2024-03-31 00:26:25,814 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 6.918164253234863
+[2024-03-31 00:26:25,814 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 6.918164253234863
+[2024-03-31 00:26:42,516 | MLM_wholewordmask_train.py | line 253] - INFO: Elapsed time: 10 minutes 28 seconds
+[2024-03-31 12:45:22,725 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:22,920 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/datasets/code_search_net HTTP/1.1" 200 7728
+[2024-03-31 12:45:22,925 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 12:45:23,162 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 12:45:23,168 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): datasets-server.huggingface.co:443
+[2024-03-31 12:45:23,429 | connectionpool.py | line 546] - DEBUG: https://datasets-server.huggingface.co:443 "GET /parquet?dataset=code_search_net HTTP/1.1" 200 None
+[2024-03-31 12:45:23,434 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 12:45:23,654 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 12:45:23,661 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:23,795 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/code_search_net.py HTTP/1.1" 200 0
+[2024-03-31 12:45:23,802 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:24,049 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/dataset_infos.json HTTP/1.1" 404 0
+[2024-03-31 12:45:24,055 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:24,192 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/README.md HTTP/1.1" 200 0
+[2024-03-31 12:45:24,251 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139642818696720 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 12:45:24,252 | _api.py | line 257] - DEBUG: Lock 139642818696720 acquired on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 12:45:24,252 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 12:45:24,253 | _api.py | line 286] - DEBUG: Attempting to release lock 139642818696720 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 12:45:24,253 | _api.py | line 289] - DEBUG: Lock 139642818696720 released on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 12:45:24,277 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139642813438864 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 12:45:24,277 | _api.py | line 257] - DEBUG: Lock 139642813438864 acquired on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 12:45:24,277 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 12:45:24,277 | _api.py | line 286] - DEBUG: Attempting to release lock 139642813438864 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 12:45:24,277 | _api.py | line 289] - DEBUG: Lock 139642813438864 released on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 12:45:24,352 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+[2024-03-31 12:45:24,685 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmp9kyui5aj
+[2024-03-31 12:45:28,775 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpbry09n2l
+[2024-03-31 12:45:49,657 | MLM_wholewordmask_train.py | line 137] - DEBUG: Configurations:
++---------------+-------+
+| Configuration | Value |
++---------------+-------+
+| train_size    | 12000 |
+| test_size     | 1500  |
++---------------+-------+
+[2024-03-31 12:45:49,680 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpvs9hzt1i
+[2024-03-31 12:45:49,685 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpm8fb14sr
+[2024-03-31 12:45:49,986 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmp3sc6f4su
+[2024-03-31 12:45:50,187 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 12:45:50,239 | repository.py | line 707] - WARNING: /home/user1-selab3/shradha_test/HFTrainings/MLM_FinetunedModel_accel is already a clone of https://huggingface.co/shradha01/MLM_FinetunedModel_accel. Make sure you pull the latest changes with `repo.git_pull()`.
+[2024-03-31 12:45:50,310 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 12:45:50,361 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:50,382 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 12:45:50,536 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 12:45:50,548 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 12:46:58,681 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9417389631271362
+[2024-03-31 12:46:58,681 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9417389631271362
+[2024-03-31 12:46:58,692 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5644371509552
+[2024-03-31 12:46:58,692 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5644371509552
+[2024-03-31 12:46:58,701 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.3277363777160645
+[2024-03-31 12:46:58,701 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.3277363777160645
+[2024-03-31 12:47:26,681 | repository.py | line 1093] - WARNING: Several commits (2) will be pushed upstream.
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.958372950553894
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.958372950553894
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.6074507236480713
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.6074507236480713
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.322233200073242
+[2024-03-31 12:48:37,295 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.322233200073242
+[2024-03-31 12:50:16,400 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.9549579620361328
+[2024-03-31 12:50:16,400 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.9549579620361328
+[2024-03-31 12:50:16,400 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.5985612869262695
+[2024-03-31 12:50:16,400 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.5985612869262695
+[2024-03-31 12:50:16,401 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.320929527282715
+[2024-03-31 12:50:16,401 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.320929527282715
+[2024-03-31 12:51:55,581 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8784255385398865
+[2024-03-31 12:51:55,581 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8784255385398865
+[2024-03-31 12:51:55,590 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.407106876373291
+[2024-03-31 12:51:55,590 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.407106876373291
+[2024-03-31 12:51:55,591 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.324361801147461
+[2024-03-31 12:51:55,591 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.324361801147461
+[2024-03-31 12:53:34,461 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.8925133943557739
+[2024-03-31 12:53:34,461 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.8925133943557739
+[2024-03-31 12:53:34,461 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.4412577152252197
+[2024-03-31 12:53:34,461 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.4412577152252197
+[2024-03-31 12:53:34,462 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.326579570770264
+[2024-03-31 12:53:34,462 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.326579570770264
+[2024-03-31 12:53:51,168 | MLM_wholewordmask_train.py | line 253] - INFO: Elapsed time: 8 minutes 28 seconds
+[2024-03-31 18:52:14,529 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:14,741 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/datasets/code_search_net HTTP/1.1" 200 7728
+[2024-03-31 18:52:14,746 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 18:52:14,994 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 18:52:15,000 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): datasets-server.huggingface.co:443
+[2024-03-31 18:52:15,371 | connectionpool.py | line 546] - DEBUG: https://datasets-server.huggingface.co:443 "GET /parquet?dataset=code_search_net HTTP/1.1" 200 None
+[2024-03-31 18:52:15,377 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 18:52:15,613 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 18:52:15,620 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:15,776 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/code_search_net.py HTTP/1.1" 200 0
+[2024-03-31 18:52:15,783 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:15,928 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/dataset_infos.json HTTP/1.1" 404 0
+[2024-03-31 18:52:15,934 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:16,082 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/README.md HTTP/1.1" 200 0
+[2024-03-31 18:52:16,141 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139731944919504 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 18:52:16,141 | _api.py | line 257] - DEBUG: Lock 139731944919504 acquired on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 18:52:16,142 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 18:52:16,143 | _api.py | line 286] - DEBUG: Attempting to release lock 139731944919504 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 18:52:16,143 | _api.py | line 289] - DEBUG: Lock 139731944919504 released on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 18:52:16,167 | _api.py | line 254] - DEBUG: Attempting to acquire lock 139731555597840 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 18:52:16,168 | _api.py | line 257] - DEBUG: Lock 139731555597840 acquired on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 18:52:16,168 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 18:52:16,168 | _api.py | line 286] - DEBUG: Attempting to release lock 139731555597840 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 18:52:16,168 | _api.py | line 289] - DEBUG: Lock 139731555597840 released on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 18:52:16,248 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+[2024-03-31 18:52:16,522 | MLM_wholewordmask_train.py | line 137] - DEBUG: Configurations:
++---------------+-------+
+| Configuration | Value |
++---------------+-------+
+| train_size    | 16000 |
+| test_size     | 2000  |
++---------------+-------+
+[2024-03-31 18:52:16,544 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpd_w4v1tk
+[2024-03-31 18:52:16,552 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpnkw1kozc
+[2024-03-31 18:52:16,874 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpkdyfhq0n
+[2024-03-31 18:52:17,313 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 18:52:17,367 | repository.py | line 707] - WARNING: /home/user1-selab3/shradha_test/HFTrainings/MLM_FinetunedModel_accel is already a clone of https://huggingface.co/shradha01/MLM_FinetunedModel_accel. Make sure you pull the latest changes with `repo.git_pull()`.
+[2024-03-31 18:52:17,418 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 18:52:17,471 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:17,490 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 18:52:17,623 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 18:52:17,669 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 18:53:43,862 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9428182244300842
+[2024-03-31 18:53:43,862 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9428182244300842
+[2024-03-31 18:53:43,872 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5672061443328857
+[2024-03-31 18:53:43,872 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5672061443328857
+[2024-03-31 18:53:43,881 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.610568523406982
+[2024-03-31 18:53:43,881 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.610568523406982
+[2024-03-31 18:54:12,142 | repository.py | line 1093] - WARNING: Several commits (2) will be pushed upstream.
+[2024-03-31 18:55:41,637 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9157907962799072
+[2024-03-31 18:55:41,637 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9157907962799072
+[2024-03-31 18:55:41,638 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.4987504482269287
+[2024-03-31 18:55:41,638 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.4987504482269287
+[2024-03-31 18:55:41,638 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.611169338226318
+[2024-03-31 18:55:41,638 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.611169338226318
+[2024-03-31 18:57:40,592 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.8784799575805664
+[2024-03-31 18:57:40,592 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.8784799575805664
+[2024-03-31 18:57:40,601 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.407238006591797
+[2024-03-31 18:57:40,601 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.407238006591797
+[2024-03-31 18:57:40,602 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.614630699157715
+[2024-03-31 18:57:40,602 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.614630699157715
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8944137692451477
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8944137692451477
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.44590163230896
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.44590163230896
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.610737323760986
+[2024-03-31 18:59:39,095 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.610737323760986
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.8509315848350525
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.8509315848350525
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.341827392578125
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.341827392578125
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.610713958740234
+[2024-03-31 19:01:38,267 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.610713958740234
+[2024-03-31 19:01:54,727 | MLM_wholewordmask_train.py | line 253] - INFO: Elapsed time: 9 minutes 40 seconds
+[2024-03-31 19:05:46,211 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:46,455 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/datasets/code_search_net HTTP/1.1" 200 7728
+[2024-03-31 19:05:46,461 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 19:05:46,724 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 19:05:46,730 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): datasets-server.huggingface.co:443
+[2024-03-31 19:05:47,084 | connectionpool.py | line 546] - DEBUG: https://datasets-server.huggingface.co:443 "GET /parquet?dataset=code_search_net HTTP/1.1" 200 None
+[2024-03-31 19:05:47,090 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): s3.amazonaws.com:443
+[2024-03-31 19:05:47,318 | connectionpool.py | line 546] - DEBUG: https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/code_search_net/code_search_net.py HTTP/1.1" 404 0
+[2024-03-31 19:05:47,326 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:47,486 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/code_search_net.py HTTP/1.1" 200 0
+[2024-03-31 19:05:47,493 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:47,644 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/dataset_infos.json HTTP/1.1" 404 0
+[2024-03-31 19:05:47,650 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:47,793 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /datasets/code_search_net/resolve/main/README.md HTTP/1.1" 200 0
+[2024-03-31 19:05:47,851 | _api.py | line 254] - DEBUG: Attempting to acquire lock 140122607123664 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 19:05:47,851 | _api.py | line 257] - DEBUG: Lock 140122607123664 acquired on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 19:05:47,852 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 19:05:47,853 | _api.py | line 286] - DEBUG: Attempting to release lock 140122607123664 on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 19:05:47,853 | _api.py | line 289] - DEBUG: Lock 140122607123664 released on /home/user1-selab3/.cache/huggingface/datasets/_home_user1-selab3_.cache_huggingface_datasets_code_search_net_java_1.0.0_8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1.lock
+[2024-03-31 19:05:47,876 | _api.py | line 254] - DEBUG: Attempting to acquire lock 140123016766608 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 19:05:47,876 | _api.py | line 257] - DEBUG: Lock 140123016766608 acquired on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 19:05:47,876 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/dataset_info.json
+[2024-03-31 19:05:47,876 | _api.py | line 286] - DEBUG: Attempting to release lock 140123016766608 on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 19:05:47,876 | _api.py | line 289] - DEBUG: Lock 140123016766608 released on /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1_builder.lock
+[2024-03-31 19:05:47,954 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
+[2024-03-31 19:05:48,224 | MLM_wholewordmask_train.py | line 137] - DEBUG: Configurations:
++---------------+-------+
+| Configuration | Value |
++---------------+-------+
+| train_size    | 20000 |
+| test_size     | 2500  |
++---------------+-------+
+[2024-03-31 19:05:48,245 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmphkpo_r3j
+[2024-03-31 19:05:48,252 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmpeni9_1vq
+[2024-03-31 19:05:48,577 | local.py | line 294] - DEBUG: open file: /home/user1-selab3/.cache/huggingface/datasets/code_search_net/java/1.0.0/8f2524e6b62f65af5f5d65c53715c654db7b08dc93e0b7bcce2ab2f286a75be1/tmp5u7_wfh8
+[2024-03-31 19:05:49,151 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 19:05:49,201 | repository.py | line 707] - WARNING: /home/user1-selab3/shradha_test/HFTrainings/MLM_FinetunedModel_accel is already a clone of https://huggingface.co/shradha01/MLM_FinetunedModel_accel. Make sure you pull the latest changes with `repo.git_pull()`.
+[2024-03-31 19:05:49,252 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 359
+[2024-03-31 19:05:49,303 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:49,323 | connectionpool.py | line 1052] - DEBUG: Starting new HTTPS connection (1): huggingface.co:443
+[2024-03-31 19:05:49,469 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 19:05:49,486 | connectionpool.py | line 546] - DEBUG: https://huggingface.co:443 "HEAD /microsoft/codebert-base-mlm/resolve/main/config.json HTTP/1.1" 200 0
+[2024-03-31 19:07:39,274 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9364269375801086
+[2024-03-31 19:07:39,274 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 0: Loss: 0.9364269375801086
+[2024-03-31 19:07:39,285 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5508508682250977
+[2024-03-31 19:07:39,285 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 0: Perplexity: 2.5508508682250977
+[2024-03-31 19:07:39,294 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.837355613708496
+[2024-03-31 19:07:39,294 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 0: Entropy: 7.837355613708496
+[2024-03-31 19:08:08,035 | repository.py | line 1093] - WARNING: Several commits (2) will be pushed upstream.
+[2024-03-31 19:10:00,678 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9018599390983582
+[2024-03-31 19:10:00,678 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 1: Loss: 0.9018599390983582
+[2024-03-31 19:10:00,678 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.464182138442993
+[2024-03-31 19:10:00,678 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 1: Perplexity: 2.464182138442993
+[2024-03-31 19:10:00,679 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.834598064422607
+[2024-03-31 19:10:00,679 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 1: Entropy: 7.834598064422607
+[2024-03-31 19:12:21,917 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.8822370767593384
+[2024-03-31 19:12:21,917 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 2: Loss: 0.8822370767593384
+[2024-03-31 19:12:21,918 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.4162991046905518
+[2024-03-31 19:12:21,918 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 2: Perplexity: 2.4162991046905518
+[2024-03-31 19:12:21,918 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.836025714874268
+[2024-03-31 19:12:21,918 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 2: Entropy: 7.836025714874268
+[2024-03-31 19:14:42,899 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8729451298713684
+[2024-03-31 19:14:42,899 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 3: Loss: 0.8729451298713684
+[2024-03-31 19:14:42,900 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.393950939178467
+[2024-03-31 19:14:42,900 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 3: Perplexity: 2.393950939178467
+[2024-03-31 19:14:42,900 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.83502197265625
+[2024-03-31 19:14:42,900 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 3: Entropy: 7.83502197265625
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.85237056016922
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 216] - INFO: >>> Epoch 4: Loss: 0.85237056016922
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.3451995849609375
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 223] - INFO: >>> Epoch 4: Perplexity: 2.3451995849609375
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.8340840339660645
+[2024-03-31 19:17:04,693 | MLM_wholewordmask_train.py | line 231] - INFO: >>> Epoch 4: Entropy: 7.8340840339660645
+[2024-03-31 19:17:21,279 | MLM_wholewordmask_train.py | line 253] - INFO: Elapsed time: 11 minutes 35 seconds
