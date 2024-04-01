@@ -59,14 +59,14 @@ Everything is similar except the part that a base tokenizer is trained on the da
 Usage:
 Run the provided Python script causal-model-token.py to start training the model.
 
-Masked Language Model Training (mask-model_training.py):
+**Masked Language Model Training (MLM_wholewordmask_train.py):**
 
 This Python script trains and evaluates a masked language model using the CodeBERT model. It leverages the Hugging Face Transformers library for model loading, tokenization, and training. The script uses Hugging face's Trainer API.
 
 Usage:
-python your_script.py -train <train_size> -valid <valid_size> -test <test_size>
+python your_script.py -train <train_size> -test <test_size>
 
-Replace <train_size>, <valid_size>, and <test_size> with the desired sizes for the training, validation, and test datasets, respectively.
+Replace <train_size>, <test_size> with the desired sizes for the training, validation, and test datasets, respectively.
 
 Description of the Script
 Argument Parsing: The script uses the argparse module to parse command-line arguments for specifying the sizes of the training, validation, and test datasets.
@@ -83,6 +83,7 @@ Training Loop: The script trains the model for a specified number of epochs usin
 
 Evaluation: After each epoch, the model's performance is evaluated on the test dataset. The loss, perplexity, and entropy metrics are calculated and printed.
 
+**MRR (MLM_wholewordmask_eval.py)**
 Masked Language Model Prediction: The script uses the trained model to predict the masked token in a sample text. It calculates the Mean Reciprocal Rank (MRR) based on the scores obtained from the model predictions.
 
 Results Analysis: The MRR is computed and printed to evaluate the model's performance.
