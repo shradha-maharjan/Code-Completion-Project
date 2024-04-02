@@ -70,7 +70,7 @@
 ***
 Note: 
 1. We need to configure causal-model job with root permissions unless no File I/O opertation can be performed inside job container. 
-2. When we run a job with an infinite sleep command, it keeps the job running indefinitely until we manually delete it. We need this setup because we want to access the container created by the job and observe the runAsUser ID required in step IX to run the job with root permissions.  
+2. When we run a job with an infinite sleep command, it keeps the job running indefinitely until we manually delete it. We need this setup because we want to access the container created by the job and see the runAsUser ID required in step IX to run the job with root permissions.  
 ***
 - `!kubectl create -f ./causal_model_job.yml`
 
