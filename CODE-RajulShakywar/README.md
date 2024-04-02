@@ -67,6 +67,11 @@
 **VI._Note_ - We need to configure causal-model job with root permissions unless no File I/O opertation can be performed inside job container**
 
 **VII.Configure causal_model_job.yaml so that it runs the container with root permissions to perform write operations within container, run job container with infinite sleep (sleep infinity) bash command in causal_model_job.yaml**
+***
+Note: 
+1. We need to configure causal-model job with root permissions unless no File I/O opertation can be performed inside job container. 
+2. When we run a job with an infinite sleep command, it keeps the job running indefinitely until we manually delete it. We need this setup because we want to access the container created by the job and observe the runAsUser ID required in step IX to run the job with root permissions.  
+***
 - `!kubectl create -f ./causal_model_job.yml`
 
 **VIII.Find the security context parameters of pod once job starts running**
@@ -74,8 +79,8 @@
 - `id`
 
 **IX.Find runAsUser parameter id and add security context configuration in causal_model_job.yaml**
-- `runAsUser: id`
-- `allowPrivilegeEscalation: false`
+***
+Note: Add the security context in container with runAsUserId and allowPrivilegeEscalation for root permissions (see line: 37) in causal_model_job.yml
 
 **X.Delete existing job and create a new one with updated security context along with command for running run_install.sh and causal-model-a.py scripts**
 - `kubectl delete job <job-name>`
