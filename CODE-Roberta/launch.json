@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/user1-selab3/shradha_test/roberta/roberta/CODE/run_training.py",
+            "args": [
+                "--train_data_file",
+                "/home/user1-selab3/shradha_test/roberta/roberta/DATASET/DATASET/JAVA/TOKEN/RAW/training_masked_code-small20per",
+                "--eval_data_file",
+                "/home/user1-selab3/shradha_test/roberta/roberta/DATASET/DATASET/JAVA/TOKEN/RAW/eval_masked_code-small20per",
+                "--output_root",
+                "OUTPUTS",
+                "--tokenizer_name",
+                "/home/user1-selab3/shradha_test/roberta/roberta/DATASET/DATASET/JAVA/TOKEN/RAW/NewTrainedTokenizer",
+                "--vocab_size",
+                "50000"
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
