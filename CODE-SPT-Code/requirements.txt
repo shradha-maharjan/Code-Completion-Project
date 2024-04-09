@@ -1,0 +1,8 @@
+nltk
+tqdm
+psutil
+scikit-learn
+prettytable
+numpy
+dataclasses
+chardet
