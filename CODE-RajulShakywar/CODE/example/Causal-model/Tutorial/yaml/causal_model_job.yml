@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-casual-model-gp-engine-unoselab01
+spec:
+  ttlSecondsAfterFinished: 86400 # a day
+  template:
+    spec:
+      automountServiceAccountToken: false
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/region
+                    operator: In
+                    values:
+                      - us-central 
+      containers:
+        - name: job-casual-model-train-container
+          image: gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest
+          workingDir: /data
+          # command: ["sh", "-c", "python3 /data/libraries-causal-model.py && python3 /data/causal-model-a.py"]
+          command: ["sh", "-c", "bash run_install.sh && python3 /data/causal-model-a.py"]
+          volumeMounts:
+            - name: pvc-gp-engine-unoselab01
+              mountPath: /data
+          resources:
+            limits:
+              memory: 21Gi
+              cpu: "8"
+              nvidia.com/gpu: 1
+            requests:
+              memory: 20Gi
+              cpu: "8"    
+              nvidia.com/gpu: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+      volumes:
+        - name: pvc-gp-engine-unoselab01
+          persistentVolumeClaim:
+            claimName: pvc-gp-engine-unoselab01
+      restartPolicy: Never
+  backoffLimit: 1
