@@ -20,6 +20,7 @@ def pre_train(args,
               trained_model: Union[BartForClassificationAndGeneration, str] = None,
               trained_vocab: Union[Tuple[Vocab, Vocab, Vocab], str] = None):
     tasks = args.pre_train_tasks
+    #Determines the tasks to be pre-trained on. If no specific tasks are provided, it defaults to pre-training tasks defined in enums.PRE_TRAIN_TASKS
     if tasks is None:
         logger.warning('Was specified for pre-training, but got pre-training tasks to None, '
                        'will default to {}'.format(','.join(enums.PRE_TRAIN_TASKS)))
@@ -33,12 +34,13 @@ def pre_train(args,
             else:
                 logger.warning(f'Pre-training task {task} is not supported and will be ignored.')
         tasks = supported_tasks
-
+#If a pre-trained model is provided, it loads it. If not, it initializes a new BART model.
     assert not trained_model or \
         isinstance(trained_model, str) or \
         isinstance(trained_model, BartForClassificationAndGeneration), \
         f'The model type is not supported, expect Bart model or string of model dir, got {type(trained_model)}'
 
+#If pre-trained vocabularies are provided, it loads them. If not, it initializes new vocabularies.
     if trained_vocab is None and args.trained_vocab is not None:
         trained_vocab = args.trained_vocab
     assert not trained_vocab or isinstance(trained_vocab, str), \
@@ -52,6 +54,7 @@ def pre_train(args,
     # --------------------------------------------------
     logger.info('-' * 100)
     logger.info('Loading and parsing datasets')
+    #Initializes and loads the pre-training dataset.
     dataset = init_dataset(args=args, mode=enums.TRAINING_MODE_PRE_TRAIN)
     logger.info(f'The size of pre_training set: {len(dataset)}')
     if args.pre_train_subset_ratio:
@@ -119,6 +122,7 @@ def pre_train(args,
     # --------------------------------------------------
     # Model
     # --------------------------------------------------
+    #Configures the BART model based on the vocabularies and the number of layers, hidden units, etc.
     logger.info('-' * 100)
     logger.info('Building model')
     config = BartConfig(vocab_size=len(code_vocab) + len(ast_vocab) + len(nl_vocab),
