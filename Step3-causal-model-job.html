@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>584007</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<section id="running-causal-model-python-script-as-a-kubernetes-job" class="cell markdown">
+<h1>Running causal-model python script as a kubernetes job</h1>
+<p>This notebook will walk through step by step to run causal-model python script as a kubernetes job</p>
+</section>
+<div class="cell markdown">
+<video width="760" height="500" controls src="./media/pod_creation_and_copy_scripts.mp4" />
+</div>
+<section id="step-0-prerequisites" class="cell markdown">
+<h1>Step 0: Prerequisites</h1>
+<p><code>Add a text to display namespace or pod in k9s.</code></p>
+<ol>
+<li>You must have been added to a Nautilus namespace</li>
+<li>You must have kubectl installed. There is a notebook to assist you <a href="./Step1-kubectl_installation.ipynb">here</a>.</li>
+<li>You must have a PVC on the Nautilus cluster in your assigned namespace. There is a notebook to assist you <a href="./Step2-persistant_volume_creation.ipynb">here</a>.</li>
+</ol>
+</section>
+<section id="step-1-create-causal-modelpy-script-to-run-as-a-kubernetes-job" class="cell markdown">
+<h1>Step 1: Create causal-model.py script to run as a kubernetes job</h1>
+<h3 id="step-1a-create-causal-model-apy-file">Step 1A: Create causal-model-a.py file</h3>
+<p>You can find the python script here <a href="./scripts/causal-model-a.py">causal-model-a.py</a></p>
+<h3 id="step-1b-create-script-to-install-all-required-python-libraries-before-runing-causal-model-model">Step 1B: Create script to install all required python libraries before runing causal-model model</h3>
+<p>You can find the script here <a href="./scripts/run_install.sh">run_install.sh</a></p>
+</section>
+<section id="step-2-copying-our-script-to-the-cluster" class="cell markdown">
+<h1>Step 2: Copying Our Script to the Cluster</h1>
+<h3 id="step-2a-spawn-pod-with-pvc">Step 2A: Spawn Pod with PVC</h3>
+<p>You now need to spawn a pod on the cluster with your peristent volume attached</p>
+<p><code>The link below is broken.</code></p>
+<p><code>The video showed the old yaml file which had the security/permission problem.</code></p>
+<p>For a refresher, <a href=".yaml//pod_pvc.yml">here is a sample YAML file</a>. Be sure to change the <code>name</code> of the pod and the <code>persistentVolume-name</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Pod</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{pod name</span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> pod-name-sso</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> ubuntu:20.04</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;echo &#39;Im a new pod&#39; &amp;&amp; sleep infinity&quot;</span><span class="kw">]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">limits</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> 12Gi</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">requests</span><span class="kw">:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> 10Gi</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /data</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{persistentVolume-name</span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{persistentVolume-name</span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">persistentVolumeClaim</span><span class="kw">:</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">claimName</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{persistentVolume-name</span><span class="kw">}</span><span class="at">}</span></span></code></pre></div>
+<p>Once you have updated those values, you can run the following cell:</p>
+</section>
+<div class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl <span class="bu">apply</span> <span class="op">-</span>f .<span class="op">/</span>yaml<span class="op">/</span>pod_pvc.yml</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">The following error was caused by the above command.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">(base) jovyan@jupyter-myoungkyu-40unomaha-2eedu:~/0-kubectrl$ kubectl apply -f pod_pvc.yml </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">Error from server: error when creating &quot;pod_pvc.yml&quot;: admission webhook &quot;pod.nrp-nautilus.io&quot; denied the request: Please accept the AUP at the user portal.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">https://portal.nrp-nautilus.io/ use the link , scroll down to Acceptable Use Policy and accept the policy</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span></code></pre></div>
+</div>
+<section id="step-2b-copy-the-file-to-the-pvc" class="cell markdown">
+<h3>Step 2B: Copy the File to the PVC</h3>
+<p>Run the following cell until your pod is <code>Running</code>:</p>
+</section>
+<div class="cell code" data-tags="[]">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl get pods</span></code></pre></div>
+</div>
+<div class="cell markdown">
+<p>Once your pod is running, we can copy our library installation script and causal-model python scripts to the PVC attached to the pod. Change <code>PODNAME</code> to your podname:</p>
+</div>
+<div class="cell code" data-tags="[]">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl cp .<span class="op">/</span>scripts<span class="op">/</span>causal<span class="op">-</span>model<span class="op">-</span>a.py gp<span class="op">-</span>engine<span class="op">-</span>unoselab01<span class="op">-</span>pod1:<span class="op">/</span>data<span class="op">/</span>causal<span class="op">-</span>model<span class="op">-</span>a.py</span></code></pre></div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl cp .<span class="op">/</span>scripts<span class="op">/</span>run_install.sh gp<span class="op">-</span>engine<span class="op">-</span>unoselab01<span class="op">-</span>pod1:<span class="op">/</span>data<span class="op">/</span>run_install.sh</span></code></pre></div>
+</div>
+<section id="note" class="cell markdown">
+<h4>Note:</h4>
+<p>Order of copying sripts does not matter here because these scripts will run as per the command order given in job specification yaml</p>
+<p>See Job specification yaml in Step 4</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;bash run_install.sh &amp;&amp; python3 /data/causal-model-a.py&quot;</span><span class="kw">]</span></span></code></pre></div>
+<p>Here running library installation script first before running causal-model job</p>
+</section>
+<div class="cell markdown">
+<p>We can check that our copy was successful with the <code>exec</code> subcommand in <code>kubectl</code>. Again, replace PODNAME with your pod's name:</p>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl <span class="bu">exec</span> gp<span class="op">-</span>engine<span class="op">-</span>unoselab01<span class="op">-</span>pod1 <span class="op">--</span> cat <span class="op">/</span>data<span class="op">/</span>causal<span class="op">-</span>model<span class="op">-</span>a.py</span></code></pre></div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl <span class="bu">exec</span> gp<span class="op">-</span>engine<span class="op">-</span>unoselab01<span class="op">-</span>pod1 <span class="op">--</span> cat <span class="op">/</span>data<span class="op">/</span>run_install.sh</span></code></pre></div>
+</div>
+<section id="step-3-building-the-job-specification-yaml" class="cell markdown">
+<h1>Step 3: Building the Job Specification YAML</h1>
+<p>We now have everything we need to run our causal-model job. The final to-do item is to create a YAML Job Specification file. There is a template file for this in the repository <a href="./causal_model_job.yml">here</a></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> batch/v1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Job</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{job name</span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ttlSecondsAfterFinished</span><span class="kw">:</span><span class="at"> </span><span class="dv">86400</span><span class="co"> # a day</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">automountServiceAccountToken</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">affinity</span><span class="kw">:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">nodeAffinity</span><span class="kw">:</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">requiredDuringSchedulingIgnoredDuringExecution</span><span class="kw">:</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">nodeSelectorTerms</span><span class="kw">:</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="kw">-</span><span class="at"> </span><span class="fu">matchExpressions</span><span class="kw">:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="kw">-</span><span class="at"> </span><span class="fu">key</span><span class="kw">:</span><span class="at"> topology.kubernetes.io/region</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">                    </span><span class="fu">operator</span><span class="kw">:</span><span class="at"> In</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">                    </span><span class="fu">values</span><span class="kw">:</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">                      </span><span class="kw">-</span><span class="at"> us-central </span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> job-casual-model-train-container</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">workingDir</span><span class="kw">:</span><span class="at"> /data</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;-c&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;bash run_install.sh &amp;&amp; python3 /data/causal-model-a.py&quot;</span><span class="kw">]</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> pvc-gp-engine-unoselab01</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /data</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">limits</span><span class="kw">:</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> 21Gi</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;8&quot;</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">nvidia.com/gpu</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">requests</span><span class="kw">:</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> 20Gi</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;8&quot;</span><span class="at">    </span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">nvidia.com/gpu</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">securityContext</span><span class="kw">:</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">allowPrivilegeEscalation</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">runAsUser</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{runAsUserID</span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{ pvc_name </span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">persistentVolumeClaim</span><span class="kw">:</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">claimName</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{ pvc_name </span><span class="kw">}</span><span class="at">}</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">backoffLimit</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span></code></pre></div>
+<p>Fill the job name and pvc name in the template</p>
+</section>
+<section id="note-add-securitycontext-in-job-specification-yml-and-add-runasuser-id-copied-from-the-pod-container-shell-mostly-it-is-0" class="cell markdown">
+<h4>Note: Add securityContext in Job specification yml and add runAsUser Id copied from the pod container shell (Mostly it is 0)</h4>
+<p>This will provide container root permissions to perform File I/O opertation required in the job.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">securityContext</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">allowPrivilegeEscalation</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runAsUser</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span></span></code></pre></div>
+</section>
+<div class="cell markdown">
+<video width="760" height="500" controls src="./media/running_causal_model_job.mp4" />
+</div>
+<section id="step-4-start-the-job" class="cell markdown">
+<h1>Step 4: Start the Job</h1>
+<p>Run the cell below to start the job:</p>
+</section>
+<div class="cell code" data-execution_count="16">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl create <span class="op">-</span>f .<span class="op">/</span>yaml<span class="op">/</span>causal_model_job.yml</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>job.batch/job-casual-model-gp-engine-unoselab01 created
+</code></pre>
+</div>
+</div>
+<div class="cell markdown">
+<p>Run the cell below until your job moves to the <code>Complete</code> status. It will go through the stages of: <code>Pending</code>, <code>ContainerCreating</code>, and <code>Running</code>:</p>
+</div>
+<section id="step-5-review-the-output-of-the-job" class="cell markdown">
+<h1>Step 5: Review the Output of the Job</h1>
+<p>As you can see in the output from Step 5, your job created a pod with the name of <code>job-ABCDE</code>. Let's check the output of that pod to see our accuracy. Change <code>PODNAME</code> below to the correct pod name:</p>
+</section>
+<div class="cell code" data-execution_count="19" data-tags="[]">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl get pods</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>NAME                                          READY   STATUS              RESTARTS   AGE
+gp-engine-unoselab01-pod1                     1/1     Running             0          47m
+job-casual-model-gp-engine-unoselab01-85qrx   0/1     ContainerCreating   0          36s
+</code></pre>
+</div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl get jobs</span></code></pre></div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl logs <span class="op">-</span>f job<span class="op">-</span>casual<span class="op">-</span>model<span class="op">-</span>gp<span class="op">-</span>engine<span class="op">-</span>unoselab01<span class="op">-</span><span class="dv">85</span><span class="er">qrx</span></span></code></pre></div>
+</div>
+<section id="you-can-also-save-the-job-logs-into-a-seprate-file-to-analyze-it" class="cell markdown">
+<h4>You can also save the job logs into a seprate file to analyze it</h4>
+</section>
+<div class="cell markdown">
+<p><img src="./media/causal-model-job-logs.png" /></p>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl logs <span class="op">-</span>f <span class="op">&lt;</span>job<span class="op">-</span>pod<span class="op">-</span>name<span class="op">&gt;</span> <span class="op">&gt;</span> causal<span class="op">-</span>model<span class="op">-</span>job.txt</span></code></pre></div>
+</div>
+<section id="step-6-delete-the-job-and-the-pod" class="cell markdown">
+<h1>Step 6: Delete the Job and the Pod</h1>
+<p>The final step is to delete the job we ran the pod we spawned. Please change <code>JOBNAME</code> and <code>PODNAME</code> below to the appropriate name:</p>
+</section>
+<div class="cell code">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl delete job <span class="op">&lt;</span>job<span class="op">-</span>name<span class="op">&gt;</span></span></code></pre></div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> kubectl delete pod <span class="op">&lt;</span>job<span class="op">-</span>pod<span class="op">-</span>name<span class="op">&gt;</span></span></code></pre></div>
+</div>
+</body>
+</html>
