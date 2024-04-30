@@ -9,7 +9,7 @@ from .timer import Timer
 from .early_stopping import EarlyStopping
 import enums
 
-
+#to provide detailed logging during training and evaluation, including epoch-wise logging, elapsed times, learning rates, and evaluation metrics
 logger = logging.getLogger(__name__)
 
 
