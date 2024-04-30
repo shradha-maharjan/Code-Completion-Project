@@ -64,6 +64,12 @@ if __name__ == '__main__':
     main_args.use_cuda = torch.cuda.is_available()
     main_args.parallel = torch.cuda.device_count() > 1
 
+    print("**")
+    cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
+    print("CUDA_VISIBLE_DEVICES:", cuda_visible_devices)
+    print(torch.cuda.is_available())
+    print(torch.cuda.device_count())
+
     # set random seed
     if main_args.random_seed > 0:
         random.seed(main_args.random_seed)
