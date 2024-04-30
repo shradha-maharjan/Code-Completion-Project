@@ -43,6 +43,7 @@ def run_completion(
     # datasets
     # --------------------------------------------------
     logger.info('-' * 100)
+    #Loads datasets for training, validation, and testing.
     logger.info('Loading datasets')
     datasets = dict()
     splits = ['test'] if only_test else ['train', 'valid', 'test']
@@ -50,8 +51,10 @@ def run_completion(
         datasets[split] = init_dataset(args=args,
                                        mode=enums.TRAINING_MODE_FINE_TUNE,
                                        task=enums.TASK_COMPLETION,
-                                       split=split)
+                                       split=split,
+                                       language='java') #added language
         logger.info(f'The size of {split} set: {len(datasets[split])}')
+    #If necessary, subsets the training dataset based on a specified ratio.
     if args.train_subset_ratio and 'train' in datasets:
         datasets['train'] = datasets['train'].subset(args.train_subset_ratio)
         logger.info(f'The train is trimmed to subset due to the argument: train_subset_ratio={args.train_subset_ratio}')
@@ -61,6 +64,7 @@ def run_completion(
     # --------------------------------------------------
     # vocabs
     # --------------------------------------------------
+    #Loads existing vocabularies from files if provided.
     logger.info('-' * 100)
     if trained_vocab:
         if isinstance(trained_vocab, tuple):
@@ -73,6 +77,7 @@ def run_completion(
             ast_vocab = load_vocab(vocab_root=trained_vocab, name=args.ast_vocab_name)
             nl_vocab = load_vocab(vocab_root=trained_vocab, name=args.nl_vocab_name)
     else:
+        #Otherwise, builds vocabularies for code, abstract syntax tree (AST), and natural language (NL).
         logger.info('Building vocabularies')
         code_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
                                 name=args.code_vocab_name,
@@ -105,6 +110,7 @@ def run_completion(
     # model
     # --------------------------------------------------
     logger.info('-' * 100)
+    #Loads a pre-trained model if provided.
     if trained_model:
         if isinstance(trained_model, BartForClassificationAndGeneration):
             logger.info('Model is passed through parameter')
@@ -115,7 +121,9 @@ def run_completion(
             model = BartForClassificationAndGeneration.from_pretrained(os.path.join(trained_model, 'pytorch_model.bin'),
                                                                        config=config)
     else:
+        #Otherwise, builds a new BART model for code completion.
         logger.info('Building the model')
+        #Configures the training arguments, including batch size, learning rate, and number of epochs.
         config = BartConfig(vocab_size=len(code_vocab) + len(ast_vocab) + len(nl_vocab),
                             max_position_embeddings=1024,
                             encoder_layers=args.n_layer,
@@ -152,12 +160,14 @@ def run_completion(
     logger.info('-' * 100)
     logger.info('Initializing the running configurations')
 
+    #decode_preds decodes the predictions and labels obtained from evaluation.
     def decode_preds(preds):
         preds, labels = preds
         decoded_preds = code_vocab.decode_batch(preds)
         decoded_labels = code_vocab.decode_batch(labels)
         return decoded_labels, decoded_preds
 
+    #compute_valid_metrics computes evaluation metrics for the validation set, including BLEU and accuracy.
     # compute metrics
     def compute_valid_metrics(eval_preds):
         decoded_labels, decoded_preds = decode_preds(eval_preds)
@@ -168,6 +178,7 @@ def run_completion(
         result.update(accuracy_for_sequence(references=refs, candidates=cans))
         return result
 
+    #compute_test_metrics computes evaluation metrics for the test set, including BLEU, METEOR, ROUGE-L, and accuracy.
     def compute_test_metrics(eval_preds):
         decoded_labels, decoded_preds = decode_preds(eval_preds)
         result = {'references': decoded_labels, 'candidates': decoded_preds}
@@ -183,6 +194,7 @@ def run_completion(
         result.update(accuracy_for_sequence(references=refs, candidates=cans))
         return result
 
+    #Sets up the training arguments using Seq2SeqTrainingArguments.
     training_args = Seq2SeqTrainingArguments(output_dir=os.path.join(args.checkpoint_root, enums.TASK_COMPLETION),
                                              overwrite_output_dir=True,
                                              do_train=True,
@@ -216,6 +228,7 @@ def run_completion(
                                              report_to=['tensorboard'],
                                              dataloader_pin_memory=True,
                                              predict_with_generate=True)
+    #Initializes a CodeTrainer object with the specified configurations.
     trainer = CodeTrainer(main_args=args,
                           code_vocab=code_vocab,
                           ast_vocab=ast_vocab,
@@ -237,14 +250,17 @@ def run_completion(
     # --------------------------------------------------
     # train
     # --------------------------------------------------
+    #If not in test mode, trains the model.
     if not only_test:
         logger.info('-' * 100)
         logger.info('Start training')
         train_result = trainer.train()
         logger.info('Training finished')
+        #Saves the trained model and its state.
         trainer.save_model(args.model_root)
         trainer.save_state()
         metrics = train_result.metrics
+        #Logs and saves the training metrics.
         trainer.log_metrics(split='train', metrics=metrics)
         trainer.save_metrics(split='train', metrics=metrics)
 
@@ -253,6 +269,7 @@ def run_completion(
     # --------------------------------------------------
     logger.info('-' * 100)
     logger.info('Start testing')
+    #Computes evaluation metrics for the test set.
     trainer.compute_metrics = compute_test_metrics
     predict_results = trainer.predict(test_dataset=datasets['test'],
                                       metric_key_prefix='test',
@@ -262,6 +279,7 @@ def run_completion(
     references = predict_metrics.pop('test_references')
     candidates = predict_metrics.pop('test_candidates')
     trainer.log_metrics(split='test', metrics=predict_metrics)
+    #Saves the testing results and metrics.
     trainer.save_metrics(split='test', metrics=predict_metrics)
     # save testing results
     with open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_results.txt'),
@@ -285,6 +303,7 @@ def run_completion(
     for name, score in predict_metrics.items():
         logger.info(f'{name}: {score}')
 
+    #Tests the accuracy of the model's predictions against the ground truth at the top K predictions.
     logger.info('-' * 100)
     logger.info('Start testing accuracy at 5')
     model.eval()
@@ -325,6 +344,7 @@ def run_completion(
     for name, score in scores.items():
         logger.info(f'{name}: {score}')
 
+#Saves the top K testing results.
     with open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_top_k_results.txt'),
               mode='w',
               encoding='utf-8') as f:
