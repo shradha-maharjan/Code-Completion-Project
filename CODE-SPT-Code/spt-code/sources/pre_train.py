@@ -83,12 +83,14 @@ def pre_train(args,
     # vocabs
     # --------------------------------------------------
     logger.info('-' * 100)
+    #If trained_vocab is provided, it loads existing vocabularies from files.
     if trained_vocab:
         logger.info('Loading vocabularies from files')
         code_vocab = load_vocab(vocab_root=trained_vocab, name=args.code_vocab_name)
         ast_vocab = load_vocab(vocab_root=trained_vocab, name=args.ast_vocab_name)
         nl_vocab = load_vocab(vocab_root=trained_vocab, name=args.nl_vocab_name)
     else:
+        # else it builds vocabularies for code, abstract syntax tree (AST), and natural language (NL).
         logger.info('Building vocabularies')
         # code vocab
         code_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
@@ -157,6 +159,7 @@ def pre_train(args,
     # --------------------------------------------------
     # pre-train
     # --------------------------------------------------
+    #It iterates over different pre-training tasks, such as code AST prediction, MASS (Masked Sequence to Sequence), and method name prediction.
     for task in tasks:
         logger.info('-' * 100)
         logger.info(f'Pre-training task: {task.upper()}')
@@ -166,6 +169,7 @@ def pre_train(args,
         else:
             dataset.set_task(task)
 
+        #It sets up the appropriate mode for the model (classification or generation).
         if task == enums.TASK_CODE_AST_PREDICTION:
             logger.info('-' * 100)
             if args.n_epoch_pre_train != 30:
@@ -183,6 +187,7 @@ def pre_train(args,
             #   File "/.../envs/spt-code/lib/python3.8/site-packages/transformers/trainer_pt_utils.py", line 510, in __call__
             #     nll_loss = log_probs.gather(dim=-1, index=labels)
             # RuntimeError: Index tensor must have the same number of dimensions as input tensor
+            # Initializes training configurations, such as batch size, learning rate, and number of epochs.
             training_args = TrainingArguments(output_dir=os.path.join(args.pre_train_output_root, task),
                                               overwrite_output_dir=True,
                                               do_train=True,
@@ -207,6 +212,7 @@ def pre_train(args,
                                               label_smoothing_factor=args.label_smoothing,
                                               report_to=['tensorboard'],
                                               dataloader_pin_memory=True)
+        #Initializes a trainer object with the model, training arguments, dataset, and callbacks.
             trainer = CodeCLSTrainer(main_args=args,
                                      code_vocab=code_vocab,
                                      ast_vocab=ast_vocab,
@@ -229,6 +235,7 @@ def pre_train(args,
             logger.info(f'Start pre-training task: {task}')
             cap_result = trainer.train()
             logger.info(f'Pre-training task {task} finished')
+            #Saves the trained model.
             trainer.save_model(os.path.join(args.model_root, task))
 
         elif task == enums.TASK_MASS:
@@ -352,8 +359,10 @@ def pre_train(args,
             logger.info(f'Start pre-training task: {task}')
             mnp_result = trainer.train()
             logger.info(f'Pre-training task {task} finished')
+            #After pre-training for all tasks, it saves the trained model and vocabularies to the specified directories.
             trainer.save_model(os.path.join(args.model_root, task))
 
     logger.info('Pre-training finished')
 
+#then, it returns the trained model and the three vocabularies (code, AST, NL).
     return model, (code_vocab, ast_vocab, nl_vocab)
