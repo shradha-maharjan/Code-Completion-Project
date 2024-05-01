@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>d0e6975ddf94499c84d9e656b0b58c21</title>
+  <title>591369</title>
   <style>
     html {
       line-height: 1.5;
@@ -29,9 +29,6 @@
       body {
         font-size: 0.9em;
         padding: 1em;
-      }
-      h1 {
-        font-size: 1.8em;
       }
     }
     @media print {
@@ -137,26 +134,15 @@
     #TOC li {
       list-style: none;
     }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -195,7 +181,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { color: #008000; } /* BuiltIn */
+    code span.bu { } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -208,7 +194,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.im { } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -227,134 +213,182 @@
   <![endif]-->
 </head>
 <body>
-<div id="9257db45-6b86-4b37-9d56-72dd88a0ac8e" class="cell markdown">
-<h1 id="kubernetes-configuration-and-setup">Kubernetes configuration and
-setup</h1>
-<p>This notebook will help to install and configure kubernetes on your
-system, you can refer to the video tutorial below</p>
-</div>
-<div id="95a60b68-87ba-46be-81eb-01f4f569aba9" class="cell markdown">
+<section id="kubernetes-configuration-and-setup" class="cell markdown">
+<h1>Kubernetes configuration and setup</h1>
+<p>This notebook will help to install and configure kubernetes on your system, you can refer to the video tutorial below</p>
+</section>
+<div class="cell markdown">
 <video width="760" height="500" controls src="./media/kubernetes-configuration.mp4" />
 </div>
-<div id="e6fd2e91-4527-438d-8626-5edf1bcda91a" class="cell markdown">
-<h2 id="step-1-donwload-config-file">Step 1: Donwload Config file</h2>
-<p>Download the config file from NRP portal - <a
-href="https://portal.nrp-nautilus.io"
-class="uri">https://portal.nrp-nautilus.io</a></p>
-</div>
-<div id="ee3fa41d-d84e-47fc-b6b9-a64cd683fda5" class="cell markdown"
-data-tags="[]">
+<section id="step-1-donwload-config-file" class="cell markdown">
+<h2>Step 1: Donwload Config file</h2>
+<h5 id="step-1a-download-the-config-file-from-nrp-portal---httpsportalnrp-nautilusio">Step 1A Download the config file from NRP portal - <a href="https://portal.nrp-nautilus.io" class="uri">https://portal.nrp-nautilus.io</a></h5>
+</section>
+<div class="cell markdown" data-tags="[]">
 <p><img src="./media/get_config.png" /></p>
 </div>
-<div id="cdde3f51-6c49-4485-802d-e2aaa7084a55" class="cell markdown">
-<h2 id="step-2-upload-your-config">Step 2: Upload Your Config</h2>
-<p>From the Jupyter Lab interface, click on the Upload symbol, and
-select the config you have downloaded from the NRP portal</p>
-</div>
-<div id="690160a2-b848-4e3c-ae50-35e36e07d6ca" class="cell markdown">
+<section id="step-1b-open-downloaded-config-file-and-verify-your-correct-namespace-name" class="cell markdown">
+<h5>Step 1B Open downloaded config file and verify your correct <code>namespace</code> name</h5>
+<p><img src="./media/verify_config_file.png" /></p>
+</section>
+<section id="step-2-upload-your-config" class="cell markdown">
+<h2>Step 2: Upload Your Config</h2>
+<h5 id="step-2a-launch-jupyter-lab-instance-server-link---httpsjupyterhub-westnrp-nautilusio">Step 2A Launch Jupyter Lab instance server <code>Link</code> - <a href="https://jupyterhub-west.nrp-nautilus.io" class="uri">https://jupyterhub-west.nrp-nautilus.io</a></h5>
+<ul>
+<li>There is a notebook to assist you <a href="./Step0-Jupyter_lab_starting.ipynb">here</a> in launching Jupyter Lab instance.</li>
+<li>Click on the <code>Upload symbol</code>, upload your config file you have downloaded from the NRP portal in your home directory once your jupyter lab instance is launched.</li>
+</ul>
+</section>
+<div class="cell markdown">
 <p><img src="./media/UploadJupyter.png" /></p>
 </div>
-<div id="4ce9ee95-b29d-4372-963e-33cd0aab538e" class="cell markdown">
-<h2 id="step-3-kubectl-installation">Step 3: Kubectl installation</h2>
-<p>Install the kubectl in four steps (Ref: <a
-href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux"
-class="uri">https://kubernetes.io/docs/tasks/tools/install-kubectl-linux</a>)</p>
+<section id="step-2b-getting-the-path" class="cell markdown">
+<h5>Step 2B Getting the Path.</h5>
+<ul>
+<li><p>First we will check if the config has been uploaded or placed in the <code>home</code> directory of our Jupyter Environment.</p></li>
+<li><p>You will see a success message <code>Found config</code> with your config path once your config file is found.</p></li>
+</ul>
+</section>
+<div class="cell code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cfg_path <span class="op">=</span> Path.home().resolve() <span class="op">/</span> <span class="st">&quot;config&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> cfg_path.is_file():</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Found config: </span><span class="sc">{</span>cfg_path<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    cfg_dir <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Enter directory with config: &quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    cfg_path <span class="op">=</span> Path(cfg_dir).resolve() <span class="op">/</span> <span class="st">&quot;config&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> cfg_path.is_file():</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Found config: </span><span class="sc">{</span>cfg_path<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;ERROR: Re-run this cell and give correct directory&quot;</span>)</span></code></pre></div>
 </div>
-<div id="5124dabb-1007-480a-86d4-887050d85d7a" class="cell markdown">
+<section id="step-2c-copy-config-file-to-kube-directory" class="cell markdown">
+<h5>Step 2C Copy config file to .kube directory.</h5>
+<ul>
+<li><p>Ensure the output of the previous cell is <strong>Found Config: /path/to/config</strong> before proceeding.</p></li>
+<li><p>Copy config file to <code>.kube</code> directory so that <strong>kubectl</strong> and other kuberentes tool can access and manage our kubernetes cluster configuration.</p></li>
+<li><p>You will get <code>SUCCESS: Copied config</code> message after file is copied.</p></li>
+</ul>
+</section>
+<div class="cell code">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shutil <span class="im">import</span> copy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dest_dir <span class="op">=</span> Path.home().resolve() <span class="op">/</span> <span class="st">&quot;.kube&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dest_dir.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>dest_path <span class="op">=</span> dest_dir <span class="op">/</span> <span class="st">&quot;config&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> dest_path.is_file():</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;SUCCESS: Config correctly configured&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> cfg_path.is_file() <span class="kw">and</span> dest_dir.is_dir():</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    copy(cfg_path, dest_path)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;SUCCESS: Copied config&quot;</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;ERROR: Ensure you have correct config path&quot;</span>)</span></code></pre></div>
+</div>
+<section id="step-3-kubectl-installation" class="cell markdown">
+<h2>Step 3: Kubectl installation</h2>
+<p>Install the kubectl in four steps (Ref: <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux" class="uri">https://kubernetes.io/docs/tasks/tools/install-kubectl-linux</a>)</p>
+</section>
+<div class="cell markdown">
 <video width="760" height="500" controls src="./media/kubectl_setup.mp4" />
 </div>
-<div id="dac66ed1-3db6-403b-bcd6-e8948cd33867" class="cell markdown">
+<div class="cell markdown">
 <p>Step I: Download kubectl binary</p>
 </div>
-<div id="d3a33748-3def-4023-afc9-69d390361882" class="cell code">
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>curl <span class="op">-</span>LO https:<span class="op">//</span>storage.googleapis.com<span class="op">/</span>kubernetes<span class="op">-</span>release<span class="op">/</span>release<span class="op">/</span>$(curl <span class="op">-</span>s https:<span class="op">//</span>storage.googleapis.com<span class="op">/</span>kubernetes<span class="op">-</span>release<span class="op">/</span>release<span class="op">/</span>stable.txt)<span class="op">/</span><span class="bu">bin</span><span class="op">/</span>linux<span class="op">/</span>amd64<span class="op">/</span>kubectl</span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span> curl <span class="op">-</span>LO https:<span class="op">//</span>storage.googleapis.com<span class="op">/</span>kubernetes<span class="op">-</span>release<span class="op">/</span>release<span class="op">/</span>$(curl <span class="op">-</span>s https:<span class="op">//</span>storage.googleapis.com<span class="op">/</span>kubernetes<span class="op">-</span>release<span class="op">/</span>release<span class="op">/</span>stable.txt)<span class="op">/</span><span class="bu">bin</span><span class="op">/</span>linux<span class="op">/</span>amd64<span class="op">/</span>kubectl</span></code></pre></div>
 </div>
-<div id="78bcd776-e1c6-40aa-9947-712b8d285879" class="cell markdown">
+<div class="cell markdown">
 <p>Step II: Make kubectl executable</p>
 </div>
-<div id="9bbf9971-ee19-4b01-9016-1faf762017f8" class="cell code">
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>chmod <span class="op">+</span>x .<span class="op">/</span>kubectl</span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>chmod <span class="op">+</span>x .<span class="op">/</span>kubectl</span></code></pre></div>
 </div>
-<div id="fd003ca5-5be1-44d9-bcac-025cbc27280f" class="cell markdown">
-<p>Step III: Move kubectl to /usr/local/bin to make it global
-command</p>
+<div class="cell markdown">
+<p>Step III: Move kubectl to /usr/local/bin to make it global command</p>
 </div>
-<div id="e9388d40-350b-41dc-a8fb-ae6710a38064" class="cell code">
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>sudo mv .<span class="op">/</span>kubectl <span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span><span class="bu">bin</span><span class="op">/</span>kubectl</span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>sudo mv .<span class="op">/</span>kubectl <span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span><span class="bu">bin</span><span class="op">/</span>kubectl</span></code></pre></div>
 </div>
-<div id="4a533dc8-0c52-470c-b990-3702a93e65e4" class="cell markdown">
+<div class="cell markdown">
 <p>Step IV: Test the kubectl command</p>
 </div>
-<div id="bfa24328-49dd-425e-a38c-3a66c2e55a6a" class="cell markdown">
+<div class="cell markdown">
 <p><img src = "./media/kubectl_version.png"/></p>
 </div>
-<div id="6f64def4-80a9-49fe-8a71-4bcf548dd7cd" class="cell code"
-data-tags="[]">
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl version</span></code></pre></div>
+<div class="cell code" data-tags="[]">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl version</span></code></pre></div>
 </div>
-<div id="bda88bcf-09e3-497f-ba8f-f5edcdadb317" class="cell markdown">
-<p>Step IV: You will get the Client version if you able to successfully
-install kubernetes, now get all the namespaces to test the cluster if it
-correctly configured</p>
+<div class="cell markdown">
+<p>Step IV: You will get the Client version if you able to successfully install kubernetes, now get all the namespaces to test the cluster if it correctly configured</p>
 </div>
-<div id="0c259c26-5313-44d9-b473-b596da608978" class="cell markdown">
+<div class="cell markdown">
 <p><img src = "./media/get_namespaces.png" /></p>
 </div>
-<div id="ff5ded61-7bc5-414e-addc-d1aa42eb4d8f" class="cell code">
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl get ns</span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>kubectl get ns</span></code></pre></div>
 </div>
-<div id="87b3ee8f-b077-45ef-b082-3334babadf4b" class="cell markdown">
-<h3 id="to-learn-more-about-useful-kubectl-command">To learn more about
-useful kubectl command</h3>
-<p>Refer: <a href="https://www.bluematador.com/learn/kubectl-cheatsheet"
-class="uri">https://www.bluematador.com/learn/kubectl-cheatsheet</a></p>
-</div>
-<div id="8df72418-24ca-454d-9f51-8a60d0075334" class="cell markdown"
-data-tags="[]">
-<h2 id="step-4-k9s-installation">Step 4: k9s Installation</h2>
-<p>Install K9s tool to visualize the kubernetes resources without
-entering kubectl commands<br />
-(Ref. <a href="https://webinstall.dev/k9s/"
-class="uri">https://webinstall.dev/k9s/</a>)</p>
-</div>
-<div id="5244dccc-bdd8-44e5-9a4f-e7ae2c476112" class="cell markdown">
+<section id="step-4-k9s-installation" class="cell markdown" data-tags="[]">
+<h2>Step 4: k9s Installation</h2>
+<p>Install K9s tool to visualize the kubernetes resources without entering kubectl commands<br />
+(Ref. <a href="https://webinstall.dev/k9s/" class="uri">https://webinstall.dev/k9s/</a>)</p>
+</section>
+<div class="cell markdown">
 <video width="760" height="500" controls src="./media/k9s_installation.mp4" />
 </div>
-<div id="745b31e0-5017-4ac5-9fdd-e181cc41c10e" class="cell markdown">
+<div class="cell markdown">
 <p>Step I: Download script and then pipe it to shell</p>
 </div>
-<div id="8b937ef7-b68c-4709-a528-0e635c05c9b5" class="cell code">
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>curl <span class="op">-</span>sS https:<span class="op">//</span>webi.sh<span class="op">/</span>k9s <span class="op">|</span> sh</span></code></pre></div>
-</div>
-<div id="c976bff0-14e4-46f3-a6fe-af37c3cfc194" class="cell markdown">
+<div class="cell markdown">
 <p>Step II: Update PATH environment variable</p>
 </div>
-<div id="20da5a1f-3981-4b8e-912f-d7cdfe6d18c9" class="cell code">
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>export PATH<span class="op">=</span><span class="st">&quot;$HOME/.local/bin:$PATH&quot;</span></span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>curl <span class="op">-</span>sS https:<span class="op">//</span>webi.sh<span class="op">/</span>k9s <span class="op">|</span> sh</span></code></pre></div>
 </div>
-<div id="3404592f-bd18-4fe3-9552-c423c0222497" class="cell markdown">
+<div class="cell code" data-execution_count="21">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>export PATH<span class="op">=</span><span class="st">&quot;$HOME/.local/bin:$PATH&quot;</span></span></code></pre></div>
+</div>
+<div class="cell markdown">
 <p>Step III: Update .bashrc file</p>
 </div>
-<div id="d01d533f-f194-4668-a7df-254ea652f6b8" class="cell code">
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>source <span class="op">~/</span>.bashrc</span></code></pre></div>
+<div class="cell code" data-execution_count="22">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>source <span class="op">~/</span>.bashrc</span></code></pre></div>
 </div>
-<div id="28ab97cd-b2cc-496b-9e8f-1f11d0cd7566" class="cell markdown">
+<div class="cell markdown">
 <p>Step IV: Launch and test k9s tool</p>
 </div>
-<div id="f12be30d-802b-490d-b6fc-505dc37bcadd" class="cell markdown">
+<div class="cell markdown">
 <p><img src = "./media/k9s.png"/></p>
 </div>
-<div id="00889001-be75-44c7-8d74-23d1d46734d1" class="cell code">
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>k9s</span></code></pre></div>
+<div class="cell code">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>k9s</span></code></pre></div>
 </div>
+<section id="step-5-know-some-useful-k9s-commands" class="cell markdown">
+<h2>Step 5: Know some useful k9s Commands</h2>
+<ul>
+<li><code>?</code> : Wildcard Search for namespace</li>
+<li><code>:</code> : Search for resources</li>
+<li><code>:ns</code> : List all namespaces</li>
+<li><code>:pods</code> : List all pods</li>
+<li><code>:jobs</code> : List all jobs</li>
+<li><code>:svc</code> : List all services</li>
+<li><code>l</code> : Print container logs</li>
+<li><code>s</code> : Go to container shell</li>
+<li><code>ctrl-d</code> : Delete any resource</li>
+<li><code>:esc</code> Go back</li>
+</ul>
+</section>
+<section id="to-learn-more-about-useful-kubectl-command" class="cell markdown">
+<h3>To learn more about useful kubectl command</h3>
+<ul>
+<li>K9s Cheatsheet: <a href="https://www.bluematador.com/learn/kubectl-cheatsheet" class="uri">https://www.bluematador.com/learn/kubectl-cheatsheet</a></li>
+<li>K9s Video tutorial: <a href="https://youtu.be/ZwOOJqcKQ8g?si=EMe0vQ2oEBs1Zats" class="uri">https://youtu.be/ZwOOJqcKQ8g?si=EMe0vQ2oEBs1Zats</a></li>
+</ul>
+<iframe width="760" height="500" src="https://www.youtube.com/embed/ZwOOJqcKQ8g?si=-LdEo_bO75pmVugp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+</section>
 </body>
 </html>
