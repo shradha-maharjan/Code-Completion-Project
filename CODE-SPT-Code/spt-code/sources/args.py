@@ -1,4 +1,3 @@
-
 import dataclasses
 from dataclasses import dataclass, field
 import os
@@ -40,12 +39,12 @@ class RuntimeArguments:
     )
 
     trained_vocab: str = field(
-        default='../pre_trained/vocabs/',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/pre_trained/vocabs',
         metadata={'help': 'Directory of trained vocabs'}
     )
 
     trained_model: str = field(
-        default='../pre_trained/models/all/',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/pre_trained/models/all',
         metadata={'help': 'Directory of trained model'}
     )
 
@@ -112,13 +111,30 @@ class RuntimeArguments:
         metadata={'help': 'Copy an existing saved file (pre_train_org)'}
     )
 
+    ast_save: bool = field(
+        default=True,
+        metadata={'action': 'store_true',
+                  'help': 'Whether to save ASTs'}
+    )
+    
+    ast_load: bool = field(
+        default=True,
+        metadata={'action': 'store_true',
+                  'help': 'Whether to load ASTs'}
+    )
+
+    ast_type: str = field(
+        default='tree-sitter',
+        metadata={'help': 'Type of AST processing',
+                  'choices': ['tree-sitter', 'jdt']}
+    )
 
 @dataclass
 class DatasetArguments:
     """Arguments for dataset loading."""
 
     dataset_root: str = field(
-        default='../../dataset/',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/dataset',
         metadata={'help': 'Root of the dataset'}
     )
 
