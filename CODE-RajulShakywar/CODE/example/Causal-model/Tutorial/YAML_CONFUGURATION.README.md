@@ -18,7 +18,7 @@ This README provides an explanation of PVC (PersistentVolumeClaim), Pod with PVC
 
 ### pvc.yaml
 
-\`\`\`yaml
+```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -30,7 +30,7 @@ spec:
   resources:
     requests:
       storage: 50Gi
-\`\`\`
+```
 - **Explanation:**
   - Defines a PersistentVolumeClaim with the given name.
   - Requests storage of 50Gi with ReadWriteMany access mode.
@@ -38,7 +38,7 @@ spec:
 
 ### pod.yaml
 
-\`\`\`yaml
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -72,7 +72,7 @@ spec:
   - name: {{persistentVolume_name}}
     persistentVolumeClaim:
       claimName: {{persistentVolume_name}}
-\`\`\`
+```
 - **Explanation:**
   - Defines a Pod with the given name.
   - Specifies node affinity for scheduling to nodes in \`us-central\` region.
@@ -82,7 +82,7 @@ spec:
 
 ### causal-model.job.yaml
 
-\`\`\`yaml
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -127,7 +127,7 @@ spec:
             claimName: {{ pvc_name }}
       restartPolicy: Never
   backoffLimit: 1
-\`\`\`
+```
 - **Explanation:**
   - Defines a Job with the given name.
   - Specifies a TTL of 86400 seconds (1 day) after the job is finished.
