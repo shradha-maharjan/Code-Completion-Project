@@ -389,6 +389,7 @@ evaluate()
 """
 Version 2 without weight
 """
+"""
 from tqdm.notebook import tqdm
 
 gradient_accumulation_steps = 8
@@ -438,9 +439,7 @@ for epoch in range(num_train_epochs):
                 repo.push_to_hub(
                     commit_message=f"Training in progress step {step}", blocking=False
                 )
-
-
-# In[ ]:
+"""
 
 
 from tqdm.notebook import tqdm
