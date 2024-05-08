@@ -8,7 +8,7 @@ from tqdm import tqdm
 from antlr4 import InputStream
 import nltk
 
-from .asts.ast_parser import generate_single_ast_nl, split_identifier
+from .asts.ast_parser import generate_single_ast_nl, parse_ast, extract_nl_from_code, split_identifier
 import enums
 from data.vocab import Vocab
 from data.antlr_parsers.go.GoLexer import GoLexer
@@ -334,7 +334,6 @@ def load_pre_train_dataset(file, lang):
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
-
 def load_dataset_from_dir(dataset_dir):
     """
     Load all files in the given dir, only for pre-training.
@@ -367,6 +366,7 @@ def load_dataset_from_dir(dataset_dir):
     all_only_names = []
     all_docs = []
 
+    print(f"Checking existence of dataset directory: {dataset_dir}")
     if not os.path.exists(dataset_dir):
         logger.info('-' * 100)
         full_path_dataset_dir = os.path.abspath(dataset_dir)
@@ -383,6 +383,10 @@ def load_dataset_from_dir(dataset_dir):
 
         lang = file
         dataset_files = iter_pre_train_dataset_files(path, lang=lang)
+        if dataset_files:
+            print(f"Processing language: {lang} with files: {dataset_files}")
+        else:
+            print(f"No dataset files found for language: {lang}")
         if len(dataset_files) > 0:
             logger.info(f'  Language: {lang}')
             paths[lang] = dataset_files
@@ -390,7 +394,8 @@ def load_dataset_from_dir(dataset_dir):
             for dataset_file_path in dataset_files:
                 sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path,
                                                                                     lang=lang)
-
+                print(f"File processed: {dataset_file_path}")
+                print(f"Number of sources processed: {len(sources)}")
                 new_sources = []
                 new_codes = []
                 new_codes_wo_name = []
@@ -398,47 +403,148 @@ def load_dataset_from_dir(dataset_dir):
                 new_names_wo_name = []
                 only_names = []
                 asts = []
-                for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
-                                                             desc=f'Parsing {os.path.basename(dataset_file_path)}',
-                                                             leave=False,
-                                                             total=len(sources)):
-                    try:
-                        ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
-                                                                     lang=lang,
-                                                                     name=name,
-                                                                     replace_method_name=True)
-                        new_sources.append(source)
-                        new_codes.append(code)
-                        new_codes_wo_name.append(code_wo_name)
-                        new_names.append(nl)
-                        new_names_wo_name.append(nl_wo_name)
-                        asts.append(ast)
-                        only_names.append(name)
-                    except Exception:
-                        continue
 
-                all_sources += new_sources
-                all_codes += new_codes
-                all_codes_wo_name += new_codes_wo_name
-                all_names += new_names
-                all_names_wo_name += new_names_wo_name
-                all_only_names += only_names
-                all_asts += asts
-                all_docs += docs
+                ast_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/ast_saved2'
+                jdt_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/jdt_saved2'
+                ast_file_path = os.path.join(ast_directory, f"{lang}_ast_tree.jsonl")
+                jdt_file_path = os.path.join(jdt_directory, f"{lang}_ast_tree.jsonl") 
+                os.makedirs(ast_directory, exist_ok=True)
 
-                n_line = len(new_sources)
-                languages += [lang for _ in range(n_line)]
-                n_sample += n_line
+                def load_ast_from_file_jdt(jdt_file_path):
+                    with open(jdt_file_path, 'r') as file:
+                        for line in file:
+                            loaded_data = json.loads(line.strip())
+                    return loaded_data
+                
+                def read_ast_from_file(ast_file_path):
+                    with open(ast_file_path, 'r') as f:
+                        for line in f:
+                            loaded_data = json.loads(line.strip())
+                    return loaded_data
+                                
+                # First, generate and save ASTs if required
+                if main_args.ast_save and main_args.ast_type == "tree-sitter":
+                    with open(ast_file_path, 'w') as write_file:
+                        for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
+                                                                    desc=f'Parsing {os.path.basename(dataset_file_path)}',
+                                                                    leave=False,
+                                                                    total=len(sources)):
+                            try:
+                                ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
+                                                                            lang=lang,
+                                                                            name=name,
+                                                                            replace_method_name=True)
+                                #write_file.write(json.dumps({'ast': ast, 'nl': nl, 'nl_wo_name': nl_wo_name}) + "\n")
+                                write_file.write(json.dumps(ast) + "\n")
+                            except Exception:
+                                #logger.error(f"Error generating AST for {name}: {e}")
+                                continue
+                if main_args.ast_load:
+                    asts, new_sources, new_codes, new_codes_wo_name, new_names, new_names_wo_name, only_names = [], [], [], [], [], [], []
+                    for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
+                                                                    desc=f'Loading and processing ASTs',
+                                                                    leave=False,
+                                                                    total=len(sources)):
+                        try:
+                            if main_args.ast_type == "tree-sitter":
+                                    ast = read_ast_from_file(ast_file_path)
+                                    root = parse_ast(source=source, lang=lang)
+                                    nl, nl_wo_name = extract_nl_from_code(source=source,
+                                                                                    lang=lang,
+                                                                                    root=root,
+                                                                                    name=name,
+                                                                                    replace_method_name=True)
+                                    new_sources.append(source)
+                                    new_codes.append(code)
+                                    new_codes_wo_name.append(code_wo_name)
+                                    new_names.append(nl)
+                                    new_names_wo_name.append(nl_wo_name)
+                                    asts.append(ast)
+                                    only_names.append(name)
+                            elif main_args.ast_type == "jdt":
+                                # asts, new_sources, new_codes, new_codes_wo_name, new_names, new_names_wo_name, only_names = [], [], [], [], [], [], []
+                                # for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
+                                #                                             desc=f'Loading and processing ASTs from JDT',
+                                #                                             leave=False,
+                                #                                             total=len(sources)):
+                                #     try:
+                                    ast = load_ast_from_file_jdt(jdt_file_path)
+                                    root = parse_ast(source=source, lang=lang)
+                                    nl, nl_wo_name = extract_nl_from_code(source=source,
+                                                                                lang=lang,
+                                                                                root=root,
+                                                                                name=name,
+                                                                                replace_method_name=True)
+                                    new_sources.append(source)
+                                    new_codes.append(code)
+                                    new_codes_wo_name.append(code_wo_name)
+                                    new_names.append(nl)
+                                    new_names_wo_name.append(nl_wo_name)
+                                    asts.append(ast)
+                                    only_names.append(name)
+                            # new_sources.append(source)
+                            # new_codes.append(code)
+                            # new_codes_wo_name.append(code_wo_name)
+                            # new_names.append(nl)
+                            # new_names_wo_name.append(nl_wo_name)
+                            # only_names.append(name)
+                        except Exception:
+                            #print(f"Error processing JDT AST for {name}: {e}")
+                            continue
+                # # Then, load ASTs if needed
+                # if main_args.ast_load:
+                #     file_path = jdt_file_path if main_args.ast_type == "jdt" else ast_file_path
+                #     with open(file_path, 'r') as f:
+                #         for line in f:
+                #             data = json.loads(line.strip())
+                #             new_sources.append(source)
+                #             new_codes.append(code)
+                #             new_codes_wo_name.append(code_wo_name)
+                #             only_names.append(name)
+                #             asts.append(data['ast'])
+                #             new_names.append(data['nl'])
+                #             new_names_wo_name.append(data['nl_wo_name'])
 
-                logger.info(f'    File: {dataset_file_path}, {n_line} samples')
+                    all_sources += new_sources
+                    all_codes += new_codes
+                    all_codes_wo_name += new_codes_wo_name
+                    all_names += new_names
+                    all_names_wo_name += new_names_wo_name
+                    all_only_names += only_names
+                    all_asts += asts
+                    all_docs += docs
+                        
+                    print(f"Total samples processed for {lang}: {n_sample}")
+                    print(f"Accumulated number of sources: {len(all_sources)}")
+                    print(f"Accumulated number of ASTs: {len(all_asts)}")
+
+                    n_line = len(new_sources)
+                    languages += [lang for _ in range(n_line)]
+                    n_sample += n_line
+
+                    print(len(languages))
+                    print(len(all_sources))
+                    print(len(all_codes))
+                    print(len(all_codes_wo_name))
+                    print(len(all_asts))
+                    print(len(all_names))
+                    print(len(all_names_wo_name))
+                    print(len(all_only_names))
+
+                    logger.info(f'    File: {dataset_file_path}, {n_line} samples')
 
             logger.info(f'  {lang} dataset size: {n_sample}')
 
     assert len(languages) == len(all_sources) == len(all_codes) == len(all_codes_wo_name) == len(all_asts) == \
            len(all_names) == len(all_names_wo_name) == len(all_only_names)
+    print("Data loading complete.")
+    print(f"Languages processed: {len(languages)}")
+    print(f"Total sources: {len(all_sources)}")
+    print(f"Total ASTs: {len(all_asts)}")
+    print(f"Total documentations: {len(all_docs)}")
+    
     return paths, languages, all_sources, all_codes, all_asts, all_names, all_codes_wo_name, all_names_wo_name, \
            all_only_names, all_docs
-
 
 def trim_spaces(string):
     """
@@ -929,6 +1035,9 @@ def parse_for_completion(source_path, target_path):
             str: Source code that can be parsed
 
         """
+        
+        logger.info(f'    Source code file: {source_path}')
+        logger.info(f'    Source code file: {target_path}')
         tokens = sub_source.split()
         is_subtoken = False
         restored_source = ''
@@ -947,6 +1056,8 @@ def parse_for_completion(source_path, target_path):
 
     source_lines = load_lines(source_path)
     target_lines = load_lines(target_path)
+    print(source_lines)
+    print(target_lines)
     assert len(source_lines) == len(target_lines)
 
     # #######################################################################
@@ -968,23 +1079,74 @@ def parse_for_completion(source_path, target_path):
     asts = []
     names = []
     targets = []
-    for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
-        try:
-            if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
-                if line_counter > lines_to_extract:
-                    break
-                line_counter += 1
 
-            source = restore_source(source)
-            target = restore_source(target)
-            ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
-            codes.append(source)
-            asts.append(ast)
-            names.append(name)
-            targets.append(target)
-        except Exception:
-            continue
-    return codes, asts, names, targets
+    ast_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/ast_saved_completion'
+    jdt_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/jdt_saved_completion'
+    ast_file_path = os.path.join(ast_directory, f"completion_ast_tree.jsonl")
+    jdt_file_path = os.path.join(jdt_directory, f"completion_ast_tree.jsonl") 
+    os.makedirs(ast_directory, exist_ok=True)
+
+    def load_ast_from_file_jdt(jdt_file_path):
+        with open(jdt_file_path, 'r') as file:
+            for line in file:
+                loaded_data = json.loads(line.strip())
+        return loaded_data
+    
+    def read_ast_from_file(ast_file_path):
+        with open(ast_file_path, 'r') as f:
+            for line in f:
+                loaded_data = json.loads(line.strip())
+        return loaded_data
+
+    if main_args.ast_save and main_args.ast_type == "tree-sitter":
+        with open(ast_file_path, 'w') as write_file:
+            for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
+                try:
+                    if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+                        if line_counter > lines_to_extract:
+                            break
+                        line_counter += 1
+
+                    source = restore_source(source)
+                    ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+                    write_file.write(json.dumps(ast) + "\n")
+                except Exception:
+                    continue
+
+    if main_args.ast_load:
+        codes,asts,names,targets = [],[],[],[]
+        for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
+                try:
+                    if main_args.ast_type == "tree-sitter":
+                        target = restore_source(target)
+                        ast = read_ast_from_file(ast_file_path)
+                        root = parse_ast(source=source, lang=enums.LANG_JAVA)
+                        name = extract_nl_from_code(source=source, lang=enums.LANG_JAVA,
+                                                                                    root=root,
+                                                                                    name=name,
+                                                                                    replace_method_name=False)
+
+                        codes.append(source)
+                        asts.append(ast)
+                        names.append(name)
+                        targets.append(target)
+                    elif main_args.ast_type == "jdt":
+                        target = restore_source(target)
+                        ast = load_ast_from_file_jdt(jdt_file_path)
+                        root = parse_ast(source=source, lang=enums.LANG_JAVA)
+                        name = extract_nl_from_code(source=source, lang=enums.LANG_JAVA,
+                                                                                    root=root,
+                                                                                    name=name,
+                                                                                    replace_method_name=False)
+
+                        codes.append(source)
+                        asts.append(ast)
+                        names.append(name)
+                        targets.append(target)
+
+                except Exception:
+                    continue
+        return codes, asts, names, targets
 
 
 def parse_for_bug_fix(buggy_path, fixed_path):
