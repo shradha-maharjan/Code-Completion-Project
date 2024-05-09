@@ -1,7 +1,6 @@
 # Dataset 'dataset_saved', 'fine_tune', 'pre_train', and 'vocab_saved'
 dataset
 
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -138,7 +137,7 @@ dmypy.json
 # outputs dir
 outputs/
 pre_trained/
-sources/data/antlr_parsers
+code/sources/data/antlr_parsers
 
 # tree-sitter
 sources/data/asts/vendor/tree-sitter-go
@@ -158,54 +157,4 @@ sources/data/asts/vendor/tree-sitter-ruby
 # mac
 .DS_Store
 
-#ignore all zip files
-*.zip
-
-#ignore all these additional files
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-11-43.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-11-45.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-11-46.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-11-54.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-12-01.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-12-07.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-12-08.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_fine_tune-2024-04-30-14-18.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-14-14-18.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-23-01-32.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-29-11-56.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-29-11-58.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-30-01-06.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-30-01-26.txt
-CODE-SPT-Code/spt-code/sources/SPTCODE_train-2024-04-30-09-08.txt
-CODE-SPT-Code/spt-code/sources/__init__.py
-CODE-SPT-Code/spt-code/sources/data/__init__.py
-CODE-SPT-Code/spt-code/sources/data/asts/__init__.py
-CODE-SPT-Code/spt-code/sources/data/asts/vendor/
-CODE-SPT-Code/spt-code/sources/data/code_tokenizers/__init__.py
-CODE-SPT-Code/spt-code/sources/data/code_tokenizers/ruby/__init__.py
-CODE-SPT-Code/spt-code/sources/downstream_tasks/__init__.py
-CODE-SPT-Code/spt-code/sources/eval/__init__.py
-CODE-SPT-Code/spt-code/sources/eval/bleu/__init__.py
-CODE-SPT-Code/spt-code/sources/eval/meteor/__init__.py
-CODE-SPT-Code/spt-code/sources/eval/rouge/__init__.py
-CODE-SPT-Code/spt-code/sources/models/__init__.py
-CODE-SPT-Code/spt-code/sources/utils/__init__.py
-
-
-HFTrainings/log files/
-backup_untracked/
-CODE-SPT-Code/spt-code/sources/data/antlr_parsers
-CODE-Roberta/STATISTICAL-ANALYSIS
-LICENSE
-
-
-*.jar
-*.txt
-*.json
-*.gz
-*.rb
-*.sh
-*.md
-*.yml
-*.gitkeep
 
