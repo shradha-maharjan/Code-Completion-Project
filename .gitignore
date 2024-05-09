@@ -138,6 +138,7 @@ dmypy.json
 # outputs dir
 outputs/
 pre_trained/
+sources/data/antlr_parsers
 
 # tree-sitter
 sources/data/asts/vendor/tree-sitter-go
