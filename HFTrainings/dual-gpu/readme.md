@@ -128,7 +128,7 @@ Launching training on one GPU.
 100%|████████████████████████████████████████████████████████████████████| 1565/1565 [08:14<00:00,  3.16it/s]
 Elapsed time: 8 minutes 15 seconds
 ```
-### GPU usage with single GPU
+### GPU usage with 1 GPU
 <pre>
 Every 2.0s: nvidia-smi                                  oisit-selab3: Mon May 20 10:50:16 2024
 
