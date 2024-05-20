@@ -2,7 +2,8 @@
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
 ```
-<pre>Elapsed time: 4 minutes 38 seconds
+<pre>
+Elapsed time: 4 minutes 38 seconds
 </pre>
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
@@ -62,6 +63,9 @@ Elapsed time: 4 minutes 38 seconds
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
 ```
+<pre>
+Elapsed time: 8 minutes 15 seconds
+</pre>
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
 Map: 100%|████████████████████████████████████████| 15328/15328 [00:03<00:00, 4451.58 examples/s]
