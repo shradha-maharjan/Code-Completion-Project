@@ -1,7 +1,9 @@
 # Dual GPUs
-
 ```
-$ python train_mlm.py -train 10000 -test 1000 -logfile logfile-may19.log
+$ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
+```
+```
+$ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
 Map: 100%|█████████████████████████████████| 26909/26909 [00:06<00:00, 4098.27 examples/s]
 Map: 100%|█████████████████████████████████| 26909/26909 [00:45<00:00, 593.07 examples/s]
 Configurations:
@@ -55,6 +57,9 @@ Elapsed time: 4 minutes 38 seconds
 
 
 # Single GPU
+```
+$ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
+```
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
 Map: 100%|████████████████████████████████████████| 15328/15328 [00:03<00:00, 4451.58 examples/s]
