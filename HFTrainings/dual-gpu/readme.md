@@ -1,6 +1,8 @@
-# Dual GPUs
+## Dual GPUs
+# Command
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
+# Elapsed time
 ```
 <pre>
 Elapsed time: 4 minutes 38 seconds
