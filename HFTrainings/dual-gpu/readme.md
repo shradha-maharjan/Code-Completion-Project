@@ -1,3 +1,16 @@
+# Testing GPU usage with APIs, notebook_launcher
+
+🤗 Accelerate provides a `notebook_launcher` function to use in a notebook to launch a distributed training. 
+
+https://github.com/huggingface/accelerate
+https://huggingface.co/docs/accelerate/v0.11.0/en/launcher
+
+<pre>
+from accelerate import notebook_launcher
+
+notebook_launcher(training_function)
+</pre>
+
 # Dual GPUs
 ### Command to run the program `train_mlm.py`
 ```
