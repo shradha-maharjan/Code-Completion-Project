@@ -205,7 +205,6 @@ LICENSE
 *.gz
 *.rb
 *.sh
-*.md
 *.yml
 *.gitkeep
 
