@@ -1,5 +1,5 @@
 # Dual GPUs
-### Command
+### Command to run the program `train_mlm.py`
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
 ```
