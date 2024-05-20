@@ -7,6 +7,7 @@ $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
 <pre>
 Elapsed time: 4 minutes 38 seconds
 </pre>
+### Program log for training and validing a model
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 2 -logfile logfile-may19.log
 Map: 100%|█████████████████████████████████| 26909/26909 [00:06<00:00, 4098.27 examples/s]
@@ -59,6 +60,7 @@ Launching training on 2 GPUs.
 100%|████████████████████████████████████████████████████████| 785/785 [04:36<00:00,  2.84it/s]
 Elapsed time: 4 minutes 38 seconds
 ```
+### GPU usage with 2 GPUs
 <pre>
 Every 2.0s: nvidia-smi                                  oisit-selab3: Mon May 20 10:49:32 2024
 
@@ -82,12 +84,15 @@ Mon May 20 10:49:32 2024
 
 
 # Single GPU
+### Command
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
 ```
+### Elapsed time
 <pre>
 Elapsed time: 8 minutes 15 seconds
 </pre>
+### Program log for training and validing a model
 ```
 $ python train_mlm.py -train 10000 -test 1000 -ngpu 1 -logfile logfile-may19.log
 Map: 100%|████████████████████████████████████████| 15328/15328 [00:03<00:00, 4451.58 examples/s]
@@ -123,6 +128,7 @@ Launching training on one GPU.
 100%|████████████████████████████████████████████████████████████████████| 1565/1565 [08:14<00:00,  3.16it/s]
 Elapsed time: 8 minutes 15 seconds
 ```
+### GPU usage with single GPU
 <pre>
 Every 2.0s: nvidia-smi                                  oisit-selab3: Mon May 20 10:50:16 2024
 
