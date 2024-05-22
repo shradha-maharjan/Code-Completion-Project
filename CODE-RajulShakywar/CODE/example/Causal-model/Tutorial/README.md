@@ -9,3 +9,5 @@ Tutorial [click here](https://group001.gitlab.io/-/research-shradha/-/jobs/67588
 
 # Step 3 : Running causal-model python script as a kubernetes job
 Tutorial [click here](https://group001.gitlab.io/-/research-shradha/-/jobs/6758887163/artifacts/public/Step3-causal-model-job.html).
+
+
