@@ -156,5 +156,7 @@ sources/data/asts/vendor/tree-sitter-ruby
 
 # mac
 .DS_Store
+*.jsonl
+*.xlsx
 
 
