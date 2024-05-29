@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-train-mlm-model-gp-engine-unoselab05
+spec:
+  ttlSecondsAfterFinished: 86400 # a day
+  template:
+    spec:
+      containers:
+        - name: job-mlm-model-train-container
+          image: gitlab-registry.nrp-nautilus.io/gp-engine/jupyter-stacks/bigdata-2023:latest
+          workingDir: /data
+          command: ["sh", "-c", "bash run_install.sh && python3 train_mlm.py -train 100000 -test 10000 -ngpu 1 -logfile logfile-may19_gpu1.log"]
+          volumeMounts:
+            - name: pvc-gp-engine-unoselab01
+              mountPath: /data
+          resources:
+            limits:
+              memory: 49Gi
+              cpu: "8"
+              nvidia.com/gpu: 1
+              ephemeral-storage: 48Gi
+            requests:
+              memory: 49Gi
+              cpu: "8"
+              nvidia.com/gpu: 1
+              ephemeral-storage: 48Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+      volumes:
+        - name: pvc-gp-engine-unoselab01
+          persistentVolumeClaim:
+            claimName: pvc-gp-engine-unoselab01
+      restartPolicy: Never
+  backoffLimit: 1
