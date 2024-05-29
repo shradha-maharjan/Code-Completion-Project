@@ -28,14 +28,16 @@ Please add a description how to perform this experiment study with 1 python scri
 - `kubectl apply -f pod_pvc.yml`
 - `kubectl get pods`
 
-**III. Copy run_install.sh script for dependencies installation and causal-model python script scripts to the volume mounted by pod once pod starts running**
+**III. Copy run_install.sh script for dependencies installation and train_mlm python script scripts to the volume mounted by pod once pod starts running**
 - `!kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh`
 - `!kubectl cp ./scripts/train_mlm.py gp-engine-unoselab01-pod1:/data/train_mlm.py`
+
+**IV. Replace the {number_of_gpus} with number of desired gpus to run the job in train_mlm_job.yml**
 
 **IV. Create train_mlm job**
 - `!kubectl create -f ./train_mlm_job.yml`
 
-**V. Check for logs of the newly created pod and resolve any erros or exceptions if there is any and wait for the job to be completed**
+**V. Check the logs of the newly created pod and resolve any errors or exceptions if there are any, and wait for the job to be completed**
 - `k9s`
 - `!kubectl logs <job-pod-name>`
 
