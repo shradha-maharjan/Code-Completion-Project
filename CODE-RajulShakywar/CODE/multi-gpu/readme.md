@@ -12,3 +12,9 @@
 |-------|-------|----------------------|---------------------|---------|---------|
 | 1     | 1     | 20,000               | 2,000               | 5       | 22m 43s |
 | 2     | 2     | 20,000               | 2,000               | 5       | 5m 21s  |
+
+
+```
+Please add a description how to perform this experiment study with 1 python script (train_mlm.py) and 3 kubernate YML files.
+```
+
