@@ -21,7 +21,7 @@ Please add a description how to perform this experiment study with 1 python scri
 # Running mlm model python script as a kubernetes job 
 
 **I. Create a persistent volume claim (PVC)**
-- `kubectl apply -f .pvc.yml`
+- `kubectl apply -f pvc.yml`
 - `kubectl get pvc`
 
 **II. Create pod with volume mount as a recent pvc**
@@ -29,17 +29,17 @@ Please add a description how to perform this experiment study with 1 python scri
 - `kubectl get pods`
 
 **III. Copy run_install.sh script for dependencies installation and train_mlm python script scripts to the volume mounted by pod once pod starts running**
-- `!kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh`
-- `!kubectl cp ./scripts/train_mlm.py gp-engine-unoselab01-pod1:/data/train_mlm.py`
+- `kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh`
+- `kubectl cp ./scripts/train_mlm.py gp-engine-unoselab01-pod1:/data/train_mlm.py`
 
 **IV. Replace the {number_of_gpus} with number of desired gpus to run the job in train_mlm_job.yml**
 
 **IV. Create train_mlm job**
-- `!kubectl create -f ./train_mlm_job.yml`
+- `kubectl create -f ./train_mlm_job.yml`
 
 **V. Check the logs of the newly created pod and resolve any errors or exceptions if there are any, and wait for the job to be completed**
 - `k9s`
-- `!kubectl logs <job-pod-name>`
+- `kubectl logs <job-pod-name>`
 
 **VI. Open k9s, select the namespace, job and monitor job container logs**
 - `k9s`
