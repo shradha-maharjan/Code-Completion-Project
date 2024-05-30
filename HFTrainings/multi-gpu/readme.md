@@ -1,4 +1,4 @@
-## Studying large language models with multiple GPUs on Kubernetes
+## Training large language models with multiple GPUs on Kubernetes
 
 | Index    | # GPU     | # Training Data Size | # Testing Data Size | # Epoch   | Time       |
 |----------|-----------|----------------------|---------------------|-----------|------------|
