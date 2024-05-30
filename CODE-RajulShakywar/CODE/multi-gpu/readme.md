@@ -1,4 +1,4 @@
-`Studying large lanuguage models with train_mlm.py using different numbers of GPUs on Kubernetes.`
+# Studying large language models with train_mlm.py using different numbers of GPUs on Kubernetes.
 
 | Index    | # GPU     | # Training Data Size | # Testing Data Size | # Epoch   | Time       |
 |----------|-----------|----------------------|---------------------|-----------|------------|
@@ -14,11 +14,8 @@
 | 2     | 2     | 20,000               | 2,000               | 5       | 5m 21s  |
 
 
-```
-Please add a description how to perform this experiment study with 1 python script (train_mlm.py) and 3 kubernate YML files.
-```
 
-# Running mlm model python script as a kubernetes job 
+# How to run a python script train_mlm.py as a kubernetes job 
 
 **I. Create a persistent volume claim (PVC)**
 - `kubectl apply -f pvc.yml`
