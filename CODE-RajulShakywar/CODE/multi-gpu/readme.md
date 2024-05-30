@@ -1,4 +1,4 @@
-# Studying large language models with train_mlm.py using different numbers of GPUs on Kubernetes.
+# Studying large language models with multiple GPUs on Kubernetes.
 
 | Index    | # GPU     | # Training Data Size | # Testing Data Size | # Epoch   | Time       |
 |----------|-----------|----------------------|---------------------|-----------|------------|
