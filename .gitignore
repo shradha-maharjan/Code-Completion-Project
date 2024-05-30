@@ -1,5 +1,3 @@
-!HFTrainings/multi-gpu/*
-
 # Dataset 'dataset_saved', 'fine_tune', 'pre_train', and 'vocab_saved'
 dataset
 
@@ -210,3 +208,4 @@ LICENSE
 *.yml
 *.gitkeep
 
+!HFTrainings/multi-gpu/
