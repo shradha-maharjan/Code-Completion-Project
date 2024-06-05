@@ -12,16 +12,24 @@ import org.eclipse.jdt.core.dom.*;
 public class TokenCounter {
 
     private static String formatCode(String codeLine) {
-        if (codeLine.startsWith("\"") && codeLine.endsWith("\"")) {
-            codeLine = codeLine.substring(1, codeLine.length() - 1);
-        }
-        codeLine = codeLine.replace("\\n", "\n").replace("\\\"", "\"");
-        return "public class DummyClass {\n" + codeLine + "\n}";
+    	System.out.println("Original: " + codeLine);
+	    if (codeLine.startsWith("\"") && codeLine.endsWith("\"")) {
+	        codeLine = codeLine.substring(1, codeLine.length() - 1);
+	        System.out.println("Trimmed Quotes: " + codeLine);
+	    }
+	    // Replace escaped characters with their actual character equivalents
+	    codeLine = codeLine.replace("\\n", "\n")
+	                       .replace("\\t", "\t")
+	                       .replace("\\r", "\r")
+	                       .replace("\\\"", "\"");
+	    System.out.println("Replaced Escapes: " + codeLine);
+
+	    return "public class DummyClass {\n" + codeLine + "\n}";
     }
 
     public static void main(String[] args) {
-        String javaFileName = "input/methods.txt";
-        String outputFileName = "input/methods_outputs2.csv";
+        String javaFileName = "input/longmethod.txt";
+        String outputFileName = "input/methods_outputs3.csv";
 
         Set<String> methodNames = new HashSet<>();
 

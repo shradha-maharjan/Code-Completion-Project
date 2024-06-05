@@ -16,17 +16,34 @@ import org.eclipse.jdt.core.dom.*;
 
 public class TokenCounter_org {
 
+//	private static String formatCode(String codeLine) {
+//	    System.out.println("Original: " + codeLine);
+//	    if (codeLine.startsWith("\"") && codeLine.endsWith("\"")) {
+//	        codeLine = codeLine.substring(1, codeLine.length() - 1);
+//	        System.out.println("Trimmed Quotes: " + codeLine);
+//	    }
+//	    codeLine = codeLine.replace("\\n", "\n").replace("\\\"", "\"");
+//	    System.out.println("Replaced Escapes: " + codeLine);
+//
+//	    return "public class DummyClass {\n" + codeLine + "\n}";
+//	}
+//	
 	private static String formatCode(String codeLine) {
 	    System.out.println("Original: " + codeLine);
 	    if (codeLine.startsWith("\"") && codeLine.endsWith("\"")) {
 	        codeLine = codeLine.substring(1, codeLine.length() - 1);
 	        System.out.println("Trimmed Quotes: " + codeLine);
 	    }
-	    codeLine = codeLine.replace("\\n", "\n").replace("\\\"", "\"");
+	    // Replace escaped characters with their actual character equivalents
+	    codeLine = codeLine.replace("\\n", "\n")
+	                       .replace("\\t", "\t")
+	                       .replace("\\r", "\r")
+	                       .replace("\\\"", "\"");
 	    System.out.println("Replaced Escapes: " + codeLine);
 
 	    return "public class DummyClass {\n" + codeLine + "\n}";
 	}
+
 
 	public static void main(String[] args) {
         String javaFileName = "input/longmethod.txt";
@@ -103,7 +120,6 @@ class TokenCounterVisitorForMethods extends ASTVisitor {
     
     public boolean visit(SimpleName node) {
     	System.out.println("Token: " + node.getIdentifier());  // Print the token
-    	tokenCount++;
         return true;  // Continue visiting other nodes
         
     }
