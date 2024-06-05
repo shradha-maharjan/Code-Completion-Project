@@ -112,17 +112,17 @@ class RuntimeArguments:
         metadata={'help': 'Copy an existing saved file (pre_train_org)'}
     )
 
-    ast_save: bool = field(
-        default=True,
-        metadata={'action': 'store_true',
-                  'help': 'Whether to save ASTs'}
-    )
+    # ast_save: bool = field(
+    #     default=True,
+    #     metadata={'action': 'store_true',
+    #               'help': 'Whether to save ASTs'}
+    # )
     
-    ast_load: bool = field(
-        default=True,
-        metadata={'action': 'store_true',
-                  'help': 'Whether to load ASTs'}
-    )
+    # ast_load: bool = field(
+    #     default=True,
+    #     metadata={'action': 'store_true',
+    #               'help': 'Whether to load ASTs'}
+    # )
 
     ast_type: str = field(
         default='tree-sitter',
