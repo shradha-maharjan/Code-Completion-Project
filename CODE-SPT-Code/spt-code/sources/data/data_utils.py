@@ -8,7 +8,7 @@ from tqdm import tqdm
 from antlr4 import InputStream
 import nltk
 
-from .asts.ast_parser import generate_single_ast_nl, split_identifier, parse_ast, extract_nl_from_code
+from .asts.ast_parser import generate_single_ast_nl, split_identifier,parse_ast, extract_nl_from_code
 import enums
 from data.vocab import Vocab
 from data.antlr_parsers.go.GoLexer import GoLexer
@@ -237,9 +237,9 @@ def parse_json_file(file, lang):
     #     #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
     #     if total_lines > 100_000:
     #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-        
-        # logger.info('*' * 100)
-        # logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
+
+    #     logger.info('*' * 100)
+    #     logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
     # #######################################################################
 
     with open(file, encoding='utf-8') as f:
@@ -329,7 +329,7 @@ def load_pre_train_dataset(file, lang):
 
     """
     if lang in [enums.LANG_JAVA]:
-        sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang)
+        sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
 
@@ -354,26 +354,17 @@ def load_dataset_from_dir(dataset_dir):
             - List of str: List of docs
 
     """
-    jdt_file_path = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/ast_jdt/ast_jdt.jsonl'
-
-    def load_ast_from_file_jdt(jdt_file_path):
-        with open(jdt_file_path, 'r') as file:
-            asts = [line.strip() for line in file.readlines()]
-            logger.info(f"Loaded {len(asts)} ASTs from {jdt_file_path}")
-        return asts 
-    
     paths = {}
     languages = []
     all_sources = []
     all_asts = []
-    temp_asts = load_ast_from_file_jdt(jdt_file_path)
     all_codes = []
     all_codes_wo_name = []
     all_names = []
     all_names_wo_name = []
     all_only_names = []
-    all_docs = [] 
-    
+    all_docs = []
+
     if not os.path.exists(dataset_dir):
         logger.info('-' * 100)
         full_path_dataset_dir = os.path.abspath(dataset_dir)
@@ -389,11 +380,7 @@ def load_dataset_from_dir(dataset_dir):
             continue
 
         lang = file
-        dataset_files = iter_pre_train_dataset_files(path, lang)
-        if dataset_files:
-            print(f"Processing language: {lang} with files: {dataset_files}")
-        else:
-            print(f"No dataset files found for language: {lang}")
+        dataset_files = iter_pre_train_dataset_files(path, lang=lang)
         if len(dataset_files) > 0:
             logger.info(f'  Language: {lang}')
             paths[lang] = dataset_files
@@ -401,9 +388,6 @@ def load_dataset_from_dir(dataset_dir):
             for dataset_file_path in dataset_files:
                 sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path,
                                                                                     lang=lang)
-                # asts = load_ast_from_file_jdt(jdt_file_path) 
-                print(f"File processed: {dataset_file_path}")
-                print(f"Number of sources processed: {len(sources)}")
                 new_sources = []
                 new_codes = []
                 new_codes_wo_name = []
@@ -411,63 +395,43 @@ def load_dataset_from_dir(dataset_dir):
                 new_names_wo_name = []
                 only_names = []
                 asts = []
-
-                logger.info(f"About to process file: {dataset_file_path} with {len(sources)} entries")
-                for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
+                for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
                                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
                                                              leave=False,
-                                                             total=len(sources))):
+                                                             total=len(sources)):
                     try:
-                        if main_args.ast_type == "jdt":
-                            root = parse_ast(source=source, lang=lang)
-                            ast = temp_asts[idx]
-                            nl, nl_wo_name = extract_nl_from_code(source=source,
-                                                                lang=lang,
-                                                                root=root,
-                                                                name=name,
-                                                                replace_method_name=True)
-                            new_sources.append(source)
-                            new_codes.append(code)
-                            new_codes_wo_name.append(code_wo_name)
-                            new_names.append(nl)
-                            new_names_wo_name.append(nl_wo_name)
-                            only_names.append(name)
-                            asts.append(ast)
-                        elif main_args.ast_type == "tree-sitter":
+                        # ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
+                        #                                              lang=lang,
+                        #                                              name=name,
+                        #                                              replace_method_name=True)
+                        if main_args.ast_type != "jdt":
                             ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
+                                                                         lang=lang,
+                                                                         name=name,
+                                                                         replace_method_name=True)
+                        else:
+                            root = parse_ast(source=source, lang=lang)
+                            ast = None  # Explicitly set ast to None when JDT is enabled
+                            nl, nl_wo_name = extract_nl_from_code(source=source,
+                                                                     root=root,
                                                                      lang=lang,
                                                                      name=name,
                                                                      replace_method_name=True)
-                            new_sources.append(source)
-                            new_codes.append(code)
-                            new_codes_wo_name.append(code_wo_name)
-                            new_names.append(nl)
-                            new_names_wo_name.append(nl_wo_name)
-                            only_names.append(name)
-                            asts.append(ast)
-                        # all_asts.append(temp_asts[idx])  # Append the corresponding AST
-                    except Exception as e:
-                        logger.error(f"Error processing source index {idx} in {dataset_file_path}: {e}")
+                        # print(f"  Source: {source}")
+                        # print(f"  AST: {ast}")
+                        # print(f"  NL: {nl}")
+                        # print(f"  NL wo Name: {nl_wo_name}")
+                        new_sources.append(source)
+                        new_codes.append(code)
+                        new_codes_wo_name.append(code_wo_name)
+                        new_names.append(nl)
+                        new_names_wo_name.append(nl_wo_name)
+                        # # if ast is not None:
+                        asts.append(ast)
+                        only_names.append(name)
+                    except Exception:
+                        # logger.error(f"Error processing {dataset_file_path}: {e}")
                         continue
-
-                # for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
-                #                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
-                #                                              leave=False,
-                #                                              total=len(sources)):
-                #     try:
-                #         ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
-                #                                                      lang=lang,
-                #                                                      name=name,
-                #                                                      replace_method_name=True)
-                #         new_sources.append(source)
-                #         new_codes.append(code)
-                #         new_codes_wo_name.append(code_wo_name)
-                #         new_names.append(nl)
-                #         new_names_wo_name.append(nl_wo_name)
-                #         asts.append(ast)
-                #         only_names.append(name)
-                #     except Exception:
-                #         continue
 
                 all_sources += new_sources
                 all_codes += new_codes
@@ -486,7 +450,7 @@ def load_dataset_from_dir(dataset_dir):
 
             logger.info(f'  {lang} dataset size: {n_sample}')
 
-    assert len(languages) == len(all_sources) == len(all_codes) == len(all_codes_wo_name) == len(all_asts) == \
+    assert len(languages) == len(all_sources) == len(all_codes) == len(all_codes_wo_name) == len(all_asts) ==\
            len(all_names) == len(all_names_wo_name) == len(all_only_names)
     return paths, languages, all_sources, all_codes, all_asts, all_names, all_codes_wo_name, all_names_wo_name, \
            all_only_names, all_docs
@@ -810,31 +774,31 @@ def parse_for_search(dataset_dir, lang, split):
 
     # #######################################################################
     # Updated to reduce the time to parse, myoungkyu song, 03/23/2024
-    if main_args.parse_subset_ratio:
-        lines_to_extract = 0
-        line_counter = 0
-        total_lines = 0
+    # if main_args.parse_subset_ratio:
+    #     lines_to_extract = 0
+    #     line_counter = 0
+    #     total_lines = 0
 
-        with open(path, encoding='utf-8') as f:
-            total_lines = sum(1 for _ in f)
-            lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
+    #     with open(path, encoding='utf-8') as f:
+    #         total_lines = sum(1 for _ in f)
+    #         lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
 
-        if total_lines > 10_000:
-            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-        if total_lines > 100_000:
-            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if total_lines > 10_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if total_lines > 100_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
 
-        logger.info('*' * 100)
-        logger.info(f'{lang} => The size of trimmed / original fine tunning {split} set to parse: {lines_to_extract} / {total_lines}')
+    #     logger.info('*' * 100)
+    #     logger.info(f'{lang} => The size of trimmed / original fine tunning {split} set to parse: {lines_to_extract} / {total_lines}')
     # #######################################################################
 
     with open(path, encoding='utf-8') as f:
         logger.info(f'  File: {path}')
         for line in tqdm(f.readlines()):
-            if main_args.parse_subset_ratio: # myoungkyu song, 03/23/2024
-                if line_counter > lines_to_extract:
-                    break
-                line_counter += 1
+            # if main_args.parse_subset_ratio: # myoungkyu song, 03/23/2024
+            #     if line_counter > lines_to_extract:
+            #         break
+            #     line_counter += 1
 
             data = json.loads(line.strip())
             if split in ['train', 'valid', 'test']:

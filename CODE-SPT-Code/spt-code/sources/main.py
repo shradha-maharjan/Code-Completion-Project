@@ -1,3 +1,4 @@
+from accelerate import Accelerator,notebook_launcher
 import torch
 
 import argparse
@@ -15,11 +16,13 @@ from pre_train import pre_train
 
 
 def main(args):
-
+    accelerator = Accelerator()
     model = None
     vocab = None
     if args.do_pre_train:
         model, vocab = pre_train(args=args)
+    
+    model, optimizer, train_dataloader = accelerator.prepare(model, optimizer, train_dataloader)
 
     if args.do_fine_tune or args.only_test:
         train(args=args,
@@ -64,11 +67,7 @@ if __name__ == '__main__':
     main_args.use_cuda = torch.cuda.is_available()
     main_args.parallel = torch.cuda.device_count() > 1
 
-    print("**")
     cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
-    print("CUDA_VISIBLE_DEVICES:", cuda_visible_devices)
-    print(torch.cuda.is_available())
-    print(torch.cuda.device_count())
 
     # set random seed
     if main_args.random_seed > 0:
@@ -102,5 +101,15 @@ if __name__ == '__main__':
         config_table.add_row([config, str(value)])
     logger.debug('Configurations:\n{}'.format(config_table))
 
-    # run
-    main(main_args)
+    main_args.parallel = torch.cuda.device_count() > 1
+
+    # Only initialize the accelerator in the main process
+    accelerator = Accelerator()
+
+    # Now use the accelerator to launch the main function
+    accelerator.wait_for_everyone()  # Ensures all processes are ready to go
+    accelerator.print("Starting training on multiple GPUs.")
+    accelerator.print(f"Running with {torch.cuda.device_count()} GPUs.")
+
+    # Use the accelerator to launch the main function
+    accelerator.launch(main, args=main_args)

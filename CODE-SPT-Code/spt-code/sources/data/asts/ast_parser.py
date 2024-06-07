@@ -22,6 +22,11 @@ LANGUAGE = {enums.LANG_GO: Language('/home/user1-selab3/Documents/research-shrad
 #             enums.LANG_PHP: Language('build/my-languages.so', 'php'),
 #             enums.LANG_RUBY: Language('build/my-languages.so', 'ruby'),
 #             enums.LANG_C_SHARP: Language('build/my-languages.so', 'c_sharp')}
+main_args = None
+
+def set_args(args):
+    global main_args
+    main_args = args
 
 parser = Parser()
 
@@ -485,19 +490,34 @@ def generate_single_ast_nl(source, lang, name=None, replace_method_name=False):
             - Nl sequence in string
 
     """
+
     root = parse_ast(source=source, lang=lang)
     ast = generate_statement_xsbt(node=root, lang=lang)
+    # if main_args.ast_type == "tree-sitter":
+    #     ast = generate_statement_xsbt(node=root, lang=lang)
+    # elif main_args.ast_type == "jdt": 
+    #     ast = None
+
     if replace_method_name:
-        nl, nl_wo_name = extract_nl_from_code(source=source,
-                                              root=root,
-                                              lang=lang,
-                                              name=name,
-                                              replace_method_name=replace_method_name)
+        nl, nl_wo_name = extract_nl_from_code(source=source, root=root, lang=lang, name=name, replace_method_name=True)
         return ast, nl, nl_wo_name
     else:
         nl = extract_nl_from_code(source=source, root=root, lang=lang, name=name)
         return ast, nl
+   
 
+    # root = parse_ast(source=source, lang=lang)
+    # ast = generate_statement_xsbt(node=root, lang=lang)
+    # if replace_method_name:
+    #     nl, nl_wo_name = extract_nl_from_code(source=source,
+    #                                           root=root,
+    #                                           lang=lang,
+    #                                           name=name,
+    #                                           replace_method_name=replace_method_name)
+    #     return ast, nl, nl_wo_name
+    # else:
+    #     nl = extract_nl_from_code(source=source, root=root, lang=lang, name=name)
+    #     return ast, nl
 # main_args = None
 
 # def set_args(args):

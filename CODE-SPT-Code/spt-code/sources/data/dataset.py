@@ -18,6 +18,20 @@ logger = logging.getLogger(__name__)
 
 
 class CodeDataset(Dataset):
+    def load_ast_from_file_jdt(self,jdt_file_path):
+        with open(jdt_file_path, 'r') as file:
+            asts = [line.strip() for line in file.readlines()]
+            print(f"Loaded {len(asts)} ASTs from {jdt_file_path}")
+            logger.info(f"Loaded {len(asts)} ASTs from {jdt_file_path}")
+        return asts 
+
+    def save_source_ast_pairs(self):
+        # Save every 10th source-AST pair for verification
+        with open('check_source_ast.txt', 'w') as file:
+            for i in range(0, len(self.sources), 10):
+                source_info = f"Source: {self.sources[i]}"
+                ast_info = f"AST: {self.asts[i]}"
+                file.write(f"Source: {self.sources[i]}\nAST: {self.asts[i]}\nNL: {self.names[i]}\n\n")
 
     def __init__(self, args, dataset_name, mode, task=None, language=None, split=None, clone_mapping=None):
         """
@@ -45,13 +59,27 @@ class CodeDataset(Dataset):
 
         # dataset dir for files, all files in this dir meeting the filename will be used as dataset files
         self.dataset_dir = os.path.join(args.dataset_root, self.mode)
-
+            
         # load pre-training dataset
         if self.mode == 'pre_train':
             set_args(args=args)
+            print("Loading dataset from directory:", self.dataset_dir)
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir)
             self.size = len(self.codes)
+            
+            if args.ast_type == "jdt":
+                self.jdt_file_path = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/ast_jdt/ast_jdt.jsonl'
+                print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
+                self.asts = self.load_ast_from_file_jdt(self.jdt_file_path)
+            
+            # if len(self.sources) != len(self.asts):
+            #     print("Error: The number of sources does not match the number of ASTs loaded.")
+            #     raise ValueError("The number of sources does not match the number of ASTs loaded.")
+
+            # Optional saving of source-AST pairs for verification
+            print("Saving source-AST pairs for verification...")
+            self.save_source_ast_pairs()
         # load fine-tuning dataset
         else:
             assert split
