@@ -20,7 +20,7 @@ def load_ast_from_file_jdt(jdt_file_path):
     """
     sources = []
     asts = []
-    error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"  # Path to the error index file
+    error_log_path = "error_indices.txt"  # Path to the error index file
     # Load error indices to skip
     try:
         with open(error_log_path, 'r') as file:

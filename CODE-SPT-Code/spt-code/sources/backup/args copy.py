@@ -39,12 +39,12 @@ class RuntimeArguments:
     )
 
     trained_vocab: str = field(
-        default='../pre_trained/vocabs/',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/pre_trained/vocabs',
         metadata={'help': 'Directory of trained vocabs'}
     )
 
     trained_model: str = field(
-        default='../pre_trained/models/all',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/pre_trained/models/all',
         metadata={'help': 'Directory of trained model'}
     )
 
@@ -122,7 +122,7 @@ class DatasetArguments:
     """Arguments for dataset loading."""
 
     dataset_root: str = field(
-        default= '../../dataset/',
+        default= '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/dataset',
         metadata={'help': 'Root of the dataset'}
     )
 
@@ -142,7 +142,7 @@ class DatasetArguments:
     )
 
     jdt_file_path: str = field(
-        default='../../asts/ast_jdt_output_file.txt',
+        default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/output_file.txt',
         metadata={'help': 'Path to JDT AST file'}
     )
 

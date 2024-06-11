@@ -333,7 +333,7 @@ def load_pre_train_dataset(file, lang):
         return sources, codes, names, codes_wo_name, docs
 
 def handle_error(error_message, index=None, file_path=None):
-    error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"  # Define the file path where error indices will be stored
+    error_log_path = "error_indices.txt"  # Define the file path where error indices will be stored
     
     # Avoid logging the same index multiple times
     logged_indices = set()
@@ -412,7 +412,7 @@ def load_dataset_from_dir(dataset_dir):
 
                 # # Load error indices to skip
                 # error_indices = set()
-                # error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"
+                # error_log_path = "error_indices.txt"
                 # if os.path.exists(error_log_path):
                 #     with open(error_log_path, 'r') as f:
                 #         error_indices = set(map(int, f.read().splitlines()))
