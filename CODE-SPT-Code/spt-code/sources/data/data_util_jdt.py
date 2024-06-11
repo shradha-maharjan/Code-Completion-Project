@@ -27,6 +27,9 @@ def load_ast_from_file_jdt(jdt_file_path):
             skipped_indices = {int(line.strip()) for line in file}
     except FileNotFoundError:
         skipped_indices = set()
+    
+    print("Skipped indices:", skipped_indices)
+    
     with open(jdt_file_path, 'r') as file:
         for idx, line in enumerate(file):
             if idx in skipped_indices:
@@ -44,6 +47,7 @@ def load_ast_from_file_jdt(jdt_file_path):
                 continue
     logger.info(f"Loaded {len(sources)} sources and {len(asts)} ASTs from {jdt_file_path}. Skipped {len(skipped_indices)} lines.")
     return sources, asts
+
     # sources = []
     # asts = []
     # with open(jdt_file_path, 'r') as file:
@@ -63,7 +67,7 @@ def load_ast_from_file_jdt(jdt_file_path):
     #             asts.append(ast_part)
     # print(f"Loaded {len(sources)} sources and {len(asts)} ASTs from {jdt_file_path}")
     # logger.info(f"Loaded {len(sources)} sources and {len(asts)} ASTs from {jdt_file_path}")
-    # # if len(sources) <= 10:  # Print all if there are 10 or fewer to avoid flooding the console
+    # # if len(sources) <= 10:  # Print all if there are 10 or fewer 
     # #     for source, ast in zip(sources, asts):
     # #         print(f"Source: {source}\nAST: {ast}\n")
     # # else:  # Print only the first few to check some examples
@@ -71,6 +75,7 @@ def load_ast_from_file_jdt(jdt_file_path):
     # #     for source, ast in zip(sources[:5], asts[:5]):
     # #         print(f"Source: {source}\nAST: {ast}\n")
     # return sources, asts
+
 # def save_source_ast_pairs(self):
 #     # Save every 10th source-AST pair for verification
 #     with open('check_source_ast.txt', 'w') as file:
@@ -89,37 +94,33 @@ def compare(text1, text2):
     """Check if two strings are equal."""
     return text1 == text2
 def compare_and_save_sources(self, sources_from_file, asts_from_file):
-    target_index = 46635  # Set the target index you're interested in
+    # target_index = 46635  
     with open('mismatched_sources.txt', 'w') as file:
         for i, (file_source, file_ast) in enumerate(zip(sources_from_file, asts_from_file)):
-            if i < len(self.sources):  # Check if index is within the bounds of self.sources
+            if i < len(self.sources):  # Check if index is within  of self.sources
                 self_source = self.sources[i]
-                # Normalize the sources
+                
                 normalized_file_source = remove_whitespaces(lowercase(file_source))
                 normalized_self_source = remove_whitespaces(lowercase(self_source))
-                # Check and print the specific index information
-                if i == target_index:
-                    print(f"Index {target_index} details:")
-                    print(f"Source from file: {file_source}")
-                    print(f"Source from self.sources: {self_source}")
-                    print(f"AST from file: {file_ast}")
-                # Compare the normalized sources
+                # # Check and print the specific index information
+                # if i == target_index:
+                #     print(f"Index {target_index} details:")
+                #     print(f"Source from file: {file_source}")
+                #     print(f"Source from self.sources: {self_source}")
+                #     print(f"AST from file: {file_ast}")
+                # Compare 
                 if not compare(normalized_file_source, normalized_self_source):
                     # Write details directly to the file if sources do not match
                     file.write(f"Source from file: {normalized_file_source}\n"
                             f"Normalized Self Source: {normalized_self_source}\n"
                             f"Original Source: {self_source}\n"
                             f"AST from file: {file_ast}\n")
-            else:
-                # Handling cases where sources_from_file might be longer than self.sources
-                normalized_file_source = remove_whitespaces(lowercase(file_source))
-                # Write details directly to the file for unmatched sources due to length discrepancy
-                file.write(f"Source from file: {normalized_file_source}\n"
-                        f"Normalized Self Source: No corresponding source\n"
-                        f"Original Source: No corresponding source\n"
-                        f"AST from file: {file_ast}\n")
-                if i == target_index:
-                    print(f"Index {target_index} details:")
-                    print(f"Source from file: {file_source}")
-                    print(f"Normalized Self Source: No corresponding source")
-                    print(f"AST from file: {file_ast}")
+            # else:
+            #     # Handling cases where sources_from_file might be longer than self.sources
+            #     normalized_file_source = remove_whitespaces(lowercase(file_source))
+            #     # Write details directly to the file for unmatched sources due to length discrepancy
+            #     file.write(f"Source from file: {normalized_file_source}\n"
+            #             f"Normalized Self Source: No corresponding source\n"
+            #             f"Original Source: No corresponding source\n"
+            #             f"AST from file: {file_ast}\n")
+                

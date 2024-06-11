@@ -410,12 +410,12 @@ def load_dataset_from_dir(dataset_dir):
                 only_names = []
                 asts = []
 
-                # Load error indices to skip
-                error_indices = set()
-                error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"
-                if os.path.exists(error_log_path):
-                    with open(error_log_path, 'r') as f:
-                        error_indices = set(map(int, f.read().splitlines()))
+                # # Load error indices to skip
+                # error_indices = set()
+                # error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"
+                # if os.path.exists(error_log_path):
+                #     with open(error_log_path, 'r') as f:
+                #         error_indices = set(map(int, f.read().splitlines()))
 
                 for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
                                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
@@ -425,9 +425,9 @@ def load_dataset_from_dir(dataset_dir):
                 #                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
                 #                                              leave=False,
                 #                                              total=len(sources)):
-                    if idx in error_indices:
-                        logger.info(f"Skipping previously failed source at index {idx}")
-                        continue
+                    # if idx in error_indices:
+                    #     logger.info(f"Error processing source index {idx} in {dataset_file_path}: {e}")
+                    #     continue
                     try:
                         # ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
                         #                                              lang=lang,
@@ -461,7 +461,7 @@ def load_dataset_from_dir(dataset_dir):
                         only_names.append(name)
                     except Exception as e:
                         error_index = handle_error(str(e), index=idx, file_path=dataset_file_path)
-                        logger.info(f"Skipping source at index {error_index}")
+                        logger.info(f"Error processing source index {error_index} in {dataset_file_path}: {e}")
                         continue
 
                 all_sources += new_sources

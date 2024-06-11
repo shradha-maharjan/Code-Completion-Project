@@ -143,7 +143,7 @@ class DatasetArguments:
 
     jdt_file_path: str = field(
         default='/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/output_file.txt',
-        metadata={'help': 'Path to JDT AST file relative to dataset_root'}
+        metadata={'help': 'Path to JDT AST file'}
     )
 
 @dataclass

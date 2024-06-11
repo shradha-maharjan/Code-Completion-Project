@@ -62,9 +62,6 @@ class CodeDataset(Dataset):
                 sources_from_file, self.asts = load_ast_from_file_jdt(self.jdt_file_path)
 
                 compare_and_save_sources(self,sources_from_file, self.asts)
-            # if len(self.sources) != len(self.asts):
-            #     print("Error: The number of sources does not match the number of ASTs loaded.")
-            #     raise ValueError("The number of sources does not match the number of ASTs loaded.")
 
             # # Optional saving of source-AST pairs for verification
             # print("Saving source-AST pairs for verification...")
