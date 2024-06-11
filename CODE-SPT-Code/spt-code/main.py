@@ -1,4 +1,6 @@
 import torch
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 import argparse
 import random
@@ -16,6 +18,19 @@ from pre_train import pre_train
 
 def main(args):
 
+    args = parser.parse_args()
+
+    # Setup device based on local_rank
+    if args.local_rank != -1:
+        torch.cuda.set_device(args.local_rank)
+        dist.init_process_group(backend='nccl')
+    # if args.parallel:
+    #     dist.init_process_group("nccl")
+    if args.use_cuda:
+        print("CUDA is enabled")
+    else:
+        print("CUDA is not enabled")
+        
     model = None
     vocab = None
     if args.do_pre_train:
@@ -25,6 +40,9 @@ def main(args):
         train(args=args,
               trained_model=model,
               trained_vocab=vocab)
+        
+    # if args.parallel:
+    #     dist.destroy_process_group()
 
 
 if __name__ == '__main__':
@@ -33,6 +51,9 @@ if __name__ == '__main__':
     parser.register('type', 'bool', lambda v: v.lower() in ['yes', 'true', 't', '1', 'y'])
 
     add_args(parser)
+    parser.add_argument("--local-rank", type=int, default=-1, help="Local rank. Necessary for using the torch.distributed.launch utility.")
+    parser.add_argument('--use-cuda', action='store_true', help='Enable CUDA if available')
+    parser.add_argument('--parallel', action='store_true', help='Enable CUDA if available')
 
     main_args = parser.parse_args()
 
@@ -53,7 +74,7 @@ if __name__ == '__main__':
     # Rot for tensorboard
     main_args.tensor_board_root = os.path.join(main_args.output_root, 'runs')
     for d in [main_args.checkpoint_root, main_args.model_root, main_args.vocab_root, main_args.tensor_board_root,
-              main_args.dataset_save_dir, main_args.vocab_save_dir, main_args.jdt_file_path]:
+              main_args.dataset_save_dir, main_args.vocab_save_dir]:
         if not os.path.exists(d):
             os.makedirs(d)
 

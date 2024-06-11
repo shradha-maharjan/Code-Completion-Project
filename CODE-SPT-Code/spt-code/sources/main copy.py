@@ -1,3 +1,4 @@
+from accelerate import Accelerator,notebook_launcher
 import torch
 
 import argparse
@@ -15,11 +16,13 @@ from pre_train import pre_train
 
 
 def main(args):
-
+    accelerator = Accelerator()
     model = None
     vocab = None
     if args.do_pre_train:
         model, vocab = pre_train(args=args)
+    
+    model, optimizer, train_dataloader = accelerator.prepare(model, optimizer, train_dataloader)
 
     if args.do_fine_tune or args.only_test:
         train(args=args,
@@ -53,7 +56,7 @@ if __name__ == '__main__':
     # Rot for tensorboard
     main_args.tensor_board_root = os.path.join(main_args.output_root, 'runs')
     for d in [main_args.checkpoint_root, main_args.model_root, main_args.vocab_root, main_args.tensor_board_root,
-              main_args.dataset_save_dir, main_args.vocab_save_dir, main_args.jdt_file_path]:
+              main_args.dataset_save_dir, main_args.vocab_save_dir]:
         if not os.path.exists(d):
             os.makedirs(d)
 
@@ -63,6 +66,8 @@ if __name__ == '__main__':
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
     main_args.use_cuda = torch.cuda.is_available()
     main_args.parallel = torch.cuda.device_count() > 1
+
+    cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
 
     # set random seed
     if main_args.random_seed > 0:
@@ -96,5 +101,11 @@ if __name__ == '__main__':
         config_table.add_row([config, str(value)])
     logger.debug('Configurations:\n{}'.format(config_table))
 
-    # run
-    main(main_args)
+    # # run
+    # # if main_args.parallel:
+    # #     # Use Accelerator to manage distributed settings
+    #     accelerator = Accelerator()
+    #     accelerator.wait_for_everyone()
+    #     main(main_args)
+    # else:
+    #     main(main_args)

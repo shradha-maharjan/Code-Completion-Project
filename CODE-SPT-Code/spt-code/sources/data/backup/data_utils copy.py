@@ -332,21 +332,7 @@ def load_pre_train_dataset(file, lang):
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
-def handle_error(error_message, index=None, file_path=None):
-    error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"  # Define the file path where error indices will be stored
-    
-    # Avoid logging the same index multiple times
-    logged_indices = set()
-    with open(error_log_path, 'a') as f:
-        if index is not None and index not in logged_indices:
-            f.write(f"{index}\n")  # Write the error index to the file
-            logged_indices.add(index)
-    
-    logger.error(f"Error processing source at index {index}: {error_message}" if index is not None else f"Error: {error_message}")
-    if file_path:
-        logger.error(f"Error occurred in file: {file_path}")
-    return index
-    
+
 def load_dataset_from_dir(dataset_dir):
     """
     Load all files in the given dir, only for pre-training.
@@ -409,25 +395,10 @@ def load_dataset_from_dir(dataset_dir):
                 new_names_wo_name = []
                 only_names = []
                 asts = []
-
-                # Load error indices to skip
-                error_indices = set()
-                error_log_path = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/error_indices.txt"
-                if os.path.exists(error_log_path):
-                    with open(error_log_path, 'r') as f:
-                        error_indices = set(map(int, f.read().splitlines()))
-
-                for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
+                for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
                                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
                                                              leave=False,
-                                                             total=len(sources))):
-                # for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
-                #                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
-                #                                              leave=False,
-                #                                              total=len(sources)):
-                    if idx in error_indices:
-                        logger.info(f"Skipping previously failed source at index {idx}")
-                        continue
+                                                             total=len(sources)):
                     try:
                         # ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
                         #                                              lang=lang,
@@ -460,8 +431,7 @@ def load_dataset_from_dir(dataset_dir):
                         asts.append(ast)
                         only_names.append(name)
                     except Exception as e:
-                        error_index = handle_error(str(e), index=idx, file_path=dataset_file_path)
-                        logger.info(f"Skipping source at index {error_index}")
+                        logger.error(f"Error processing {dataset_file_path}: {e}")
                         continue
 
                 all_sources += new_sources
