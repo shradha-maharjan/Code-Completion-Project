@@ -142,7 +142,12 @@ class DatasetArguments:
     )
 
     jdt_file_path: str = field(
-        default='../../asts/ast_jdt_output_file.txt',
+        default='../../asts/pretrain/ast_jdt_output_file.txt',
+        metadata={'help': 'Path to JDT AST file'}
+    )
+
+    ast_file_path: str = field(
+        default='../../asts/finetune',
         metadata={'help': 'Path to JDT AST file'}
     )
 

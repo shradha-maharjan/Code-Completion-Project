@@ -332,20 +332,40 @@ def load_pre_train_dataset(file, lang):
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
-def handle_error(error_message, index=None, file_path=None):
-    error_log_path = "error_indices.txt"  # Define the file path where error indices will be stored
-    
-    # Avoid logging the same index multiple times
-    logged_indices = set()
+def handle_error(error_message, context, index=None, file_path=None, source=None):
+    # error_log_path = "error_sources.txt"  # Change to store sources
+    if context == 'parse_for_completion':
+        error_log_path = "error_parse_for_completion.txt"  # Specific file for parse_for_completion errors
+    elif context == 'load_dataset':
+        error_log_path = "error_sources.txt"
+
+    # Format the source to remove newlines, carriage returns, and tabs
+    formatted_source = source.replace('\n', '').replace('\r', '').replace('\t', '') if source else "No source available"
+
+    # Log the error with formatted source information
+    logger.error(f"Error at index {index} in file {file_path}: {formatted_source}\nError Message: {error_message}")
+
+    # Write the error index and formatted source to a file if not already logged
     with open(error_log_path, 'a') as f:
-        if index is not None and index not in logged_indices:
-            f.write(f"{index}\n")  # Write the error index to the file
-            logged_indices.add(index)
+        if index is not None:
+            f.write(f"{formatted_source}\n")
+
+    return formatted_source  # Return the formatted source for further processing or logging
+
+# def handle_error(error_message, index=None, file_path=None):
+#     error_log_path = "error_indices.txt"  # Define the file path where error indices will be stored
     
-    logger.error(f"Error processing source at index {index}: {error_message}" if index is not None else f"Error: {error_message}")
-    if file_path:
-        logger.error(f"Error occurred in file: {file_path}")
-    return index
+#     # Avoid logging the same index multiple times
+#     logged_indices = set()
+#     with open(error_log_path, 'a') as f:
+#         if index is not None and index not in logged_indices:
+#             f.write(f"{index}\n")  # Write the error index to the file
+#             logged_indices.add(index)
+    
+#     logger.error(f"Error processing source at index {index}: {error_message}" if index is not None else f"Error: {error_message}")
+#     if file_path:
+#         logger.error(f"Error occurred in file: {file_path}")
+#     return index
     
 def load_dataset_from_dir(dataset_dir):
     """
@@ -416,7 +436,6 @@ def load_dataset_from_dir(dataset_dir):
                 # if os.path.exists(error_log_path):
                 #     with open(error_log_path, 'r') as f:
                 #         error_indices = set(map(int, f.read().splitlines()))
-
                 for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
                                                              desc=f'Parsing {os.path.basename(dataset_file_path)}',
                                                              leave=False,
@@ -460,8 +479,8 @@ def load_dataset_from_dir(dataset_dir):
                         asts.append(ast)
                         only_names.append(name)
                     except Exception as e:
-                        error_index = handle_error(str(e), index=idx, file_path=dataset_file_path)
-                        logger.info(f"Error processing source index {error_index} in {dataset_file_path}: {e}")
+                        handle_error(str(e), context= "load_dataset", index=idx, file_path=dataset_file_path, source=source)
+                        logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
                         continue
 
                 all_sources += new_sources
@@ -998,38 +1017,50 @@ def parse_for_completion(source_path, target_path):
 
     # #######################################################################
     # Updated to reduce the time to parse, myoungkyu song, 03/31/2024
-    if main_args.parse_subset_ratio:
-        line_counter = 0
-        lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
+    # if main_args.parse_subset_ratio:
+    #     line_counter = 0
+    #     lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
 
-        if len(source_lines) > 10_000:
-            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-        if len(source_lines) > 100_000:
-            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if len(source_lines) > 10_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if len(source_lines) > 100_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
 
-        logger.info('*' * 100)
-        logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
+    #     logger.info('*' * 100)
+    #     logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
     # #######################################################################
 
     codes = []
     asts = []
     names = []
     targets = []
-    for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
+    for idx, (source, target) in enumerate(tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines))):
         try:
-            if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
-                if line_counter > lines_to_extract:
-                    break
-                line_counter += 1
+            # if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+            #     if line_counter > lines_to_extract:
+            #         break
+            #     line_counter += 1
 
             source = restore_source(source)
             target = restore_source(target)
-            ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+            #ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+            if main_args.ast_type != "jdt":
+                ast, name = generate_single_ast_nl(source=source,
+                                                   lang=enums.LANG_JAVA)
+            else:
+                root = parse_ast(source=source, lang=enums.LANG_JAVA)
+                ast = None  # Explicitly set ast to None when JDT is enabled
+                name = extract_nl_from_code(source=source,
+                                            root=root,
+                                            lang=enums.LANG_JAVA,
+                                            replace_method_name=False)
             codes.append(source)
             asts.append(ast)
             names.append(name)
             targets.append(target)
-        except Exception:
+        except Exception as e:
+            formatted_source = handle_error(str(e), context= "parse_for_completion",index=idx, file_path=source_path, source=source)
+            logger.error(f"Failed to parse {source_path} at index {idx}. Error: {formatted_source}")
             continue
     return codes, asts, names, targets
 

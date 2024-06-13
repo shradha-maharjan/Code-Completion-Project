@@ -11,7 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_ast_from_file_jdt, compare_and_save_sources 
+from .data_util_jdt import load_ast_from_file_jdt, compare_and_save_sources #, compare_and_save_sources_completion
 from eval.bleu.google_bleu import avg_bleu
 from data.vocab import Vocab
 
@@ -54,14 +54,26 @@ class CodeDataset(Dataset):
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir)
             self.size = len(self.codes)
+
+            # with open('pre_train_sources.txt', 'w') as src_file:
+            #     for source in self.sources:
+            #         formatted_source = source.replace('\n', ' ').replace('\t', ' ').replace('\r', ' ')
+            #         src_file.write(f"{formatted_source}\n")
             
             if args.ast_type == "jdt":
                 self.jdt_file_path = args.jdt_file_path
                 print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
                 # Unpacking both sources and ASTs returned by the method
-                sources_from_file, self.asts = load_ast_from_file_jdt(self.jdt_file_path)
+                sources_from_file, self.asts = load_ast_from_file_jdt(self.jdt_file_path, context = 'load_dataset')
 
-                compare_and_save_sources(self,sources_from_file, self.asts)
+                # # Save loaded sources and ASTs to a file on a single line
+                # with open('loaded_data.txt', 'w') as file:
+                #     for source, ast in zip(sources_from_file, self.asts):
+                #         file.write(f"Loaded source: {source}, Loaded AST: {ast}\n")
+                    
+                # compare_and_save_sources(self,sources_from_file, self.asts)
+
+                compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
 
             # # Optional saving of source-AST pairs for verification
             # print("Saving source-AST pairs for verification...")
@@ -167,6 +179,19 @@ class CodeDataset(Dataset):
                 self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
                                                                                        target_path=target_path)
                 
+                print(len(self.codes))
+                print(len(self.asts))
+                print(len(self.names))
+                print(len(self.targets))
+                print("**")
+                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+                if args.ast_type == "jdt":
+                    self.ast_file_path = os.path.join(args.ast_file_path, f'finetune_methods_{split}.txt')  # Customize path as needed
+                    print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
+                    sources_from_file, self.asts = load_ast_from_file_jdt(self.ast_file_path, context = 'parse_for_completion')
+                    
+                    compare_and_save_sources(self, sources_from_file, self.asts, 'codes', 'mismatched_sources_completion.txt')
+
                 # JDT's AST expression with 6 text files in CODE-SPT-Code/dataset/fine_tune/completion
                 # Given 'split', self.asts can be updated.
                 # To parse data.TargetType.seq.test.source.txt (INPUT), find the corresponding raw java methods.
@@ -180,8 +205,11 @@ class CodeDataset(Dataset):
                 # self.asts = self.load_ast_from_file_jdt(self.jdt_file_path)
                 # Do the similar logic.
 
-                
-                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+                print(len(self.codes))
+                print(len(self.asts))
+                print(len(self.names))
+                print(len(self.targets))
+                # assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
             # bug fix
             elif task == enums.TASK_BUG_FIX:
