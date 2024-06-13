@@ -28,8 +28,8 @@ public class TokenCounter {
     }
 
     public static void main(String[] args) {
-        String javaFileName = "input/longmethod.txt";
-        String outputFileName = "input/methods_outputs3.csv";
+        String javaFileName = "input/finetune_methods_train_final.txt";
+        String outputFileName = "input/finetune_methods_train_final.csv";
 
         Set<String> methodNames = new HashSet<>();
 

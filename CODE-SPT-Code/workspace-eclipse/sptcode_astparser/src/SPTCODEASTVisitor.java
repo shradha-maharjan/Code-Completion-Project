@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -23,8 +22,8 @@ public class SPTCODEASTVisitor {
     }
 
     public static void main(String[] args) {
-        String javaFileName = "input/methods.txt";
-        String outputFileName = "input/outputs.txt";
+        String javaFileName = "input/finetune_methods_train_final.txt";
+        String outputFileName = "input/finetune_methods_train_asts.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(javaFileName));
              FileWriter writer = new FileWriter(outputFileName)) {
@@ -292,7 +291,6 @@ public class SPTCODEASTVisitor {
         }
     }
 }
-
 
 //
 //public class SPTCODEASTVisitor extends ASTVisitor {
