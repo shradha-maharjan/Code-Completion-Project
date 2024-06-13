@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # Rot for tensorboard
     main_args.tensor_board_root = os.path.join(main_args.output_root, 'runs')
     for d in [main_args.checkpoint_root, main_args.model_root, main_args.vocab_root, main_args.tensor_board_root,
-              main_args.dataset_save_dir, main_args.vocab_save_dir]:
+              main_args.dataset_save_dir, main_args.vocab_save_dir, main_args.jdt_file_path]:
         if not os.path.exists(d):
             os.makedirs(d)
 
@@ -63,12 +63,6 @@ if __name__ == '__main__':
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
     main_args.use_cuda = torch.cuda.is_available()
     main_args.parallel = torch.cuda.device_count() > 1
-
-    print("**")
-    cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
-    print("CUDA_VISIBLE_DEVICES:", cuda_visible_devices)
-    print(torch.cuda.is_available())
-    print(torch.cuda.device_count())
 
     # set random seed
     if main_args.random_seed > 0:

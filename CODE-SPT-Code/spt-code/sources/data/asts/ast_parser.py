@@ -4,16 +4,15 @@ from tree_sitter import Language, Parser
 import re
 
 import enums
-import json
-import os
 
-LANGUAGE = {enums.LANG_GO: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'go'),
-            enums.LANG_JAVASCRIPT: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'javascript'),
-            enums.LANG_PYTHON: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'python'),
-            enums.LANG_JAVA: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'java'),
-            enums.LANG_PHP: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'php'),
-            enums.LANG_RUBY: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'ruby'),
-            enums.LANG_C_SHARP: Language('/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/build/my-languages.so', 'c_sharp')}
+
+LANGUAGE = {enums.LANG_GO: Language('data/asts/build/my-languages.so', 'go'),
+            enums.LANG_JAVASCRIPT: Language('data/asts/build/my-languages.so', 'javascript'),
+            enums.LANG_PYTHON: Language('data/asts/build/my-languages.so', 'python'),
+            enums.LANG_JAVA: Language('data/asts/build/my-languages.so', 'java'),
+            enums.LANG_PHP: Language('data/asts/build/my-languages.so', 'php'),
+            enums.LANG_RUBY: Language('data/asts/build/my-languages.so', 'ruby'),
+            enums.LANG_C_SHARP: Language('data/asts/build/my-languages.so', 'c_sharp')}
 
 # LANGUAGE = {enums.LANG_GO: Language('build/my-languages.so', 'go'),
 #             enums.LANG_JAVASCRIPT: Language('build/my-languages.so', 'javascript'),
@@ -498,54 +497,6 @@ def generate_single_ast_nl(source, lang, name=None, replace_method_name=False):
         nl = extract_nl_from_code(source=source, root=root, lang=lang, name=name)
         return ast, nl
 
-# main_args = None
-
-# def set_args(args):
-#     global main_args
-#     main_args = args
-
-# def generate_single_ast_nl(main_args,source, lang, name=None, replace_method_name=False):
-#     """
-#     Generate or load AST sequence and nl sequence for a single source code sample based on provided parameters.
-    
-#     Args:
-#         source (str): Source code string
-#         lang (str): Source code language
-#         ast_directory (str): Directory to save/load ASTs
-#         name (str): Optional, name of method/function
-#         replace_method_name (bool): Whether to replace method name and return a version without names additionally
-
-#     Returns:
-#         Union[(str, str), (str, str, str)]: AST sequence in string, NL sequence in string, and optionally NL sequence without names
-#     """
-#     ast_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/asts_saved'
-#     jdt_directory = '/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/jdt_saved'
-#     ast_file_path = os.path.join(ast_directory, f"{lang}_{name}.json") if name else None
-#     jdt_file_path = os.path.join(jdt_directory, f"jdt_{lang}_{name}.json") if name else None
-
-#     root = parse_ast(source=source, lang=lang)
-#     ast = generate_statement_xsbt(node=root, lang=lang)
-    
-#     if main_args.ast_save and ast_file_path:
-#         os.makedirs(ast_directory, exist_ok=True)  
-#         with open(ast_file_path, 'w') as f:
-#             json.dump(ast, f)
-
-#     if main_args.ast_load:
-#         if main_args.ast_type == "tree-sitter":
-#             return ast
-#         elif main_args.ast_type == "jdt" and jdt_file_path:
-#             with open(jdt_file_path, 'r') as file:
-#                 return json.load(file)
-#     print("The file is generated..................")
-
-#     if replace_method_name:
-#         nl, nl_wo_name = extract_nl_from_code(source=source, root=root, lang=lang, name=name, replace_method_name=True)
-#         return ast, nl, nl_wo_name
-#     else:
-#         nl = extract_nl_from_code(source=source, root=root, lang=lang, name=name)
-#         return ast, nl
-
 
 def generate_asts_nls(sources, langs):
     """
@@ -598,14 +549,14 @@ def generate_asts_nls(sources, langs):
 #         except Exception:
 #             continue
 #     return langs, codes, asts, names
-
-
+#
+#
 # def get_single_ast(lang, source):
 #     tree = parse_ast(source=source, lang=lang)
 #     ast = generate_statement_xsbt(tree.root_node)
 #     return ' '.join(ast)
-
-
+#
+#
 # def get_single_ast_name(lang, source):
 #     tree = parse_ast(source=source, lang=lang)
 #     ast = generate_statement_xsbt(tree.root_node)
@@ -615,16 +566,16 @@ def generate_asts_nls(sources, langs):
 
 # def lang_sample(lang):
 #     import random, json
-#     with open(f'/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/dataset/pre_train/java/valid.jsonl') as f:
+#     with open(f'../../../../dataset/pre_train/{lang}/valid/{lang}_valid_0.jsonl') as f:
 #         line = f.readlines()[random.randint(0, 1000)]
 #         data = json.loads(line.strip())
 #         name = data['func_name']
 #         source = data['code']
 #     return source, name
-
-
+#
+#
 # lang = 'java'
-
+#
 # source, name = lang_sample(lang)
 # print('-' * 100)
 # print('source:')
@@ -633,7 +584,7 @@ def generate_asts_nls(sources, langs):
 # print('name in json:')
 # print(name)
 # print('-' * 100)
-
+#
 # root = parse_ast(source, lang=lang)
 # print('name extracted:')
 # print(get_method_name(source=source, root=root, lang=lang))
