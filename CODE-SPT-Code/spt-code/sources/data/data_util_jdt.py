@@ -185,7 +185,7 @@ def compare_and_save_sources(self, sources_from_file, asts_from_file, compare_at
     """
     # Select the attribute for comparison based on the provided parameter
     comparison_list = getattr(self, compare_attribute)
-
+    all_matched = True
     with open(output_filename, 'w') as file:
         for i, (file_source, file_ast) in enumerate(zip(sources_from_file, asts_from_file)):
             if i < len(comparison_list):
@@ -194,11 +194,13 @@ def compare_and_save_sources(self, sources_from_file, asts_from_file, compare_at
                 normalized_self_source = remove_whitespaces(lowercase(self_source))
 
                 if not compare(normalized_file_source, normalized_self_source):
+                    all_matched = False
                     file.write(f"Source from file: {normalized_file_source}\n"
                                f"Normalized Self Source: {normalized_self_source}\n"
                                f"Original Source: {self_source}\n"
                                f"AST from file: {file_ast}\n")
-                
+    if all_matched == True:
+        print('[INFO] All indices are matched b/w JDT datasets and original datasets.')            
 # def compare_and_save_sources(self, sources_from_file, asts_from_file):
 #     # target_index = 46635  
 #     with open('mismatched_sources.txt', 'w') as file:

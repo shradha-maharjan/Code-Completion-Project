@@ -208,4 +208,4 @@ LICENSE
 *.yml
 *.gitkeep
 
-!HFTrainings/multi-gpu/
+HFTrainings/multi-gpu/
