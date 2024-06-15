@@ -204,8 +204,5 @@ LICENSE
 *.json
 *.gz
 *.rb
-*.sh
-*.yml
 *.gitkeep
 
-HFTrainings/multi-gpu/
