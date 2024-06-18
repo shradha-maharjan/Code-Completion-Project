@@ -3,6 +3,9 @@ from torch.utils.data.dataset import Dataset
 import os
 import logging
 
+import difflib
+import re
+
 from .data_utils import  handle_error
 
 # Configure logging
@@ -264,5 +267,45 @@ def compare_and_save_sources(self, sources_from_file, asts_from_file, compare_at
 #                         f"Normalized Self Source: No corresponding source\n"
 #                         f"Original Source: No corresponding source\n"
 #                         f"AST from file: {file_ast}\n")
-                
-                
+       
+# Define string pattern to replace strings
+
+STRING_MATCHING_PATTERN = re.compile(r'([bruf]*)(\"\"\"|\'\'\'|\"|\')(?:(?!\2)(?:\\.|[^\\]))*\2')
+
+def levenshtein_ratio(s1, s2):
+    """Calculate the Levenshtein ratio between two strings."""
+    s = difflib.SequenceMatcher(None, s1, s2)
+    return 1 - s.ratio()
+
+def process_content(text, remove_first_word):
+    """Process the text to prepare for comparison."""
+    text = text.lower().replace(' ', '')  # convert to lower case and remove spaces
+    if remove_first_word:
+        text = remove_first_word_from_text(text)
+    return text
+
+def replace_strings(text):
+    """Replace string literals in the text."""
+    return STRING_MATCHING_PATTERN.sub('___STR', text)
+
+def remove_first_word_from_text(text):
+    """Remove the first word from the text."""
+    return ' '.join(text.split()[1:])
+
+def format_code(raw_code):
+    """Format the raw code to standardize it for comparison."""
+    formatted_code = raw_code.replace(' _ ', '').replace(';', ';\n').replace('{', '{\n').replace('}', '\n}')
+    return formatted_code
+
+def compare_similarity(source_file, code_file, threshold=0.7):
+    """Compare lines from two sources for similarity and return indices of matched items."""
+    matched_indices = []
+    with open(source_file, 'r') as file1, open(code_file, 'r') as file2:
+        for index, (line1, line2) in enumerate(zip(file1, file2)):
+            content1 = process_content(line1, True)
+            content2 = process_content(replace_strings(format_code(line2)), False)
+            ratio = levenshtein_ratio(content1, content2)
+            if ratio > threshold:
+                matched_indices.append(index)  # Save index if similarity is above threshold
+    return matched_indices
+
