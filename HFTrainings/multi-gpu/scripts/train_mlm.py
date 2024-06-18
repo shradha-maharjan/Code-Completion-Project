@@ -1,7 +1,9 @@
 
 from collections import defaultdict
 from tqdm import tqdm
+import datasets
 from datasets import Dataset, load_dataset, DatasetDict
+import transformers
 from transformers import AutoTokenizer, GPT2LMHeadModel, AutoConfig, DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 import torch
@@ -22,12 +24,14 @@ import logging
 import os
 import sys
 from prettytable import PrettyTable 
+import platform
 
 # Command line arguments
 parser = argparse.ArgumentParser(description="Data Splitting")
 parser.add_argument("-train", type=int, required=True, help="Size of the training dataset (e.g., 10000)")
 parser.add_argument("-test", type=int, required=True, help="Size of the test dataset (e.g., 1000)")
 parser.add_argument("-ngpu", type=int, required=True, help="Number of GPUs (e.g., 1 or 2)")
+parser.add_argument("-epoch", type=int, required=True, help="Number of Epoch")
 parser.add_argument("-logfile", type=str, required=True, help="Log file name (e.g., logfile.log)")
 args = parser.parse_args()
 
@@ -51,7 +55,31 @@ formatter = logging.Formatter('[%(asctime)s | %(filename)s | line %(lineno)d] - 
 file.setFormatter(formatter)
 logger.addHandler(file)
 
+
+# from datasets import config
+# cache_dir = config.HF_DATASETS_CACHE
+# print(f"Dataset cache directory: {cache_dir}")
+# # -----------------------------------------------------------
+
+# import shutil
+# import os
+# dataset_name = "code_search_net"
+# dataset_cache_dir = os.path.join(cache_dir, dataset_name)
+# shutil.rmtree(dataset_cache_dir, ignore_errors=True)
+# print(f"Delete dataset cache directory: {cache_dir}")
+# # -----------------------------------------------------------
+
+print('-----------------------------------------')
+print(f"Transformers version: {transformers.__version__}")
+print(f"Torch version: {torch.__version__}")
+print(f"Datasets version: {datasets.__version__}")
+version = platform.python_version()
+print(f"Python version: {version}")
+print('-----------------------------------------')
+
+print('[DBG] Begin load_dataset code_search_net')
 codesearchnet_dataset = load_dataset("code_search_net", "java")
+print('[DBG] End load_dataset code_search_net')
 
 model_checkpoint = "microsoft/codebert-base-mlm"
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
@@ -184,8 +212,7 @@ def training_function():
     accelerator = Accelerator()
     model, optimizer, train_dataloader, eval_dataloader = accelerator.prepare(model, optimizer, train_dataloader, eval_dataloader)
 
-    # set the number of epochs which is set to 30
-    num_train_epochs = 30
+    num_train_epochs = args.epoch
     num_update_steps_per_epoch = len(train_dataloader)
     num_training_steps = num_train_epochs * num_update_steps_per_epoch
 
@@ -207,21 +234,11 @@ def training_function():
             lr_scheduler.step()
             optimizer.zero_grad()
             progress_bar.update(1)
-            if epoch == 0 and batch_idx == 0:
+            if epoch == 0 and batch_idx == 10:
                 stream = os.popen('nvidia-smi')
                 output = stream.read()
                 print("---------------Nvidia GPU---------------")
                 print(output)               
-                # Show a bash command like 'nvidia-smi'
-                # IF the result of 'nvidia-smi' shows 2 GPU usage, then
-                # If '2-GPU program' uses 2 GPUs for building a model and no difference from 1 GPU program result, then
-                #   Test the program train_mlm with training data size, 20000 and testing data size 2000.
-                
-                # IF the result of 'nvidia-smi' shows 1 GPU usage, then
-                # If '2-GPU program' does not use 2 GPUs, then
-                #   Need to explore the solution to let the program/environment determine 2 GPUs specified in YML.
-                
-                # counte += 1
 
         # Evaluation
         model.eval()
@@ -260,7 +277,10 @@ def training_function():
             # )
 
 start_time= time.time()
+# -----------------------------------------------------------------
 notebook_launcher(training_function, num_processes = args.ngpu)
+# training_function()
+# -----------------------------------------------------------------
 end_time= time.time()
 elapsed_time = end_time - start_time
 minutes = int(elapsed_time // 60)

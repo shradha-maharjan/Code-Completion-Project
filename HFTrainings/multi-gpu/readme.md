@@ -28,6 +28,7 @@
 **III. Copy run_install.sh script for dependencies installation and train_mlm python script scripts to the volume mounted by pod once pod starts running**
 - `kubectl cp ./scripts/run_install.sh gp-engine-unoselab01-pod1:/data/run_install.sh`
 - `kubectl cp ./scripts/train_mlm.py gp-engine-unoselab01-pod1:/data/train_mlm.py`
+- `kubectl cp ./scripts/env_mlm.yml gp-engine-unoselab01-pod1:/data/env_mlm.yml`
 
 **IV. Replace the {number_of_gpus} with number of desired gpus to run the job in train_mlm_job.yml**
 

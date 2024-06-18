@@ -16,8 +16,4 @@ echo '--------------------------------------------------------'
 echo 'Installation completed'
 echo '--------------------------------------------------------'
 
-# conda env create -f env_mlm.yml
-# echo $SHELL
-# conda init bash
-# # source .bashrc
-# conda activate env_mlm
+# This script should be updated to use a ``conda virtual environment``.
