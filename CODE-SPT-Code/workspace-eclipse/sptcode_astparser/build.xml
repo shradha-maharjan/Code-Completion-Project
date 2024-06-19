@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="sptcode_astparser">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../eclipse-rcp-2023-09-R-win32-x86_64/eclipse/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="17"/>
+    <property name="source" value="17"/>
+    <path id="Plug-in Dependencies.libraryclasspath">
+        <pathelement location="${ECLIPSE_HOME}plugins/org.osgi.annotation.versioning_1.1.2.202109301733.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.osgi.annotation.bundle_2.0.0.202202082230.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.osgi.service.component.annotations_1.5.1.202212101352.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.osgi.service.metatype.annotations_1.4.1.202109301733.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/javax.inject_1.0.0.v20220405-0441.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.core.runtime_3.29.0.v20230726-0617.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.osgi_3.18.500.v20230801-1826.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.osgi.compatibility.state_1.2.800.v20221116-1440.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.equinox.common_3.18.100.v20230730-1117.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.core.jobs_3.15.0.v20230808-1403.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.equinox.registry_3.11.300.v20230801-1826.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.equinox.preferences_3.10.300.v20230630-1303.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.osgi.service.prefs_1.1.2.202109301733.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.core.contenttype_3.9.100.v20230630-1232.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.equinox.app_1.6.300.v20230630-1303.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.swt_3.124.100.v20230825-1346.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.swt.win32.win32.x86_64_3.124.100.v20230825-1346.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.ui.model.workbench_2.4.100.v20230801-1255.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.jface_3.31.0.v20230821-1552.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.core.commands_3.11.100.v20230708-0916.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.ui.services_1.6.100.v20230630-1554.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.ui.workbench_1.15.100.v20230819-0347.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.core.di_1.9.100.v20230721-1753.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.core.di.annotations_1.8.100.v20230617-1158.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.ui.di_1.5.100.v20230630-1554.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.e4.core.contexts_1.12.100.v20230725-1354.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.jdt.core_3.35.0.v20230814-1356.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.jdt.core.compiler.batch_3.35.0.v20230814-2020.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.text_3.13.100.v20230801-1334.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/org.eclipse.core.resources_3.19.100.v20230814-1312.jar"/>
+        <pathelement location="${ECLIPSE_HOME}plugins/javax.annotation_1.3.5.v20200909-1856.jar"/>
+    </path>
+    <path id="sptcode_astparser.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <pathelement location="bin"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.asts.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.MethodTokenCounter.JsonExample.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.MethodTokenCounter.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.SPTCODEASTVisitor.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.TokenCounter.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.TokenCounter_org.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.pred.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.MainSim.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="sptcode_astparser.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="asts">
+        <java classname="backup.asts" failonerror="true" fork="yes">
+            <classpath refid="run.asts.classpath"/>
+        </java>
+    </target>
+    <target name="MethodTokenCounter.JsonExample">
+        <java classname="MethodTokenCounter$JsonExample" failonerror="true" fork="yes">
+            <classpath refid="run.MethodTokenCounter.JsonExample.classpath"/>
+        </java>
+    </target>
+    <target name="MethodTokenCounter">
+        <java classname="backup.MethodTokenCounter" failonerror="true" fork="yes">
+            <classpath refid="run.MethodTokenCounter.classpath"/>
+        </java>
+    </target>
+    <target name="SPTCODEASTVisitor">
+        <java classname="SPTCODEASTVisitor" failonerror="true" fork="yes">
+            <classpath refid="run.SPTCODEASTVisitor.classpath"/>
+        </java>
+    </target>
+    <target name="TokenCounter">
+        <java classname="TokenCounter" failonerror="true" fork="yes">
+            <classpath refid="run.TokenCounter.classpath"/>
+        </java>
+    </target>
+    <target name="TokenCounter_org">
+        <java classname="backup.TokenCounter_org" failonerror="true" fork="yes">
+            <classpath refid="run.TokenCounter_org.classpath"/>
+        </java>
+    </target>
+    <target name="pred">
+        <java classname="pred" failonerror="true" fork="yes">
+            <classpath refid="run.pred.classpath"/>
+        </java>
+    </target>
+    <target name="MainSim">
+        <java classname="MainSim" failonerror="true" fork="yes">
+            <classpath refid="run.MainSim.classpath"/>
+        </java>
+    </target>
+</project>
