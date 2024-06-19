@@ -71,7 +71,7 @@ def pre_train(args,
     logger.info('Datasets loaded and parsed successfully')
 
     # ##################################################
-    # Edited to force to initialize vocab, myoungkyu song, 03/23/2024
+    #Edited to force to initialize vocab, myoungkyu song, 03/23/2024
     if trained_vocab == 'None':
         trained_vocab = None
     # ##################################################
@@ -88,29 +88,41 @@ def pre_train(args,
     else:
         logger.info('Building vocabularies')
         # code vocab
+        
+        # First, check if the dataset is a Subset and access the original dataset attributes
+        original_dataset = dataset.dataset if isinstance(dataset, torch.utils.data.Subset) else dataset
+        print(original_dataset)
+        print(original_dataset.codes[:1])
+        
+        print(original_dataset.asts[:1])
+        
+        print(original_dataset.names[:1])
         code_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
                                 name=args.code_vocab_name,
                                 method=args.code_tokenize_method,
                                 vocab_size=args.code_vocab_size,
-                                datasets=[dataset.codes],
+                                datasets=[original_dataset.codes],
                                 ignore_case=True,
-                                save_root=args.vocab_root)
+                                save_root=args.vocab_root,
+                                load_if_saved=False)
         # nl vocab
         nl_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
-                              name=args.nl_vocab_name,
-                              method=args.nl_tokenize_method,
-                              vocab_size=args.nl_vocab_size,
-                              datasets=[dataset.names, dataset.docs] if hasattr(dataset, 'docs') else [dataset.names],
-                              ignore_case=True,
-                              save_root=args.vocab_root,
-                              index_offset=len(code_vocab))
+                            name=args.nl_vocab_name,
+                            method=args.nl_tokenize_method,
+                            vocab_size=args.nl_vocab_size,
+                            datasets=[original_dataset.names, original_dataset.docs] if hasattr(original_dataset, 'docs') else [original_dataset.names],
+                            ignore_case=True,
+                            save_root=args.vocab_root,
+                            index_offset=len(code_vocab),
+                            load_if_saved=False)
         # ast vocab
         ast_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
-                               name=args.ast_vocab_name,
-                               method='word',
-                               datasets=[dataset.asts],
-                               save_root=args.vocab_root,
-                               index_offset=len(code_vocab) + len(nl_vocab))
+                            name=args.ast_vocab_name,
+                            method='word',
+                            datasets=[original_dataset.asts],
+                            save_root=args.vocab_root,
+                            index_offset=len(code_vocab) + len(nl_vocab),
+                            load_if_saved=False)
     logger.info(f'The size of code vocabulary: {len(code_vocab)}')
     logger.info(f'The size of nl vocabulary: {len(nl_vocab)}')
     logger.info(f'The size of ast vocabulary: {len(ast_vocab)}')

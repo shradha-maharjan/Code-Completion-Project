@@ -158,5 +158,5 @@ sources/data/asts/vendor/tree-sitter-ruby
 .DS_Store
 *.jsonl
 *.xlsx
-
+*.pk
 
