@@ -11,9 +11,9 @@ public class MainSimilarity {
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
 
     // Hardcoded file paths
-    private static final String FILE_PATH1 = "input/finetune_methods_valid_final.txt";
-    private static final String FILE_PATH2 = "input/data.TargetType.seq.valid.source.txt";//"input/input1.txt";
-    private static final String OUTPUT_FILE = "input/finetune_valid_compare_output.txt";
+    private static final String FILE_PATH1 = "input/finetune_methods_test_final.txt";
+    private static final String FILE_PATH2 = "input/data.TargetType.seq.test.source.txt";//"input/input1.txt";
+    private static final String OUTPUT_FILE = "input/finetune_test_compare_output.txt";
 
     public static void main(String[] args) {
         try {
