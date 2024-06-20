@@ -1,3 +1,106 @@
+//import org.apache.commons.text.similarity.LevenshteinDistance;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
+//import java.io.*;
+//
+//public class MainSimilarity {
+//
+//    private static final LevenshteinDistance lv = new LevenshteinDistance();
+//    private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
+//
+//    // Hardcoded file paths
+//    private static final String FILE_PATH1 = "input/finetune_methods_valid_final.txt";
+//    private static final String FILE_PATH2 = "input/input1.txt";
+//    private static final String OUTPUT_FILE = "input/finetune_valid_compare_output.txt";
+//
+//    public static void main(String[] args) {
+//        try {
+//            PrintStream fileOut = new PrintStream(new FileOutputStream(OUTPUT_FILE));
+//            System.setOut(fileOut);  // Redirects standard output to "output.txt"
+//            long startTime = System.currentTimeMillis();  // Start time
+//            compareFiles(FILE_PATH1, FILE_PATH2);
+//            long endTime = System.currentTimeMillis();  // End time
+//            System.out.println("Start Time: " + startTime);
+//            System.out.println("End Time: " + endTime);
+//            System.out.println("Duration: " + (endTime - startTime) + " ms");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void compareFiles(String filePath1, String filePath2) throws IOException {
+//        try (BufferedReader reader1 = new BufferedReader(new FileReader(filePath1));
+//             BufferedReader reader2 = new BufferedReader(new FileReader(filePath2))) {
+//
+//            List<String> file1Lines = new ArrayList<>();
+//            String line1;
+//            while ((line1 = reader1.readLine()) != null) {
+//                file1Lines.add(processContent(line1, true));
+//            }
+//
+//            String line2;
+//            String bestFile1Line = "";
+//            String bestFile2Line = "";
+//            double maxRatio = 0.0;  // Track the highest similarity ratio
+//            int lineNumber = 1;
+//
+//            while ((line2 = reader2.readLine()) != null) {
+//                String content2 = processContent(replaceStrings(formatCode(line2)), false);
+//                for (String content1 : file1Lines) {
+//                    String adjustedContent1 = adjustContent(content1, content2);
+//                    double ratio = levenshteinRatio(adjustedContent1, content2);
+//                    if (ratio > maxRatio) {
+//                        maxRatio = ratio;  // Update max ratio found
+//                        bestFile1Line = adjustedContent1;  // Store the best matching line from file1
+//                        bestFile2Line = content2;  // Store the best matching line from file2
+//                    }
+//                }
+//             // Print the lines with the highest similarity ratio for the current line from file2
+//                System.out.printf("Line %d from File2 with highest similarity:\n", lineNumber);
+//                System.out.println("File1: " + bestFile1Line);
+//                System.out.println("File2: " + content2);
+//                System.out.printf("Highest Similarity Ratio: %.2f\n\n", maxRatio);
+//                
+//                lineNumber++;
+//            }
+//        }
+//    }
+//
+//    private static String adjustContent(String file1, String file2) {
+//        String first10File1 = file1.length() > 10 ? file1.substring(0, 10) : file1;
+//        if (!file2.contains(first10File1)) {
+//            file1 = file1.substring(first10File1.length());
+//        }
+//        return file1;
+//    }
+//
+//    public static double levenshteinRatio(String s, String s1) {
+//        return 1 - ((double) lv.apply(s, s1)) / Math.max(s.length(), s1.length());
+//    }
+//
+//    private static String processContent(String text, boolean removeAccessModifiers) {
+//        text = text.replaceAll("\\s+", "");
+//        return text.toLowerCase();
+//    }
+//
+//    private static String replaceStrings(String text) {
+//        Matcher matcher = STRING_PATTERN.matcher(text);
+//        return matcher.replaceAll("___STR");
+//    }
+//
+//    private static String formatCode(String rawCode) {
+//        String formattedCode = rawCode.replace(" _ ", "")
+//                                     .replace(";", ";\n")
+//                                     .replace("{", "{\n")
+//                                     .replace("}", "\n}");
+//        return formattedCode;
+//    }
+//}
+
+
+
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.ArrayList;
@@ -6,7 +109,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.*;
 
-public class MainSim {
+public class MainSimilarity {
 
     private static final LevenshteinDistance lv = new LevenshteinDistance();
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
@@ -39,26 +142,49 @@ public class MainSim {
             List<String> file1Lines = new ArrayList<>();
             String line1;
             while ((line1 = reader1.readLine()) != null) {
-                file1Lines.add(processContent(line1, true));
+                file1Lines.add(processContent(line1, false));
             }
 
             String line2;
+            double maxRatio = 0.0;  // Track the highest similarity ratio
+            String bestFile1Line = "";
+            String bestFile2Line = "";
             int lineNumber = 1;
-
-            // Compare each line from file2 against all lines in file1
+            
             while ((line2 = reader2.readLine()) != null) {
                 String content2 = processContent(replaceStrings(formatCode(line2)), false);
-                System.out.printf("Comparing line %d from file2:\n", lineNumber);
                 for (String content1 : file1Lines) {
                     double ratio = levenshteinRatio(content1, content2);
-                    System.out.println("File1: " + content1);
-                    System.out.println("File2: " + content2);
-                    System.out.printf("Similarity Ratio: %.2f\n", ratio);
+                    if (ratio > maxRatio) {
+                        maxRatio = ratio;  // Update max ratio found
+                        bestFile1Line = content1;  // Store the best matching line from file1
+                        bestFile2Line = content2;  // Store the best matching line from file2
+                    }
                 }
+             // Print the lines with the highest similarity ratio for the current line from file2
+                System.out.printf("Line %d from File2 with highest similarity:\n", lineNumber);
+                System.out.println("File1: " + bestFile1Line);
+                System.out.println("File2: " + bestFile2Line);
+                System.out.printf("Highest Similarity Ratio: %.2f\n\n", maxRatio);
+                
                 lineNumber++;
             }
         }
     }
+//            // Compare each line from file2 against all lines in file1
+//            while ((line2 = reader2.readLine()) != null) {
+//                String content2 = processContent(replaceStrings(formatCode(line2)), false);
+//                System.out.printf("Comparing line %d from file2:\n", lineNumber);
+//                for (String content1 : file1Lines) {
+//                    double ratio = levenshteinRatio(content1, content2);
+//                    System.out.println("File1: " + content1);
+//                    System.out.println("File2: " + content2);
+//                    System.out.printf("Similarity Ratio: %.2f\n", ratio);
+//                }
+//                lineNumber++;
+//            }
+//        }
+//    }
 
     public static double levenshteinRatio(String s, String s1) {
         return 1 - ((double) lv.apply(s, s1)) / Math.max(s.length(), s1.length());
