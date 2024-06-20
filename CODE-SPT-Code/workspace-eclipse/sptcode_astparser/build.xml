@@ -92,6 +92,16 @@
         <path refid="sptcode_astparser.classpath"/>
         <pathelement location="../commons-text-1.12.0.jar"/>
     </path>
+    <path id="run.similaritythreshold.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.pred2.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
@@ -171,6 +181,16 @@
     <target name="MainSimilarity">
         <java classname="MainSimilarity" failonerror="true" fork="yes">
             <classpath refid="run.MainSimilarity.classpath"/>
+        </java>
+    </target>
+    <target name="similaritythreshold">
+        <java classname="similaritythreshold" failonerror="true" fork="yes">
+            <classpath refid="run.similaritythreshold.classpath"/>
+        </java>
+    </target>
+    <target name="pred2">
+        <java classname="pred2" failonerror="true" fork="yes">
+            <classpath refid="run.pred2.classpath"/>
         </java>
     </target>
 </project>

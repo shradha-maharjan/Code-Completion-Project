@@ -6,7 +6,7 @@ import java.io.IOException;
 public class asts {
 
     public static void main(String[] args) {
-        String pathToFile = "input/finetune_methods_train_asts.txt";  // Replace with your file path
+        String pathToFile = "input/data.TargetType.seq.train.source.txt";  // Replace with your file path
         System.out.println("Number of lines: " + countLines(pathToFile));
     }
 
