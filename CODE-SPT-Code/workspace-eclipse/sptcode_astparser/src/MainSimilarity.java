@@ -10,10 +10,9 @@ public class MainSimilarity {
     private static final LevenshteinDistance lv = new LevenshteinDistance();
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
 
-    // Hardcoded file paths
-    private static final String FILE_PATH1 = "input/finetune_methods_train_final.txt";
-    private static final String FILE_PATH2 = "input/data.TargetType.seq.train.source.txt";//"input/input1.txt";
-    private static final String OUTPUT_FILE = "input/finetune_train_compare_output.txt";
+    private static final String FILE_PATH1 = "input/finetune_methods_test_final.txt";
+    private static final String FILE_PATH2 = "input/data.TargetType.seq.test.source.txt";//"input/input1.txt";
+    private static final String OUTPUT_FILE = "input/finetune_test_compare_output.txt";
 
     public static void main(String[] args) {
         try {
@@ -67,8 +66,8 @@ public class MainSimilarity {
                     System.out.printf("Line %d from File2: No significant match found.\n\n", lineNumber);
                 }
 
-                lineNumber++; // Ensure we move to the next line number for the next iteration
-                maxRatio = 0.0; // Reset maxRatio for the next line of File2
+                lineNumber++; 
+                maxRatio = 0.0; 
             }
         }
     }
