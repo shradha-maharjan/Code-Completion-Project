@@ -125,7 +125,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class binarysearch {
+public class BinarySearch {
 
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
     //private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(public|private|protected)(\\s+static|override)?\\b");

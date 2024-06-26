@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class binarysearchreference {
+public class BinarySearchReference {
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
     // Updated pattern to match specified combinations
 //    private static final Pattern MODIFIERS_PATTERN = Pattern.compile(
@@ -19,9 +19,9 @@ public class binarysearchreference {
     
     private static final Pattern MODIFIERS_PATTERN = Pattern.compile(
     	    "\\b(override\\s+)?(public|private|protected)(\\s+static)?\\b");
-    private static final String FILE_PATH1 = "input/sorted_finetune_methods_valid_final.txt";
-    private static final String FILE_PATH2 = "input/sorted_data.TargetType.seq.valid.source.txt";
-    private static final String OUTPUT_FILE = "input/finetune_valid_binary_search_output.txt";
+    private static final String FILE_PATH1 = "input/sorted_finetune_methods_train_final.txt";
+    private static final String FILE_PATH2 = "input/sorted_data.TargetType.seq.train.source.txt";
+    private static final String OUTPUT_FILE = "output/finetune_train_binary_search_output.txt";
     private static final String SEARCH = "pred";  // Adjust SEARCH to match your actual search keyword
 
     public static void main(String[] args) {

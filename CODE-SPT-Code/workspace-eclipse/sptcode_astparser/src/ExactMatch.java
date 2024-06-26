@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
-public class exactmatch {
+public class ExactMatch {
 
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
     private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(public|private|protected|privatestatic)\\b");
@@ -85,7 +85,7 @@ public class exactmatch {
                         double similarity = 1 - (double) distance / Math.max(content1.length(), (beforePred + afterPred).length());
                         if (similarity > 0.7) {
                         	System.out.printf("Line %d from File2 matched with Line in File1 based on similarity > 80%%: %s\n", lineNumber, content1);
-                            System.out.printf("Similarity Score: %.2f%%\n");
+                            System.out.printf("Similarity Score: %.2f%%\n", similarity);
                             matchFound = true;
                             break;
                         }
