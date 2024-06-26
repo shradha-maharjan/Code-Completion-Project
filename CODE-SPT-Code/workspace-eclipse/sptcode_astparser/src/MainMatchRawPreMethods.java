@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BinarySearchReference {
+public class MainMatchRawPreMethods {
     private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
     // Updated pattern to match specified combinations
 //    private static final Pattern MODIFIERS_PATTERN = Pattern.compile(
