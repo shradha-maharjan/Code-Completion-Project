@@ -1,12 +1,7 @@
 package match;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,7 +18,7 @@ public class MainMatchRawPreMethods {
    // private static final String FILE_PATH2 = "input/sorted_data.TargetType.seq.valid.source.txt";
    // private static final String OUTPUT_FILE = "output/finetune_valid_binary_search_output.txt";
 
-   private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
+   // private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
    private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(override\\s+)?(public|private|protected)(\\s+static)?\\b");
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 

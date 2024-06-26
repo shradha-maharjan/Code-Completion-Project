@@ -18,9 +18,19 @@ import java.util.Scanner;
 public class UtilFile {
 
    public static void writeFile(List<String> list, String fileName) {
+      StringBuilder buffer = new StringBuilder();
+      int limit = 1000;
+
       try (FileWriter writer = new FileWriter(fileName)) {
-         for (String line : list) {
-            writer.write(line + System.lineSeparator());
+         for (int i = 0; i < list.size(); i++) {
+            String line = list.get(i);
+
+            buffer.append(line + System.lineSeparator());
+            if (i % limit == 0) {
+               writer.write(buffer.toString());
+               // Find an API to reset the StringBuffer contents.
+               buffer.setLength(0);
+            }
          }
       } catch (IOException e) {
          e.printStackTrace();
