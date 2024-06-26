@@ -35,14 +35,14 @@ public class MainMatchRawPreMethods {
    // static String FILE_PRE_METHODS = "";
    // static String FILE_RAW_METHODS = "";
    // Output files
-   static String FILE_MATCHED_METHODS = "output/matched_raw_pre_step1.txt";
+   static String FILE_MATCHED_METHODS = "output/step1-raw-pre.txt";
 
    static List<String> listPreMethods = null, listRawMethods = null;
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
 
    public static void main(String[] args) {
       try {
-         PrintStream fileOut = new PrintStream(new FileOutputStream(OUTPUT_FILE));
+         PrintStream fileOut = new PrintStream(new FileOutputStream(FILE_MATCHED_METHODS));
          System.setOut(fileOut);
          long startTime = System.currentTimeMillis();
 
@@ -92,29 +92,52 @@ public class MainMatchRawPreMethods {
       listRawMethodsClean = cleanedListRawMethods;
    }
 
+
    // Step 2. Find matched raw methods.
    static void findMatchedRawMethods() {
-      String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
+       String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
+       //Arrays.sort(rawMethods);
 
-      for (String iPreMethod : listPreMethodsClean) {
+       try (PrintStream output = new PrintStream(new FileOutputStream(FILE_MATCHED_METHODS))) {
+           output.println("Index\tPreMethod\tMatchedRawMethod");
 
-         Comparator<String> customComparator = createComparator();
-         int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
+           for (String iPreMethod : listPreMethodsClean) {
+               Comparator<String> customComparator = createComparator();
+               int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
 
-         // Output format to be saved.
-         // foundIndx
-         // iPreMethod
-         // rawMethods[foundIndex]
-         //
-         // 1
-         // m1() {.. pred ..}
-         // m1() {...}
-         // 2
-         // m2() {.. pred ..}
-         // m2 {...}
-         // ...
-      }
+               if (foundIndex >= 0) {
+                   output.println(foundIndex + "\t" + iPreMethod + "\t" + rawMethods[foundIndex]);
+               }
+           }
+       } catch (Exception e) {
+           System.err.println("Error writing to output file: " + e.getMessage());
+           e.printStackTrace();
+       }
    }
+
+//
+//   static void findMatchedRawMethods() {
+//      String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
+//
+//      for (String iPreMethod : listPreMethodsClean) {
+//
+//         Comparator<String> customComparator = createComparator();
+//         int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
+//
+////          Output format to be saved.
+////          foundIndx
+////          iPreMethod
+////          rawMethods[foundIndex]
+////         
+////          1
+////          m1() {.. pred ..}
+////          m1() {...}
+////          2
+////          m2() {.. pred ..}
+////          m2 {...}
+////          ...
+//      }
+//   }
 
    public static void compareFiles(String filePath1, String filePath2) throws IOException {
       try (BufferedReader reader1 = new BufferedReader(new FileReader(filePath1)); BufferedReader reader2 = new BufferedReader(new FileReader(filePath2))) {
