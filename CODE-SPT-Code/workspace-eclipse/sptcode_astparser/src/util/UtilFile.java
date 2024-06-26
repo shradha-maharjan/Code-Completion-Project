@@ -16,23 +16,15 @@ import java.util.Scanner;
  * @since J2SE-1.8
  */
 public class UtilFile {
-	
-	public static void writeFile(List<String> list) {
-	    try (FileWriter writer = new FileWriter("output.txt")) {
-	        for (String line : list) {
-	            writer.write(line + System.lineSeparator());
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	}
 
-   public static void writeFile(List<String> list) {
-      // file object
-      for (String iLine : list) {
-         // save(iLine)
+   public static void writeFile(List<String> list, String fileName) {
+      try (FileWriter writer = new FileWriter(fileName)) {
+         for (String line : list) {
+            writer.write(line + System.lineSeparator());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
       }
-      // close file object
    }
 
    public static List<String> readFile(String filePath) {

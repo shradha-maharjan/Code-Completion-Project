@@ -117,7 +117,7 @@ public class MainMatchRawPreMethods {
             outputMatched.add(rawMethods[foundIndex]);
          }
       }
-      UtilFile.writeFile(outputMatched);
+      UtilFile.writeFile(outputMatched, FILE_MATCHED_METHODS);
    }
 
    private static Comparator<String> createComparator() {
