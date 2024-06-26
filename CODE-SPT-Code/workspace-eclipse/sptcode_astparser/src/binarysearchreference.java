@@ -104,21 +104,21 @@ public class binarysearchreference {
     }
 
     private static String removeJavaModifiers(String text) {
-        System.out.println("Original text: " + text);  // Debug output of original text
+        //System.out.println("Original text: " + text);  // Debug output of original text
 
         Matcher matcher = MODIFIERS_PATTERN.matcher(text);
         StringBuffer sb = new StringBuffer();
 
         // Using appendReplacement and appendTail to build the new string
         while (matcher.find()) {
-            System.out.println("Match found: " + matcher.group());  // Prints the matched group
+            //System.out.println("Match found: " + matcher.group());  // Prints the matched group
             // Replace matched group with an empty string
             matcher.appendReplacement(sb, "");
         }
         matcher.appendTail(sb);
 
         String modifiedText = sb.toString();
-        System.out.println("Modified text: " + modifiedText);  // Debug output after replacement
+        //System.out.println("Modified text: " + modifiedText);  // Debug output after replacement
 
         return modifiedText;
     }
