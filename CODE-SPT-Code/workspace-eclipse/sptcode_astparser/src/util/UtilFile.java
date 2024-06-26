@@ -16,6 +16,14 @@ import java.util.Scanner;
  */
 public class UtilFile {
 
+   public static void writeFile(List<String> list) {
+      // file object
+      for (String iLine : list) {
+         // save(iLine)
+      }
+      // close file object
+   }
+
    public static List<String> readFile(String filePath) {
       List<String> contents = new ArrayList<String>();
       File file = new File(filePath);
