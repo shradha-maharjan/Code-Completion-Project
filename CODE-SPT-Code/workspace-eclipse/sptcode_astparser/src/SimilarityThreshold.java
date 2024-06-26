@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class similaritythreshold {
+public class SimilarityThreshold {
 
     private static final String INPUT_FILE = "input/finetune_valid_compare_output.txt"; 
     private static final String OUTPUT_FILE = "output/high_similarity_entries_7.txt"; 

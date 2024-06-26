@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import org.eclipse.jdt.core.dom.*;
 
-public class pred2 {
+public class Pred2 {
 
     private static String formatCode(String codeSnippet) {
         codeSnippet = codeSnippet.replaceAll(" _ ", "")
