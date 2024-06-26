@@ -23,9 +23,20 @@ public class MainMatchRawPreMethods {
    private static final String OUTPUT_FILE = "output/finetune_valid_binary_search_output.txt";
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 
-   // Information
-   static String FILE_PRE_METHODS = "";
-   static String FILE_RAW_METHODS = "";
+   // Information:
+   // Assume that the files below were sorted.
+   // Small sample datasets
+   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";
+   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";
+   // After removing the first matching.
+   // static String FILE_PRE_METHODS = "input/step1-valid.source.txt";
+   // static String FILE_RAW_METHODS = "input/step1-raw-methods.txt";
+   // Large datasets
+   // static String FILE_PRE_METHODS = "";
+   // static String FILE_RAW_METHODS = "";
+   // Output files
+   static String FILE_MATCHED_METHODS = "output/matched_raw_pre_step1.txt";
+
    static List<String> listPreMethods = null, listRawMethods = null;
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
 
@@ -55,8 +66,16 @@ public class MainMatchRawPreMethods {
 
    static void removeSpecialChars() {
       List<String> cleanedListPreMethods = new ArrayList<>();
-      for (String preMethod : listPreMethods) {
-         String cleanedMethod = removeJavaModifiers(preMethod);
+      for (String iPreMethod : listPreMethods) {
+         int predIndex = iPreMethod.indexOf(SEARCH);
+
+         if (predIndex == -1) {
+            System.out.println("[ERR] " + SEARCH + " term not found in target: " + iPreMethod);
+            throw new RuntimeException("[ERR] " + SEARCH + " term not found in target: " + iPreMethod);
+            // do not continue the iteration but need to exam the dataset first.
+         }
+
+         String cleanedMethod = removeJavaModifiers(iPreMethod);
          cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
          cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
          cleanedListPreMethods.add(cleanedMethod);
@@ -75,8 +94,25 @@ public class MainMatchRawPreMethods {
 
    // Step 2. Find matched raw methods.
    static void findMatchedRawMethods() {
+      String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
+
       for (String iPreMethod : listPreMethodsClean) {
 
+         Comparator<String> customComparator = createComparator();
+         int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
+
+         // Output format to be saved.
+         // foundIndx
+         // iPreMethod
+         // rawMethods[foundIndex]
+         //
+         // 1
+         // m1() {.. pred ..}
+         // m1() {...}
+         // 2
+         // m2() {.. pred ..}
+         // m2 {...}
+         // ...
       }
    }
 
@@ -117,10 +153,6 @@ public class MainMatchRawPreMethods {
          @Override
          public int compare(String method, String target) {
             int predIndex = target.indexOf(SEARCH);
-            if (predIndex == -1) {
-               System.out.println("[DBG] SEARCH term not found in target: " + target);
-               return 1; // Default non-zero return if SEARCH term isn't found
-            }
 
             String beforePred = target.substring(0, predIndex).trim();
             String afterPred = target.substring(predIndex + SEARCH.length()).trim();
