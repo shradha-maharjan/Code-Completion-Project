@@ -6,6 +6,7 @@ package util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,16 @@ import java.util.Scanner;
  * @since J2SE-1.8
  */
 public class UtilFile {
+	
+	public static void writeFile(List<String> list) {
+	    try (FileWriter writer = new FileWriter("output.txt")) {
+	        for (String line : list) {
+	            writer.write(line + System.lineSeparator());
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 
    public static List<String> readFile(String filePath) {
       List<String> contents = new ArrayList<String>();
