@@ -51,29 +51,27 @@ public class MainMatchRawPreMethods {
       }
    }
 
+   // Step 1. Remove special characters.
 
-// Step 1. Remove special characters.
-   
-	static void removeSpecialChars() {
-	    List<String> cleanedListPreMethods = new ArrayList<>();
-	    for (String preMethod : listPreMethods) {
-	        String cleanedMethod = removeJavaModifiers(preMethod);
-	        cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
-	        cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
-	        cleanedListPreMethods.add(cleanedMethod);
-	    }
-	    listPreMethods = cleanedListPreMethods; 
-	
-	    List<String> cleanedListRawMethods = new ArrayList<>();
-	    for (String rawMethod : listRawMethods) {
-	        String cleanedMethod = removeJavaModifiers(rawMethod);
-	        cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
-	        cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
-	        cleanedListRawMethods.add(cleanedMethod);
-	    }
-	    listRawMethods = cleanedListRawMethods; 
-	}
+   static void removeSpecialChars() {
+      List<String> cleanedListPreMethods = new ArrayList<>();
+      for (String preMethod : listPreMethods) {
+         String cleanedMethod = removeJavaModifiers(preMethod);
+         cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
+         cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
+         cleanedListPreMethods.add(cleanedMethod);
+      }
+      listPreMethodsClean = cleanedListPreMethods;
 
+      List<String> cleanedListRawMethods = new ArrayList<>();
+      for (String rawMethod : listRawMethods) {
+         String cleanedMethod = removeJavaModifiers(rawMethod);
+         cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
+         cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
+         cleanedListRawMethods.add(cleanedMethod);
+      }
+      listRawMethodsClean = cleanedListRawMethods;
+   }
 
    // Step 2. Find matched raw methods.
    static void findMatchedRawMethods() {
