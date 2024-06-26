@@ -48,7 +48,6 @@ public class binarysearchreference {
             while ((line1 = reader1.readLine()) != null) {
                 String processedLine1 = processContent(line1);
                 file1Lines.add(processedLine1);
-                System.out.println("processedLine1: " + processedLine1);
             }
 
             Collections.sort(file1Lines);
@@ -56,7 +55,6 @@ public class binarysearchreference {
             String line2;
             while ((line2 = reader2.readLine()) != null) {
                 String processedLine2 = processContent(line2);
-                System.out.println("processedLine2: " + processedLine2);
 
                 Comparator<String> customComparator = createComparator();
                 int index = Arrays.binarySearch(file1Lines.toArray(new String[0]), processedLine2, customComparator);
