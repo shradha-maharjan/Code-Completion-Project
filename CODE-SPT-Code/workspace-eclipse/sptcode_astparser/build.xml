@@ -107,12 +107,17 @@
         <path refid="sptcode_astparser.classpath"/>
         <pathelement location="JARS/commons-text-1.12.0.jar"/>
     </path>
-    <path id="run.binarysearch.classpath">
+    <path id="run.binarysearchreference.classpath">
         <path refid="Plug-in Dependencies.libraryclasspath"/>
         <path refid="sptcode_astparser.classpath"/>
         <pathelement location="../commons-text-1.12.0.jar"/>
     </path>
-    <path id="run.binarysearchreference.classpath">
+    <path id="run.BinarySearch.classpath">
+        <path refid="Plug-in Dependencies.libraryclasspath"/>
+        <path refid="sptcode_astparser.classpath"/>
+        <pathelement location="../commons-text-1.12.0.jar"/>
+    </path>
+    <path id="run.ExactMatch.classpath">
         <path refid="Plug-in Dependencies.libraryclasspath"/>
         <path refid="sptcode_astparser.classpath"/>
         <pathelement location="JARS/commons-text-1.12.0.jar"/>
@@ -213,14 +218,19 @@
             <classpath refid="run.exactmatch.classpath"/>
         </java>
     </target>
-    <target name="binarysearch">
-        <java classname="binarysearch" failonerror="true" fork="yes">
-            <classpath refid="run.binarysearch.classpath"/>
-        </java>
-    </target>
     <target name="binarysearchreference">
         <java classname="binarysearchreference" failonerror="true" fork="yes">
             <classpath refid="run.binarysearchreference.classpath"/>
+        </java>
+    </target>
+    <target name="BinarySearch">
+        <java classname="BinarySearch" failonerror="true" fork="yes">
+            <classpath refid="run.BinarySearch.classpath"/>
+        </java>
+    </target>
+    <target name="ExactMatch">
+        <java classname="ExactMatch" failonerror="true" fork="yes">
+            <classpath refid="run.ExactMatch.classpath"/>
         </java>
     </target>
 </project>
