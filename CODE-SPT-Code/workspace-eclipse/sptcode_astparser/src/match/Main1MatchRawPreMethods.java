@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import util.UtilFile;
 
-public class Main1MatchRawPreMethods {
+public class Main1MatchRawPreMethods implements InfoFileNames {
    // Updated pattern to match specified combinations
    // private static final Pattern MODIFIERS_PATTERN = Pattern.compile(
    // "\\boverride\\s+(public|private|protected)\\b|\\b(public|private|protected)\\s+static\\b|\\b(public|private|protected)\\b");
@@ -21,20 +21,6 @@ public class Main1MatchRawPreMethods {
    // private static final Pattern STRING_PATTERN = Pattern.compile("\"[^\"]*\"|'[^']*'");
    private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(override\\s+)?(public|private|protected)(\\s+static)?\\b");
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
-
-   // Information:
-   // Assume that the files below were sorted.
-   // Small sample datasets
-   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";
-   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";
-   // After removing the first matching.
-   // static String FILE_PRE_METHODS = "input/step1-valid.source.txt";
-   // static String FILE_RAW_METHODS = "input/step1-raw-methods.txt";
-   // Large datasets
-   // static String FILE_PRE_METHODS = "";
-   // static String FILE_RAW_METHODS = "";
-   // Output files
-   static String FILE_MATCHED_METHODS = "output/step1-raw-pre.txt";
 
    static List<String> listPreMethods = null, listRawMethods = null;
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
