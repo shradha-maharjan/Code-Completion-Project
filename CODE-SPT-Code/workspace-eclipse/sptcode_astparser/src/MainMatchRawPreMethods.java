@@ -23,11 +23,24 @@ public class MainMatchRawPreMethods {
    private static final String OUTPUT_FILE = "output/finetune_train_binary_search_output.txt";
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 
+   // Information
+   static String FILE_PRE_METHODS = "";
+   static String FILE_RAW_METHODS = "";
+   static List<String> listPreMethods = null, listRawMethods = null;
+   static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
+
    public static void main(String[] args) {
       try {
          PrintStream fileOut = new PrintStream(new FileOutputStream(OUTPUT_FILE));
          System.setOut(fileOut);
          long startTime = System.currentTimeMillis();
+
+         // Step 1. Remove special characters.
+         listPreMethods = UtilFile.readFile(FILE_PRE_METHODS);
+         listRawMethods = UtilFile.readFile(FILE_RAW_METHODS);
+         removeSpecialChars();
+
+         // Step 2. Find matched raw methods.
          compareFiles(FILE_PATH1, FILE_PATH2);
          long endTime = System.currentTimeMillis();
          System.out.println("Start Time: " + startTime);
@@ -35,6 +48,18 @@ public class MainMatchRawPreMethods {
          System.out.println("Duration: " + (endTime - startTime) + " ms");
       } catch (IOException e) {
          e.printStackTrace();
+      }
+   }
+
+   // Step 1. Remove special characters.
+   static void removeSpecialChars() {
+
+   }
+
+   // Step 2. Find matched raw methods.
+   static void findMatchedRawMethods() {
+      for (String iPreMethod : listPreMethodsClean) {
+
       }
    }
 
