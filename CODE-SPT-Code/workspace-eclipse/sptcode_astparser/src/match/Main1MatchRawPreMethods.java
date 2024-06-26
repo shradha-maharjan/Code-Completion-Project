@@ -34,7 +34,11 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       removeSpecialChars();
 
       // Step 2. Find matched raw methods.
-      findMatchedRawMethods();
+      List<String> outputMatched = findMatchedRawMethods();
+
+      // Step 3. Find unmatched raw methods.
+      findUnmatchedRawMethods(listRawMethods, outputMatched);
+
       long endTime = System.currentTimeMillis();
       System.out.println("Start Time: " + startTime);
       System.out.println("End Time: " + endTime);
@@ -71,7 +75,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
    }
 
    // Step 2. Find matched raw methods.
-   static void findMatchedRawMethods() {
+   static List<String> findMatchedRawMethods() {
       List<String> outputMatched = new ArrayList<String>();
 
       String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
@@ -100,6 +104,18 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
          }
       }
       UtilFile.writeFile(outputMatched, FILE_MATCHED_METHODS);
+      return outputMatched;
+   }
+
+   // Step 3. Find unmatched raw methods
+   static void findUnmatchedRawMethods(List<String> orgRawMethods, List<String> matchedMethod) {
+      List<String> outputUnmatched = new ArrayList<String>();
+
+      for (String iOrgMethod : orgRawMethods) {
+         if (!matchedMethod.contains(iOrgMethod)) {
+            outputUnmatched.add(iOrgMethod);
+         }
+      }
    }
 
    private static Comparator<String> createComparator() {
