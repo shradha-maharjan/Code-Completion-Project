@@ -18,9 +18,9 @@ public class MainMatchRawPreMethods {
    // "\\boverride\\s+(public|private|protected)\\b|\\b(public|private|protected)\\s+static\\b|\\b(public|private|protected)\\b");
 
    private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(override\\s+)?(public|private|protected)(\\s+static)?\\b");
-   private static final String FILE_PATH1 = "input/sorted_finetune_methods_train_final.txt";
-   private static final String FILE_PATH2 = "input/sorted_data.TargetType.seq.train.source.txt";
-   private static final String OUTPUT_FILE = "output/finetune_train_binary_search_output.txt";
+   private static final String FILE_PATH1 = "input/sorted_finetune_methods_valid_final.txt";
+   private static final String FILE_PATH2 = "input/sorted_data.TargetType.seq.valid.source.txt";
+   private static final String OUTPUT_FILE = "output/finetune_valid_binary_search_output.txt";
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 
    // Information
@@ -51,10 +51,29 @@ public class MainMatchRawPreMethods {
       }
    }
 
-   // Step 1. Remove special characters.
-   static void removeSpecialChars() {
 
-   }
+// Step 1. Remove special characters.
+   
+	static void removeSpecialChars() {
+	    List<String> cleanedListPreMethods = new ArrayList<>();
+	    for (String preMethod : listPreMethods) {
+	        String cleanedMethod = removeJavaModifiers(preMethod);
+	        cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
+	        cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
+	        cleanedListPreMethods.add(cleanedMethod);
+	    }
+	    listPreMethods = cleanedListPreMethods; 
+	
+	    List<String> cleanedListRawMethods = new ArrayList<>();
+	    for (String rawMethod : listRawMethods) {
+	        String cleanedMethod = removeJavaModifiers(rawMethod);
+	        cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9]+", "").toLowerCase();
+	        cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
+	        cleanedListRawMethods.add(cleanedMethod);
+	    }
+	    listRawMethods = cleanedListRawMethods; 
+	}
+
 
    // Step 2. Find matched raw methods.
    static void findMatchedRawMethods() {
