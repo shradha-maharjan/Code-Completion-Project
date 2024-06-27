@@ -43,14 +43,9 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       // Step 2. Find matched raw methods.
       List<String> outputMatched = findMatchedRawMethods();
 
-<<<<<<< HEAD
-      // Step 3. Find unmatched raw methods.
-      findUnmatchedRawMethods(listPreMethods, outputMatched);// (listRawMethods, outputMatched);
-=======
       // Step 3. Find unmatched preprocessed and raw methods.
       findUnmatchedRawMethods(listPreMethods, outputMatched, FILE_UNMATCHED_METHODS_PRE);
       findUnmatchedRawMethods(listRawMethods, outputMatched, FILE_UNMATCHED_METHODS_RAW);
->>>>>>> be5a2e1cf28f356b0802b483d95cf0736a5df91f
 
       long endTime = System.currentTimeMillis();
       System.out.println("Start Time: " + startTime);
