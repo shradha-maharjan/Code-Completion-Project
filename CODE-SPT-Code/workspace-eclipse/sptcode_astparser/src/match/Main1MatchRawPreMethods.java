@@ -31,6 +31,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
 
    public static void main(String[] args) {
+
       long startTime = System.currentTimeMillis();
 
       listPreMethods = UtilFile.readFile(FILE_PRE_METHODS);
@@ -43,7 +44,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       List<String> outputMatched = findMatchedRawMethods();
 
       // Step 3. Find unmatched raw methods.
-      findUnmatchedRawMethods(listPreMethods, outputMatched);//(listRawMethods, outputMatched);
+      findUnmatchedRawMethods(listPreMethods, outputMatched);// (listRawMethods, outputMatched);
 
       long endTime = System.currentTimeMillis();
       System.out.println("Start Time: " + startTime);
@@ -98,7 +99,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
          Comparator<String> customComparator = createComparator();
          int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
 
-         if (foundIndex >= 0 ) { // Check if not already matched
+         if (foundIndex >= 0) { // Check if not already matched
             matchedIndices.add(foundIndex); // Mark this index as matched
             outputMatched.add("Match Found:");
             outputMatched.add(preMethodMap.get(iPreMethod));
