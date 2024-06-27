@@ -98,7 +98,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
          Comparator<String> customComparator = createComparator();
          int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
 
-         if (foundIndex >= 0 && !matchedIndices.contains(foundIndex)) { // Check if not already matched
+         if (foundIndex >= 0 ) { // Check if not already matched
             matchedIndices.add(foundIndex); // Mark this index as matched
             outputMatched.add("Match Found:");
             outputMatched.add(preMethodMap.get(iPreMethod));

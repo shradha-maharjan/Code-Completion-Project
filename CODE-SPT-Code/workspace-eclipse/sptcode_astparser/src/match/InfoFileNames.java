@@ -13,16 +13,16 @@ public interface InfoFileNames {
    // static String FILE_RAW_METHODS = "";
    // Output files
 
-   // static String FILE_PRE_METHODS = "input/inputdebug1.txt";//"input/step0-valid.source.txt";//
-   // static String FILE_RAW_METHODS = "input/inputdebug2.txt";//"input/step0-raw-methods.txt";
-   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";//
-   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";
+   static String FILE_PRE_METHODS = "input/inputdebug1.txt";//"input/step0-valid.source.txt";//
+   static String FILE_RAW_METHODS = "input/inputdebug2.txt";//"input/step0-raw-methods.txt";
+//   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";//
+//   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";
 
    // Testing
    // Include 10 methods in FILE_RAW_METHODS
    // Include 2 methods in FILE_PRE_METHODS
 
-   // static String FILE_MATCHED_METHODS = "output/matched-debug.txt";// "output/step1-raw-pre.txt";
-   static String FILE_MATCHED_METHODS = "output/step1-raw-pre.txt";
+   static String FILE_MATCHED_METHODS = "output/matched-debug.txt";// "output/step1-raw-pre.txt";
+   //static String FILE_MATCHED_METHODS = "output/step1-raw-pre.txt";
 
 }
