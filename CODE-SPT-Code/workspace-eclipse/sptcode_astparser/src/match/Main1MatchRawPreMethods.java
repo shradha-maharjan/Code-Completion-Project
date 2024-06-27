@@ -43,7 +43,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       List<String> outputMatched = findMatchedRawMethods();
 
       // Step 3. Find unmatched raw methods.
-      findUnmatchedRawMethods(listPreMethods, outputMatched);// (listRawMethods, outputMatched);
+      findUnmatchedRawMethods(listPreMethods, outputMatched);//(listRawMethods, outputMatched);
 
       long endTime = System.currentTimeMillis();
       System.out.println("Start Time: " + startTime);
@@ -141,8 +141,8 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
 
       // write unmatched methods
       try {
-         UtilFile.writeFile(outputUnmatched, "output/unmatched_debug_pre_methods.txt");
-         System.out.println("Unmatched methods written to file: output/unmatched_debug_pre_methods.txt");
+         UtilFile.writeFile(outputUnmatched, FILE_UNMATCHED_METHODS_PRE);
+         System.out.println("Unmatched methods written to file");
       } catch (Exception e) {
          System.err.println("Error writing unmatched methods to file: " + e.getMessage());
          e.printStackTrace();
