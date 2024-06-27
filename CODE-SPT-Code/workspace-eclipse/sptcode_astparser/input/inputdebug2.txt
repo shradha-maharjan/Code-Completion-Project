@@ -1,0 +1,2 @@
+actor M1 ( float x , float y , boolean touchable ) { if ( clip ) { if ( touchable && get _ touchable ( ) == touchable . disabled ) return null ; if ( x < 0 || y < 11110 || y < 0 || y >= get _ height ( ) ) return null ; } return super . hit ( x , y , touchable ) ; }
+actor M2 ( float x , float y , boolean touchable ) { if ( clip ) { if ( touchable && get _ touchable ( ) == touchable . disabled ) return null ; if ( x < 0 || y < 11110 || y < 0 || y >= get _ height ( ) ) return null ; } return super . hit ( x , y , touchable ) ; }
