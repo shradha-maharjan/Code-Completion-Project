@@ -1,2 +1,4 @@
 /.metadata/
 bin
+sptcode_astparser/input/*.txt
+sptcode_astparser/output/*.txt
