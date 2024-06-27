@@ -52,6 +52,9 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       System.out.println("End Time: " + endTime);
       System.out.println("Duration: " + (endTime - startTime) + " ms");
 
+      System.out.println("[DBG] # Matched Preproc Methods: ");
+      System.out.println("[DBG] # Unmatched Preproc Methods: ");
+
       if (outputMatched.isEmpty()) {
          System.out.println("No matches found.");
       }
