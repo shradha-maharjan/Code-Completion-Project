@@ -18,23 +18,26 @@ import java.util.Scanner;
 public class UtilFile {
 
    public static void writeFile(List<String> list, String fileName) {
-      StringBuilder buffer = new StringBuilder();
-      int limit = 1000;
+	   final int limit = 1000;  // Flush every 1000 lines
+       StringBuilder buffer = new StringBuilder();
 
-      try (FileWriter writer = new FileWriter(fileName)) {
-         for (int i = 0; i < list.size(); i++) {
-            String line = list.get(i);
+       try (FileWriter writer = new FileWriter(fileName)) {
+           for (int i = 0; i < list.size(); i++) {
+               buffer.append(list.get(i)).append(System.lineSeparator());
 
-            buffer.append(line + System.lineSeparator());
-            if (i % limit == 0) {
+               // Flush the buffer to the file every 'limit' lines
+               if ((i + 1) % limit == 0) {
+                   writer.write(buffer.toString());
+                   buffer.setLength(0);  // Reset the buffer
+               }
+           }
+           // Ensure any remaining content in buffer is written to file
+           if (buffer.length() > 0) {
                writer.write(buffer.toString());
-               // Find an API to reset the StringBuffer contents.
-               buffer.setLength(0);
-            }
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
+           }
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
    }
 
    public static List<String> readFile(String filePath) {

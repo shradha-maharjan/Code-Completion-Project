@@ -13,8 +13,8 @@ public interface InfoFileNames {
    // static String FILE_RAW_METHODS = "";
    // Output files
 
-   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";
-   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";
+   static String FILE_PRE_METHODS = "input/step0-valid.source.txt";//"input/input1.txt";//
+   static String FILE_RAW_METHODS = "input/step0-raw-methods.txt";//"input/input2.txt"; //
 
    // Testing
    // Include 10 methods in FILE_RAW_METHODS
