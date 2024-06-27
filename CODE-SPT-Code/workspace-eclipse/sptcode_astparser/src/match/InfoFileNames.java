@@ -23,6 +23,8 @@ public interface InfoFileNames {
    // Include 2 methods in FILE_PRE_METHODS
 
    static String FILE_MATCHED_METHODS = "output/output1-matched.txt";// "output/step1-raw-pre.txt";
+   static String FILE_UNMATCHED_METHODS_PRE = "output/output1-unmatched_pre.txt";// "output/step1-raw-pre.txt";
+   static String FILE_UNMATCHED_METHODS_RAW = "output/output1-unmatched_raw.txt";// "output/step1-raw-pre.txt";
    // static String FILE_MATCHED_METHODS = "output/step1-raw-pre.txt";
 
 }
