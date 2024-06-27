@@ -91,7 +91,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
    // Step 2. Find matched raw methods and ensure unique matching.
    static List<String> findMatchedRawMethods() {
       List<String> outputMatched = new ArrayList<>();
-      Set<Integer> matchedIndices = new HashSet<>(); // To keep track of matched raw method indices
+      // Set<Integer> matchedIndices = new HashSet<>(); // To keep track of matched raw method indices
       String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
 
       Arrays.sort(rawMethods);
@@ -101,7 +101,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
          int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
 
          if (foundIndex >= 0) { // Check if not already matched
-            matchedIndices.add(foundIndex); // Mark this index as matched
+            outputMatched.add("" + foundIndex); // Mark this index as matched
             outputMatched.add("Match Found:");
             outputMatched.add(preMethodMap.get(iPreMethod));
             outputMatched.add(rawMethodMap.get(rawMethods[foundIndex]));
