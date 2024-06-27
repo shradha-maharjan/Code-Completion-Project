@@ -42,8 +42,9 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       // Step 2. Find matched raw methods.
       List<String> outputMatched = findMatchedRawMethods();
 
-      // Step 3. Find unmatched raw methods.
-      findUnmatchedRawMethods(listPreMethods, outputMatched);//(listRawMethods, outputMatched);
+      // Step 3. Find unmatched preprocessed and raw methods.
+      findUnmatchedRawMethods(listPreMethods, outputMatched, FILE_UNMATCHED_METHODS_PRE);
+      findUnmatchedRawMethods(listRawMethods, outputMatched, FILE_UNMATCHED_METHODS_RAW);
 
       long endTime = System.currentTimeMillis();
       System.out.println("Start Time: " + startTime);
@@ -98,7 +99,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
          Comparator<String> customComparator = createComparator();
          int foundIndex = Arrays.binarySearch(rawMethods, iPreMethod, customComparator);
 
-         if (foundIndex >= 0 ) { // Check if not already matched
+         if (foundIndex >= 0) { // Check if not already matched
             matchedIndices.add(foundIndex); // Mark this index as matched
             outputMatched.add("Match Found:");
             outputMatched.add(preMethodMap.get(iPreMethod));
@@ -119,16 +120,32 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       return outputMatched;
    }
 
-   // Step 3. Find unmatched raw methods
-   static void findUnmatchedRawMethods(List<String> orgRawMethods, List<String> matchedMethods) {
-      List<String> outputUnmatched = new ArrayList<String>();
+   // Step 3. Find unmatched preprocessed and raw methods
+   static void findUnmatchedRawMethods(List<String> orgMethods, List<String> matchedMethods, String fileName) {
 
-      Set<String> matchedMethod = new HashSet<>(matchedMethods);
-      for (String iOrgMethod : orgRawMethods) {
-         if (!matchedMethod.contains(iOrgMethod)) {
+      // Case 1: Pre
+      // Case 2: Raw
+
+      String[] matchedMethodsArray = matchedMethods.toArray(new String[0]);
+      Arrays.sort(matchedMethodsArray);
+
+      List<String> outputUnmatched = new ArrayList<String>();
+      for (String iOrgMethod : orgMethods) {
+         // Find iOrgMethod from `matchedMethods`
+         // if false then record
+         int indexFound = Arrays.binarySearch(matchedMethodsArray, iOrgMethod);
+         if (indexFound < 0) {
             outputUnmatched.add(iOrgMethod);
          }
+
       }
+
+      // Set<String> matchedMethod = new HashSet<>(matchedMethods);
+      // for (String iOrgMethod : orgMethods) {
+      // if (!matchedMethod.contains(iOrgMethod)) {
+      // outputUnmatched.add(iOrgMethod);
+      // }
+      // }
 
       // Print unmatched methods
       if (outputUnmatched.isEmpty()) {
@@ -141,7 +158,7 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
 
       // write unmatched methods
       try {
-         UtilFile.writeFile(outputUnmatched, FILE_UNMATCHED_METHODS_PRE);
+         UtilFile.writeFile(outputUnmatched, fileName);
          System.out.println("Unmatched methods written to file");
       } catch (Exception e) {
          System.err.println("Error writing unmatched methods to file: " + e.getMessage());
