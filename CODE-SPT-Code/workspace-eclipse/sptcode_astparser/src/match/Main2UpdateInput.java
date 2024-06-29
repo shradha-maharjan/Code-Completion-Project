@@ -21,9 +21,9 @@ public class Main2UpdateInput implements InfoFileNames {
             List<String> matchedMethods = Files.readAllLines(matchedMethodsPath);
 
             // Step 2: Remove the intermediate results from the raw methods file
-            Path rawMethodsPath = Paths.get(FILE_RAW_METHODS);
+            Path rawMethodsPath = Paths.get(FILE_PRE_METHODS);
             if (!Files.exists(rawMethodsPath)) {
-                throw new IOException("Raw methods file not found: " + FILE_RAW_METHODS);
+                throw new IOException("Raw methods file not found: " + FILE_PRE_METHODS);
             }
             List<String> rawMethods = Files.readAllLines(rawMethodsPath);
             Set<String> matchedSet = new HashSet<>(matchedMethods);
