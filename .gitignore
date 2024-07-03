@@ -204,6 +204,8 @@ LICENSE
 *.gz
 *.rb
 *.gitkeep
+*.txt
+*.html
 
 
 
