@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 import util.UtilFile;
 
-public class Main1MatchRawPreMethods implements InfoFileNames {
+public class MainNewMatchRawPreMethods implements InfoFileNames {
 
    // private static final String FILE_PATH1 =
    // "input/sorted_finetune_methods_valid_final.txt";
@@ -29,11 +29,11 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
    // private static final String OUTPUT_FILE =
    // "output/finetune_valid_binary_search_output.txt";
 
-   private static final Pattern STRING_PATTERN = Pattern.compile("\"([^\"]*)\"");//("(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')");// ("\"[^\"]*\"|'[^']*'");
-   private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(@override\\s+)?(public|private|protected)(\\s+static)?\\b");
+   //private static final Pattern STRING_PATTERN = Pattern.compile("\"([^\"]*)\"");//("(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')");// ("\"[^\"]*\"|'[^']*'");
+  // private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(@override\\s+)?(public|private|protected)(\\s+static)?\\b");
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 
-   private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Arrays.asList("private", "protected", "public", "static", "@Overrideprotected", "override", "@Overridepublic", "@Overrideprivate", "Protected", "Public", "Private"));
+  // private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Arrays.asList("private", "protected", "public", "static", "@Overrideprotected", "override", "@Overridepublic", "@Overrideprivate", "Protected", "Public", "Private"));
 
    static List<String> listPreMethods = null, listRawMethods = null;
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
@@ -83,27 +83,27 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
    static void removeSpecialChars() {
       List<String> cleanedListPreMethods = new ArrayList<>();
       for (String iPreMethod : listPreMethods) {
-         String cleanedMethod = replaceStrings(normalizeIdentifiers(removeJavaModifiers(formatCode(iPreMethod))));
-         cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
+         String //cleanedMethod = removeJavaModifiers(iPreMethod);
+         cleanedMethod = iPreMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
                                                                                                 // in the regex
          cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
          cleanedListPreMethods.add(cleanedMethod);
          preMethodMap.put(cleanedMethod, iPreMethod); // Map cleaned to original
       }
       listPreMethodsClean = cleanedListPreMethods;
-      System.out.println("[DBG] listPreMethodsClean: " + listPreMethodsClean);
+      //System.out.println("[DBG] listPreMethodsClean: " + listPreMethodsClean);
 
       List<String> cleanedListRawMethods = new ArrayList<>();
       for (String rawMethod : listRawMethods) {
-         String cleanedMethod = removeJavaModifiers(formatCode(rawMethod));
-         cleanedMethod = cleanedMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
+         String //cleanedMethod = removeJavaModifiers(rawMethod);
+         cleanedMethod = rawMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
                                                                                                 // in the regex
          cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
          cleanedListRawMethods.add(cleanedMethod);
          rawMethodMap.put(cleanedMethod, rawMethod); // Map cleaned to original
       }
       listRawMethodsClean = cleanedListRawMethods;
-      System.out.println("[DBG] listRawMethodsClean: " + listRawMethodsClean);
+      //System.out.println("[DBG] listRawMethodsClean: " + listRawMethodsClean);
    }
 
    // Step 2. Find matched raw methods and ensure unique matching.
@@ -260,34 +260,34 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       };
    }
 
-   private static String removeJavaModifiers(String text) {
-      text = text.replaceAll("@Overrideprotected\\s*", "");
-      text = text.replaceAll("@Overridepublic\\s*", "");
-      text = text.replaceAll("@Overrideprivate\\s*", "");
-      text = text.replaceAll("protected", "");
-      text = text.replaceAll("Protected", "");
-      text = text.replaceAll("public", "");
-      text = text.replaceAll("Public", "");
-      text = text.replaceAll("private", "");
-      text = text.replaceAll("Private", "");
-      text = text.replaceAll("Static", "");
-      text = text.replaceAll("static", "");
-
-      Matcher matcher = MODIFIERS_PATTERN.matcher(text);
-      StringBuffer sb = new StringBuffer();
-
-      while (matcher.find()) {
-         matcher.appendReplacement(sb, "");
-      }
-      matcher.appendTail(sb);
-
-      String modifiedText = sb.toString().trim();
-      for (String keyword : JAVA_KEYWORDS) {
-         modifiedText = modifiedText.replaceAll("\\b" + keyword + "\\b", "");
-      }
-
-      return modifiedText.trim();
-   }
+//   private static String removeJavaModifiers(String text) {
+//      text = text.replaceAll("@Overrideprotected\\s*", "");
+//      text = text.replaceAll("@Overridepublic\\s*", "");
+//      text = text.replaceAll("@Overrideprivate\\s*", "");
+//      text = text.replaceAll("protected", "");
+//      text = text.replaceAll("Protected", "");
+//      text = text.replaceAll("public", "");
+//      text = text.replaceAll("Public", "");
+//      text = text.replaceAll("private", "");
+//      text = text.replaceAll("Private", "");
+//      text = text.replaceAll("Static", "");
+//      text = text.replaceAll("static", "");
+//
+//      Matcher matcher = MODIFIERS_PATTERN.matcher(text);
+//      StringBuffer sb = new StringBuffer();
+//
+//      while (matcher.find()) {
+//         matcher.appendReplacement(sb, "");
+//      }
+//      matcher.appendTail(sb);
+//
+//      String modifiedText = sb.toString().trim();
+//      for (String keyword : JAVA_KEYWORDS) {
+//         modifiedText = modifiedText.replaceAll("\\b" + keyword + "\\b", "");
+//      }
+//
+//      return modifiedText.trim();
+//   }
 
    public static int countLines(String filename) {
       int lines = 0;
@@ -300,29 +300,29 @@ public class Main1MatchRawPreMethods implements InfoFileNames {
       return lines;
    }
 
-   private static String normalizeIdentifiers(String text) {
-      text = text.replace("__STR", "PLACEHOLDER_STR");
-      text = text.replace("_", "");
-      text = text.replace("PLACEHOLDER_STR", "__STR");
-      return text;
-   }
-   
-   public static String replaceStrings(String text) {
-// Patterns for single and double quotes
-   Pattern singleQuotePattern = Pattern.compile("'(?:[^'\\\\]|\\\\.)*'");
-   Pattern doubleQuotePattern = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
-
-   // Replace single-quoted strings first
-   Matcher doubleMatcher = doubleQuotePattern.matcher(text);
-   
-   String doubleReplaced = doubleMatcher.replaceAll("__STR");
-
-   // Now replace double-quoted strings in the result from the first replacement
-   Matcher singleMatcher = singleQuotePattern.matcher(doubleReplaced);
-   String singleReplaced = singleMatcher.replaceAll("__STR");
-
-   return singleReplaced;
-   }
+//   private static String normalizeIdentifiers(String text) {
+//      text = text.replace("__STR", "PLACEHOLDER_STR");
+//      text = text.replace("_", "");
+//      text = text.replace("PLACEHOLDER_STR", "__STR");
+//      return text;
+//   }
+//   
+//   public static String replaceStrings(String text) {
+//// Patterns for single and double quotes
+//   Pattern singleQuotePattern = Pattern.compile("'(?:[^'\\\\]|\\\\.)*'");
+//   Pattern doubleQuotePattern = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
+//
+//   // Replace single-quoted strings first
+//   Matcher doubleMatcher = doubleQuotePattern.matcher(text);
+//   
+//   String doubleReplaced = doubleMatcher.replaceAll("__STR");
+//
+//   // Now replace double-quoted strings in the result from the first replacement
+//   Matcher singleMatcher = singleQuotePattern.matcher(doubleReplaced);
+//   String singleReplaced = singleMatcher.replaceAll("__STR");
+//
+//   return singleReplaced;
+//   }
 
 //   private static String replaceStrings(String text) {
 //      Matcher matcher = STRING_PATTERN.matcher(text);
