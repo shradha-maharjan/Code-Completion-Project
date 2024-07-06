@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 import util.UtilFile;
 
-public class Main2MatchRawPreMethods implements InfoFileNames {
+public class MainNewMatchRawPreMethods implements InfoFileNames {
 
    // private static final String FILE_PATH1 =
    // "input/sorted_finetune_methods_valid_final.txt";
@@ -29,11 +29,11 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
    // private static final String OUTPUT_FILE =
    // "output/finetune_valid_binary_search_output.txt";
 
-//   private static final Pattern STRING_PATTERN = Pattern.compile("(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')");// ("\"[^\"]*\"|'[^']*'");
-//   private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(@override\\s+)?(public|private|protected)(\\s+static)?\\b");
+   //private static final Pattern STRING_PATTERN = Pattern.compile("\"([^\"]*)\"");//("(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')");// ("\"[^\"]*\"|'[^']*'");
+  // private static final Pattern MODIFIERS_PATTERN = Pattern.compile("\\b(@override\\s+)?(public|private|protected)(\\s+static)?\\b");
    private static final String SEARCH = "pred"; // Adjust SEARCH to match your actual search keyword
 
-   private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Arrays.asList("private", "protected", "public", "static", "@Overrideprotected", "override", "@Overridepublic", "@Overrideprivate", "Protected", "Public", "Private"));
+  // private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Arrays.asList("private", "protected", "public", "static", "@Overrideprotected", "override", "@Overridepublic", "@Overrideprivate", "Protected", "Public", "Private"));
 
    static List<String> listPreMethods = null, listRawMethods = null;
    static List<String> listPreMethodsClean = null, listRawMethodsClean = null;
@@ -83,7 +83,7 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
    static void removeSpecialChars() {
       List<String> cleanedListPreMethods = new ArrayList<>();
       for (String iPreMethod : listPreMethods) {
-         String //cleanedMethod = replaceStrings(normalizeIdentifiers(removeJavaModifiers(formatCode(iPreMethod))));
+         String //cleanedMethod = removeJavaModifiers(iPreMethod);
          cleanedMethod = iPreMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
                                                                                                 // in the regex
          cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
@@ -91,11 +91,11 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
          preMethodMap.put(cleanedMethod, iPreMethod); // Map cleaned to original
       }
       listPreMethodsClean = cleanedListPreMethods;
-      System.out.println("[DBG] listPreMethodsClean: " + listPreMethodsClean);
+      //System.out.println("[DBG] listPreMethodsClean: " + listPreMethodsClean);
 
       List<String> cleanedListRawMethods = new ArrayList<>();
       for (String rawMethod : listRawMethods) {
-         String //cleanedMethod = removeJavaModifiers(formatCode(rawMethod));
+         String //cleanedMethod = removeJavaModifiers(rawMethod);
          cleanedMethod = rawMethod.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase(); // Include brackets
                                                                                                 // in the regex
          cleanedMethod = cleanedMethod.replaceAll("\\s+", "");
@@ -103,55 +103,51 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
          rawMethodMap.put(cleanedMethod, rawMethod); // Map cleaned to original
       }
       listRawMethodsClean = cleanedListRawMethods;
-      System.out.println("[DBG] listRawMethodsClean: " + listRawMethodsClean);
+      //System.out.println("[DBG] listRawMethodsClean: " + listRawMethodsClean);
    }
 
    // Step 2. Find matched raw methods and ensure unique matching.
    static List<String> findMatchedRawMethods() {
-	    List<String> outputMatched = new ArrayList<>();
-	    String[] rawMethods = listRawMethodsClean.toArray(new String[0]);
-	    String[] preMethods = listPreMethodsClean.toArray(new String[0]);
+      List<String> outputMatched = new ArrayList<>();
+   // Assuming you have converted your lists to arrays already
+      String[] sortedRawMethods = listRawMethodsClean.toArray(new String[0]);
+      String[] sortedPreMethods = listPreMethodsClean.toArray(new String[0]);
 
+      Comparator<String> customComparator = createComparator();
+//
+      // Sort both arrays using the custom comparator
+      Arrays.sort(sortedRawMethods);
+      System.out.println("sortedRawMethods: " + Arrays.toString(sortedRawMethods));
+      Arrays.sort(sortedPreMethods);
+      System.out.println("sortedPreMethods: " + Arrays.toString(sortedPreMethods));
 
-	    for (String preMethod : preMethods) {
-	        System.out.println("Processing preMethod: " + preMethod);
-	        boolean matchFound = false;
+      for (String iPreMethod : sortedPreMethods) {
+    	 System.out.println("Processing method: " + iPreMethod);
+         //Comparator<String> customComparator = createComparator();
+         int foundIndex = Arrays.binarySearch(sortedRawMethods, iPreMethod, customComparator);
+         // another for loop by reusing custom comparator
 
-	        for (String rawMethod : rawMethods) {
-	            System.out.println("Comparing preMethod: " + preMethod + " with rawMethod: " + rawMethod);
-	            
-	            int predIndex = preMethod.indexOf(SEARCH);
-	            if (predIndex == -1) {
-	                continue;  // Skip this rawMethod if it doesn't contain 'pred'
-	            }
-
-	            // Extract parts before and after 'pred' in the rawMethod
-	            String beforePred = preMethod.substring(0, predIndex).trim();
-	            String afterPred = preMethod.substring(predIndex + SEARCH.length()).trim();
-
-	            // Check if the preMethod contains these parts
-	            if (rawMethod.contains(beforePred) && rawMethod.contains(afterPred)) {
-	                System.out.println("Match found: preMethod matches before and after segments of 'pred' in rawMethod");
-	                outputMatched.add("Match Found:");
-	                outputMatched.add(preMethodMap.get(preMethod));
-	                outputMatched.add(rawMethodMap.get(rawMethod));
-//	                outputMatched.add(preMethod);
-//	                outputMatched.add(rawMethod);
-	                outputMatched.add("");  // For readability
-	                matchFound = true;
-	                break;  // Assuming one-to-one matching
-	            }
-	        }
-
-	        if (!matchFound) {
-	            System.out.println("No match found for preMethod: " + preMethod);
-	            outputMatched.add("[No match found for: " + preMethod + "]");
-	        }
-	    }
-
-	    UtilFile.writeFile(outputMatched, FILE_MATCHED_METHODS);
-	    return outputMatched;
-	}
+         if (foundIndex >= 0) {
+        	System.out.println("Match found at index: " + foundIndex + " for method: " + iPreMethod); // Debug successful match
+            outputMatched.add("" + foundIndex); // Mark this index as matched
+            outputMatched.add("Match Found:");
+            outputMatched.add(preMethodMap.get(iPreMethod));
+            outputMatched.add(rawMethodMap.get(sortedRawMethods[foundIndex]));
+            outputMatched.add("");
+         }
+         else {// For debugging: show the last comparison attempt if not matched
+            int lastComparedIndex = (foundIndex >= 0) ? foundIndex : -(foundIndex + 1);
+            if (lastComparedIndex >= 0 && lastComparedIndex < sortedRawMethods.length) {
+               outputMatched.add("[DBG] Method \"" + iPreMethod + "\" compared with \"" + sortedRawMethods[lastComparedIndex] + "\" not found.");
+            }
+            else {
+               outputMatched.add("[DBG] Method \"" + iPreMethod + "\" has no comparable raw method.");
+            }
+         }
+      }
+      UtilFile.writeFile(outputMatched, FILE_MATCHED_METHODS);
+      return outputMatched;
+   }
 
    static String timeNow(ZonedDateTime zonedDateTime, String msg) {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -160,67 +156,109 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
       return msg + formattedTime;
    }
 
+   // Step 3. Find unmatched raw methods
+   // static void findUnmatchedRawMethods(List<String> orgRawMethods, List<String> matchedMethods) {
+   // List<String> outputUnmatched = new ArrayList<String>();
+   //
+   // Set<String> matchedMethod = new HashSet<>(matchedMethods);
+   // for (String iOrgMethod : orgRawMethods) {
+   // if (!matchedMethod.contains(iOrgMethod)) {
+   // outputUnmatched.add(iOrgMethod);
+   // }
+   // }
+   //
+   // // Print unmatched methods to the console
+   // if (outputUnmatched.isEmpty()) {
+   // System.out.println("No unmatched methods found.");
+   // } else {
+   // System.out.println("Unmatched Methods:");
+   // outputUnmatched.forEach(System.out::println);
+   // }
+   //
+   // // Optionally write unmatched methods to a file
+   // try {
+   // UtilFile.writeFile(outputUnmatched, "output/unmatched_raw_methods.txt");
+   // System.out.println("Unmatched methods written to file: output/unmatched_raw_methods.txt");
+   // } catch (Exception e) {
+   // System.err.println("Error writing unmatched methods to file: " + e.getMessage());
+   // e.printStackTrace();
+   // }
+   // }
+
    // // Step 3. Find unmatched preprocessed and raw methods
    static void findUnmatchedRawMethods(List<String> orgMethods, List<String> matchedMethods, String fileName) {
-	    // Convert matchedMethods list to a HashSet for quick lookup
-	    Set<String> matchedMethodSet = new HashSet<>(matchedMethods);
 
-	    List<String> outputUnmatched = new ArrayList<>();
+      // Case 1: Pre
+      // Case 2: Raw
 
-	    // Iterate over original methods and check if they are in the matched methods set
-	    for (String iOrgMethod : orgMethods) {
-	        if (!matchedMethodSet.contains(iOrgMethod)) {
-	            outputUnmatched.add(iOrgMethod);
-	        }
-	    }
+      String[] matchedMethodsArray = matchedMethods.toArray(new String[0]);
+      Arrays.sort(matchedMethodsArray);
 
-	    // Print unmatched methods
-	    if (outputUnmatched.isEmpty()) {
-	        System.out.println("No unmatched methods found.");
-	    } else {
-	        System.out.println("Unmatched Methods:");
-	        outputUnmatched.forEach(System.out::println);
-	    }
+      List<String> outputUnmatched = new ArrayList<String>();
+      for (String iOrgMethod : orgMethods) {
+         // Find iOrgMethod from `matchedMethods`
+         // if false then record
+         int indexFound = Arrays.binarySearch(matchedMethodsArray, iOrgMethod);
+         if (indexFound < 0) {
+            outputUnmatched.add(iOrgMethod);
+         }
 
-	    // Write unmatched methods to file
-	    try {
-	        UtilFile.writeFile(outputUnmatched, fileName);
-	        System.out.println("Unmatched methods written to file");
-	    } catch (Exception e) {
-	        System.err.println("Error writing unmatched methods to file: " + e.getMessage());
-	        e.printStackTrace();
-	    }
-	}
+      }
 
-//
-//   private static Comparator<String> createComparator() {
-//      return new Comparator<String>() {
-//         @Override
-//         public int compare(String method, String target) {
+      // Set<String> matchedMethod = new HashSet<>(matchedMethods);
+      // for (String iOrgMethod : orgMethods) {
+      // if (!matchedMethod.contains(iOrgMethod)) {
+      // outputUnmatched.add(iOrgMethod);
+      // }
+      // }
+
+      // Print unmatched methods
+      if (outputUnmatched.isEmpty()) {
+         System.out.println("No unmatched methods found.");
+      }
+      else {
+         System.out.println("Unmatched Methods:");
+         outputUnmatched.forEach(System.out::println);
+      }
+
+      // write unmatched methods
+      try {
+         UtilFile.writeFile(outputUnmatched, fileName);
+         System.out.println("Unmatched methods written to file");
+      } catch (Exception e) {
+         System.err.println("Error writing unmatched methods to file: " + e.getMessage());
+         e.printStackTrace();
+      }
+   }
+
+   private static Comparator<String> createComparator() {
+      return new Comparator<String>() {
+         @Override
+         public int compare(String method, String target) {
 //            String debugPoint = "swappedcreatefunc";
-////            if (!method.contains(debugPoint)) {
-////               System.out.println("[DBG] method " + method);
-////               System.out.println("[DBG] target " + target);
-////            }
-//
-//            int predIndex = target.indexOf(SEARCH);
-//
-//            if (predIndex == -1) {
-//               return -1;
+//            if (!method.contains(debugPoint)) {
+//               System.out.println("[DBG] method " + method);
+//               System.out.println("[DBG] target " + target);
 //            }
-//
-//            String beforePred = target.substring(0, target.indexOf(SEARCH)).trim();
-//            String afterPred = target.substring(target.indexOf(SEARCH) + SEARCH.length()).trim();
-//
-//            String methodBeforePred = method.substring(0, Math.min(beforePred.length(), method.length())).trim();
-//            String methodAfterPred = method.substring(Math.max(method.length() - afterPred.length(), 0)).trim();
-//
-//            int result = (methodBeforePred + methodAfterPred).compareTo(beforePred + afterPred);
-//            System.out.println("[DBG] Comparinggg: " + (methodBeforePred + methodAfterPred) + " with " + (beforePred + afterPred) + " result: " + result);
-//            return result;
-//         }
-//      };
-//   }
+
+            int predIndex = target.indexOf(SEARCH);
+
+            if (predIndex == -1) {
+               return -1;
+            }
+
+            String beforePred = target.substring(0, target.indexOf(SEARCH)).trim();
+            String afterPred = target.substring(target.indexOf(SEARCH) + SEARCH.length()).trim();
+
+            String methodBeforePred = method.substring(0, Math.min(beforePred.length(), method.length())).trim();
+            String methodAfterPred = method.substring(Math.max(method.length() - afterPred.length(), 0)).trim();
+
+            int result = (methodBeforePred + methodAfterPred).compareTo(beforePred + afterPred);
+            System.out.println("[DBG] Comparinggg: " + (methodBeforePred + methodAfterPred) + " with " + (beforePred + afterPred) + " result: " + result);
+            return result;
+         }
+      };
+   }
 
 //   private static String removeJavaModifiers(String text) {
 //      text = text.replaceAll("@Overrideprotected\\s*", "");
@@ -250,7 +288,7 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
 //
 //      return modifiedText.trim();
 //   }
-//
+
    public static int countLines(String filename) {
       int lines = 0;
       try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -261,34 +299,39 @@ public class Main2MatchRawPreMethods implements InfoFileNames {
       }
       return lines;
    }
-//
+
 //   private static String normalizeIdentifiers(String text) {
 //      text = text.replace("__STR", "PLACEHOLDER_STR");
 //      text = text.replace("_", "");
 //      text = text.replace("PLACEHOLDER_STR", "__STR");
 //      return text;
 //   }
-//
+//   
 //   public static String replaceStrings(String text) {
-//	// Patterns for single and double quotes
-//	   Pattern singleQuotePattern = Pattern.compile("'(?:[^'\\\\]|\\\\.)*'");
-//	   Pattern doubleQuotePattern = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
+//// Patterns for single and double quotes
+//   Pattern singleQuotePattern = Pattern.compile("'(?:[^'\\\\]|\\\\.)*'");
+//   Pattern doubleQuotePattern = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
 //
-//	   // Replace single-quoted strings first
-//	   Matcher doubleMatcher = doubleQuotePattern.matcher(text);
-//	   
-//	   String doubleReplaced = doubleMatcher.replaceAll("__STR");
+//   // Replace single-quoted strings first
+//   Matcher doubleMatcher = doubleQuotePattern.matcher(text);
+//   
+//   String doubleReplaced = doubleMatcher.replaceAll("__STR");
 //
-//	   // Now replace double-quoted strings in the result from the first replacement
-//	   Matcher singleMatcher = singleQuotePattern.matcher(doubleReplaced);
-//	   String singleReplaced = singleMatcher.replaceAll("__STR");
+//   // Now replace double-quoted strings in the result from the first replacement
+//   Matcher singleMatcher = singleQuotePattern.matcher(doubleReplaced);
+//   String singleReplaced = singleMatcher.replaceAll("__STR");
 //
-//	   return singleReplaced;
-//	   }
-//
-//   private static String formatCode(String rawCode) {
-//      return rawCode.replace(";", ";\n").replace("{", "{\n").replace("}", "\n}");
+//   return singleReplaced;
 //   }
+
+//   private static String replaceStrings(String text) {
+//      Matcher matcher = STRING_PATTERN.matcher(text);
+//      return matcher.replaceAll("___STR");
+//   }
+
+   private static String formatCode(String rawCode) {
+      return rawCode.replace(";", ";\n").replace("{", "{\n").replace("}", "\n}");
+   }
 
    public static int countDistinctMatches(String filename) {
       int distinctMatches = 0;
