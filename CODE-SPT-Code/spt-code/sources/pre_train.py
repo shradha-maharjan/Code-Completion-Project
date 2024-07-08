@@ -181,7 +181,8 @@ def pre_train(args,
             # set model mode
             logger.info('-' * 100)
             # Updated to use 'GEN' instead of 'CLS', myoungkyu song, 3/29/2024
-            model.set_model_mode(enums.MODEL_MODE_GEN) # model.set_model_mode(enums.MODEL_MODE_CLS)
+            #model.set_model_mode(enums.MODEL_MODE_GEN) # model.set_model_mode(enums.MODEL_MODE_CLS)
+            model.set_model_mode(enums.MODEL_MODE_CLS)
             # --------------------------------------------------
             # trainer
             # --------------------------------------------------
