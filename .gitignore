@@ -149,6 +149,7 @@ sources/data/asts/vendor/tree-sitter-php
 sources/data/asts/vendor/tree-sitter-python
 sources/data/asts/vendor/tree-sitter-ruby
 
+
 # csv
 *.csv
 
@@ -190,6 +191,7 @@ CODE-SPT-Code/spt-code/sources/eval/meteor/__init__.py
 CODE-SPT-Code/spt-code/sources/eval/rouge/__init__.py
 CODE-SPT-Code/spt-code/sources/models/__init__.py
 CODE-SPT-Code/spt-code/sources/utils/__init__.py
+CODE-SPT-Code/spt-code/sources/data/asts/antlr_parsers
 
 
 HFTrainings/log files/

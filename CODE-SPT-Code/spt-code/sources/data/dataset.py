@@ -168,37 +168,39 @@ class CodeDataset(Dataset):
                 assert len(self.codes_1) == len(self.asts_1) == len(self.names_1) \
                        == len(self.codes_2) == len(self.asts_2) == len(self.names_2) == len(self.labels)
                 self.size = len(self.codes_1)
-            # completion
-            # elif task == enums.TASK_COMPLETION:
-            #     assert split in ['train', 'valid', 'test']
-            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
-            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
-            #     self.paths['source'] = source_path
-            #     self.paths['target'] = target_path
-            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
-            #                                                                            target_path=target_path)
-            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-            #     self.size = len(self.codes)
+            #completion
             elif task == enums.TASK_COMPLETION:
                 assert split in ['train', 'valid', 'test']
                 source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
                 target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
                 self.paths['source'] = source_path
                 self.paths['target'] = target_path
-                set_args(args=args)  # Passing args
-                self.codes, _, self.names, self.targets = parse_for_completion(source_path=source_path,
-                                                                            target_path=target_path)
+                set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
+                self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
+                                                                                       target_path=target_path)
+                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+                self.size = len(self.codes)
+                print("Codes:", self.codes)
+                print("Targets:", self.targets)
+            # elif task == enums.TASK_COMPLETION:
+            #     assert split in ['train', 'valid', 'test']
+            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
+            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
+            #     self.paths['source'] = source_path
+            #     self.paths['target'] = target_path
+            #     set_args(args=args)  # Passing args
+            #     self.codes, _, self.names, self.targets = parse_for_completion(source_path=source_path,
+            #                                                                 target_path=target_path)
                 
-                if args.ast_type == "jdt":
-                    self.ast_file_path = os.path.join(args.ast_file_path, f'finetune_methods_{split}.txt')
-                    print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
-                    # Compare and get indices of matches
-                    matched_indices = compare_similarity(self.ast_file_path, self.codes)
-                    # Load ASTs only for matched indices
-                    self.asts = load_ast_from_file_jdt(self.ast_file_path, matched_indices, context='parse_for_completion')
-                    print(len(self.codes), len(self.asts), len(self.names), len(self.targets), "**")
-                    assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+            #     if args.ast_type == "jdt":
+            #         self.ast_file_path = os.path.join(args.ast_file_path, f'finetune_methods_{split}.txt')
+            #         print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
+            #         # Compare and get indices of matches
+            #         matched_indices = compare_similarity(self.ast_file_path, self.codes)
+            #         # Load ASTs only for matched indices
+            #         self.asts = load_ast_from_file_jdt(self.ast_file_path, matched_indices, context='parse_for_completion')
+            #         print(len(self.codes), len(self.asts), len(self.names), len(self.targets), "**")
+            #         assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
 
             # elif task == enums.TASK_COMPLETION:
             #     assert split in ['train', 'valid', 'test']
