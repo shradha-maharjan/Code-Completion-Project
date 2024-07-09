@@ -4,22 +4,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import org.eclipse.jdt.core.dom.*;
 
-public class SPTCODEASTVisitor {
+public class SPTCODEASTVisitor2 {
 
-    private static String formatCode(String codeSnippet) {
+   // private static final boolean TRUE = false;
+
+	private static String formatCode(String codeSnippet) {
         // Removing the leading and trailing quote
-        if (codeSnippet.startsWith("\"") && codeSnippet.endsWith("\"")) {
-            codeSnippet = codeSnippet.substring(1, codeSnippet.length() - 1);
-        }
-        // Unescaping newline, tab, quote, and return characters
-        codeSnippet = codeSnippet.replace("\\n", "\n")
-                                 .replace("\\t", "\t")
-                                 .replace("\\r", "\r")
-                                 .replace("\\\"", "\"");
+//        if (codeSnippet.startsWith("\"") && codeSnippet.endsWith("\"")) {
+//            codeSnippet = codeSnippet.substring(1, codeSnippet.length() - 1);
+//        }
+//        // Unescaping newline, tab, quote, and return characters
+//        codeSnippet = codeSnippet.replace("\\n", "\n")
+//                                 .replace("\\t", "\t")
+//                                 .replace("\\r", "\r")
+//                                 .replace("\\\"", "\"");
 
         // Wrapping in a dummy class structure
         return "public class DummyClass {\n" + codeSnippet + "\n}";
     }
+	
+	private static String wrapWithClass(String method) {
+	    return "public class DummyWrapper {\n" +
+	           method.replace("string", "String")
+	                 .replace("file", "File")
+	                 .replace("ioException", "IOException")
+	                 .replace("[MSK]", "0xFF") + // Assume 0xFF as a mask value
+	           "\n}";
+	}
 
     public static void main(String[] args) {
         String javaFileName = "input/input1-pre.txt";
@@ -28,28 +39,30 @@ public class SPTCODEASTVisitor {
         try (BufferedReader reader = new BufferedReader(new FileReader(javaFileName));
              FileWriter writer = new FileWriter(outputFileName)) {
 
-            StringBuilder snippetBuilder = new StringBuilder();
+            //StringBuilder snippetBuilder = new StringBuilder();
             String line;
-            boolean isCodeSnippet = false;
+//            boolean isCodeSnippet = TRUE ;
 
             while ((line = reader.readLine()) != null) {
+            	//snippetBuilder.append(line).append("\n"); // Ensure newlines are preserved
+            
                 // Check if the line starts or ends a code snippet
-                if (line.trim().startsWith("\"")) {
-                    isCodeSnippet = true;
-                    snippetBuilder.append(line);
-                    if (line.trim().endsWith("\"")) {
-                        isCodeSnippet = false;
-                    }
-                } else if (line.trim().endsWith("\"")) {
-                    snippetBuilder.append("\n").append(line);
-                    isCodeSnippet = false;
-                } else if (isCodeSnippet) {
-                    snippetBuilder.append("\n").append(line);
-                }
+//                if (line.trim().startsWith("\"")) {
+//                    isCodeSnippet = true;
+//                    snippetBuilder.append(line);
+//                    if (line.trim().endsWith("\"")) {
+//                        isCodeSnippet = false;
+//                    }
+//                } else if (line.trim().endsWith("\"")) {
+//                    snippetBuilder.append("\n").append(line);
+//                    isCodeSnippet = false;
+//                } else if (isCodeSnippet) {
+//                    snippetBuilder.append("\n").append(line);
+//                }
 
                 // If the code snippet is complete, process it
-                if (!isCodeSnippet && snippetBuilder.length() > 0) {
-                    String formattedCode = formatCode(snippetBuilder.toString());
+//                if (!isCodeSnippet && snippetBuilder.length() > 0) {
+                    String formattedCode = wrapWithClass(line.toString());
                     ASTParser parser = ASTParser.newParser(AST.JLS_Latest);
                     parser.setSource(formattedCode.toCharArray());
                     parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -283,9 +296,9 @@ public class SPTCODEASTVisitor {
                     // Write the collected AST output to file and append a newline to separate entries
                     writer.write(astOutput.toString().trim() + "\n");
                     // Clear the snippetBuilder for the next snippet
-                    snippetBuilder.setLength(0);
+                    //snippetBuilder.setLength(0);
                 }
-            }
+            //}
         } catch (IOException e) {
             e.printStackTrace();
         }

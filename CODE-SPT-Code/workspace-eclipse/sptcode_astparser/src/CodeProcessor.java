@@ -33,6 +33,8 @@ public class CodeProcessor {
 
                     methodMap.put("PRED method " + lineCount, predictedMethod);
                     methodMap.put("RAW method " + lineCount, completeMethod);
+                    
+                    methodMap.put(predictedMethod, completeMethod);
 
                     writer.write(completeMethod + "\n");
                     writer.write(predictedMethod + "\n");
