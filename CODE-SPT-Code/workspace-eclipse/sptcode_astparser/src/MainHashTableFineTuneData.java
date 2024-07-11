@@ -1,6 +1,8 @@
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.Test;
+
 import java.io.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -30,15 +32,15 @@ public class MainHashTableFineTuneData {
 	// Datasets of raw and pred
 	static String DIR_INPUT_RAW = //WORK_SPT_CODE +
 			"dataset/finetune_raw/java-small-json/";
-	static String INPUT_JSON = "java-small.val.json";//"test.json";//
-	static String OUTPUT_PRED_RAW = "output/finetune-val-pre-raw-new.txt";//"output/test-raw-pre.txt";//
+	static String INPUT_JSON = "test.json";//"java-small.val.json";//
+	static String OUTPUT_PRED_RAW = "output/test-raw-pre.txt";//"output/finetune-val-pre-raw-new.txt";//
 	static String matchedoutputFile = "output/output1-pre-matched.txt";
 	static String unmatchedOutputFile = "output/output1-pre-Unmatched.txt";
 
 	// Preprocessed data of SPT-Code
 	static String DIR__PREP_SPT_CODE = //WORK_SPT_CODE + 
 			"dataset/fine_tune/completion/";
-	static String INPUT_PREP_SPT_CODE = "data.TargetType.seq.valid.source.txt";//"test.txt";//
+	static String INPUT_PREP_SPT_CODE = "test.txt";//"data.TargetType.seq.valid.source.txt";//
 
 	public static void main(String[] args) {
 		if (!new File(DIR_INPUT_RAW + INPUT_JSON).exists()) {
@@ -251,6 +253,32 @@ public class MainHashTableFineTuneData {
 	    return method;
 	}
 	
+//	@Test
+//	public void testRemoveComments1() {
+//		System.out.println("[DBG] test1");
+//		String input = "void foo() { // comment m1();}";
+//		String expectedOutput = "void foo() { m1();}";
+//		String actualOutput = removeCommentsAndStrings(input);
+//		
+//		System.out.println(input);
+//		System.out.println(expectedOutput);
+//		System.out.println(actualOutput);		
+//	}
+//
+//
+//	@Test
+//	public void testRemoveComments2() {
+//		System.out.println("[DBG] test 2");
+//		String input = "void foo() { /n// comment\n m1();}";
+//		String expectedOutput = "void foo() { m1();}";
+//		String actualOutput = removeCommentsAndStrings(input);
+//		
+//		System.out.println(input);
+//		System.out.println(expectedOutput);
+//		System.out.println(actualOutput);		
+//	}
+		
+	
 	private static String removeCommentsAndStrings(String code) {
 	    // Regular expression to identify comments and string literals
 	    String regex = "//.*?$|/\\*.*?\\*/|'(?:\\\\.|[^\\\\'])*'|\"(?:\\\\.|[^\\\\\"])*\"";
@@ -279,6 +307,7 @@ public class MainHashTableFineTuneData {
 	      text = text.replaceAll("@Overrideprotected\\s*", "");
 	      text = text.replaceAll("@Overridepublic\\s*", "");
 	      text = text.replaceAll("@Overrideprivate\\s*", "");
+	      text = text.replaceAll("@Override", "");
 	      text = text.replaceAll("protected", "");
 	      text = text.replaceAll("Protected", "");
 	      text = text.replaceAll("public", "");
