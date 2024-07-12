@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class MainHashTableFineTuneData {
+public class MainHashTableFineTuneDataWithBinarySearch {
 
 	private static final Pattern STRING_MATCHING_PATTERN = Pattern
 			.compile("([bruf]*)(\"\"\"|'''|\"|')(?:(?!\\2)(?:\\\\.|[^\\\\]))*\\2");
@@ -29,18 +29,30 @@ public class MainHashTableFineTuneData {
 	private static final Set<String> JAVA_KEYWORDS = new HashSet<>(Arrays.asList("private", "protected", "public", "static", "@Overrideprotected", "override", "@Overridepublic", "@Overrideprivate", "Protected", "Public", "Private"));
 
 //	static String WORK_SPT_CODE = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/";
-	// Datasets of raw and pred
-	static String DIR_INPUT_RAW = //WORK_SPT_CODE +
+//	 Datasets of raw and pred
+//	static String DIR_INPUT_RAW = //WORK_SPT_CODE +
+//			"dataset/finetune_raw/java-small-json/";
+//	static String INPUT_JSON = "java-small.val.json";//"test.json";//
+//	static String OUTPUT_PRED_RAW = "output/finetune-val-pre-raw-new.txt";//"output/test-raw-pre.txt";//
+//	static String matchedoutputFile = "output/output1-pre-matched.txt";
+//	static String unmatchedOutputFile = "output/output1-pre-Unmatched.txt";
+//
+//	// Preprocessed data of SPT-Code
+//	static String DIR__PREP_SPT_CODE = //WORK_SPT_CODE + 
+//			"dataset/fine_tune/completion/";
+//	static String INPUT_PREP_SPT_CODE = "data.TargetType.seq.valid.source.txt";//"test.txt";//
+	
+	static String DIR_INPUT_RAW = //WORK_SPT_CODE + 
 			"dataset/finetune_raw/java-small-json/";
-	static String INPUT_JSON = "test.json";//"java-small.val.json";//
-	static String OUTPUT_PRED_RAW = "output/test-raw-pre.txt";//"output/finetune-val-pre-raw-new.txt";//
-	static String matchedoutputFile = "output/output1-pre-matched.txt";
-	static String unmatchedOutputFile = "output/output1-pre-Unmatched.txt";
+	static String INPUT_JSON = "java-small.test.json";//"test.json";//
+	static String OUTPUT_PRED_RAW = "output/finetune-test-pre-raw.txt";//"output/test-raw-pre.txt";//
+	static String matchedoutputFile = "output/test-pre-matched.txt";
+	static String unmatchedOutputFile = "output/test-pre-Unmatched.txt";
 
 	// Preprocessed data of SPT-Code
 	static String DIR__PREP_SPT_CODE = //WORK_SPT_CODE + 
 			"dataset/fine_tune/completion/";
-	static String INPUT_PREP_SPT_CODE = "test.txt";//"data.TargetType.seq.valid.source.txt";//
+	static String INPUT_PREP_SPT_CODE = "data.TargetType.seq.test.source.txt";//"test.txt";//
 
 	public static void main(String[] args) {
 		if (!new File(DIR_INPUT_RAW + INPUT_JSON).exists()) {
@@ -58,7 +70,7 @@ public class MainHashTableFineTuneData {
 		Instant startTime = Instant.now();
 		timeNow(ZonedDateTime.now(), "Start Time: ");
 
-		MainHashTableFineTuneData main = new MainHashTableFineTuneData();
+		MainHashTableFineTuneDataWithBinarySearch main = new MainHashTableFineTuneDataWithBinarySearch();
 //		try {
 //			HashMap<String, String> methodMap = main.createHashMap(DIR_INPUT_RAW, INPUT_JSON, OUTPUT_PRED_RAW);
 //			match(methodMap, DIR__PREP_SPT_CODE + INPUT_PREP_SPT_CODE);
@@ -92,7 +104,7 @@ public class MainHashTableFineTuneData {
 ////		}
 ////	}
 //		
-//		 // Use try-with-resources to ensure the BufferedReader is closed after use
+		 // Use try-with-resources to ensure the BufferedReader is closed after use
 //		    try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
 //		         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
 //		        String line;
@@ -160,8 +172,14 @@ public class MainHashTableFineTuneData {
 	         BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
 	        JSONParser parser = new JSONParser();
 	        String line;
+	        int lineNumber = 0;
 	        while ((line = reader.readLine()) != null) {
+	        	lineNumber++;
 	            try {
+	            	if (line.trim().isEmpty()) {
+	                    System.out.println("Skipping empty line at line number: " + lineNumber);
+	                    continue;
+	                }
 	                JSONObject jsonObject = (JSONObject) parser.parse(line);
 	                String leftContext = processJavaCode((String) jsonObject.get("left_context"));
 					String rightContext = processJavaCode((String) jsonObject.get("right_context"));
@@ -171,10 +189,10 @@ public class MainHashTableFineTuneData {
 	                String originalCompleteMethod = leftContext + " " + targetSeq + " " + rightContext;
 
 	                // Cleaned Methods
-	                String cleanedPredictedMethod = removeSpecialChars_raw(originalPredictedMethod);
-	                System.out.println(cleanedPredictedMethod);
-	                String cleanedCompleteMethod = removeSpecialChars_raw(originalCompleteMethod);
-	                System.out.println(cleanedCompleteMethod);
+	                String cleanedPredictedMethod = removeSpecialChars(originalPredictedMethod);
+	                //System.out.println(cleanedPredictedMethod);
+	                String cleanedCompleteMethod = removeSpecialChars(originalCompleteMethod);
+	                //System.out.println(cleanedCompleteMethod);
 	                
 //	                String predictedMethod = removeSpecialChars_raw(leftContext + "PRED" + rightContext);
 //	                String completeMethod = removeSpecialChars_raw(leftContext + " " + targetSeq + " " + rightContext);
@@ -193,7 +211,8 @@ public class MainHashTableFineTuneData {
 	                methodPairs.add(new String[]{cleanedPredictedMethod, originalPredictedMethod, cleanedCompleteMethod, originalCompleteMethod});
 	                writer.write(cleanedPredictedMethod + "\n" + cleanedCompleteMethod + "\n");
 	            } catch (ParseException e) {
-	                System.out.println("Error decoding JSON on input line: " + e.getMessage());
+	            	System.out.println("Error decoding JSON on input line " + lineNumber + ": " + line);
+	                e.printStackTrace();
 	            }
 	        }
 	    }
@@ -209,7 +228,7 @@ public class MainHashTableFineTuneData {
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            String cleanedMethod = removeSpecialChars(processJavaCode(line));
-	            System.out.println(cleanedMethod);
+	            //System.out.println(cleanedMethod);
 	            //int resultIndex = Arrays.binarySearch(methodPairs, new String[]{cleanedMethod, null}, Comparator.comparing(o -> o[0]));
 	            int resultIndex = Arrays.binarySearch(methodPairs, new String[]{cleanedMethod, null, null, null}, Comparator.comparing(o -> o[0]));
 	            
@@ -240,14 +259,6 @@ public class MainHashTableFineTuneData {
 	private static String removeSpecialChars(String method) {
 	    // Assuming that the same normalization and cleaning operations are to be performed
 	    method = removeJavaModifiers(formatCode(method));
-	    method = method.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase();
-	    method = method.replaceAll("\\s+", "");
-	    return method;
-	}
-	
-	private static String removeSpecialChars_raw(String method) {
-	    // Assuming that the same normalization and cleaning operations are to be performed
-		method = removeJavaModifiers(formatCode(method));
 	    method = method.replaceAll("[^A-Za-z0-9{}()\\[\\]]+", "").toLowerCase();
 	    method = method.replaceAll("\\s+", "");
 	    return method;
@@ -308,6 +319,7 @@ public class MainHashTableFineTuneData {
 	      text = text.replaceAll("@Overridepublic\\s*", "");
 	      text = text.replaceAll("@Overrideprivate\\s*", "");
 	      text = text.replaceAll("@Override", "");
+	      text = text.replaceAll("override", "");
 	      text = text.replaceAll("protected", "");
 	      text = text.replaceAll("Protected", "");
 	      text = text.replaceAll("public", "");
