@@ -12,6 +12,13 @@ from .data_utils import  handle_error
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+def load_lines_from_file(file_path):
+    lines = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            lines.append(line.strip())
+    return lines
+
 def load_ast_from_file_jdt(jdt_file_path, context):
     sources = []
     asts = []

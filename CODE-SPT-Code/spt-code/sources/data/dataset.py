@@ -11,7 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_ast_from_file_jdt, compare_and_save_sources, compare_similarity #, compare_and_save_sources_completion
+from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources, compare_similarity #, compare_and_save_sources_completion
 from eval.bleu.google_bleu import avg_bleu
 from data.vocab import Vocab
 
@@ -168,20 +168,50 @@ class CodeDataset(Dataset):
                 assert len(self.codes_1) == len(self.asts_1) == len(self.names_1) \
                        == len(self.codes_2) == len(self.asts_2) == len(self.names_2) == len(self.labels)
                 self.size = len(self.codes_1)
-            #completion
+            #completion old
+            # elif task == enums.TASK_COMPLETION:
+            #     assert split in ['train', 'valid', 'test']
+            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
+            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
+            #     self.paths['source'] = source_path
+            #     self.paths['target'] = target_path
+            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
+            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
+            #                                                                         target_path=target_path)
+            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+            #     self.size = len(self.codes)
             elif task == enums.TASK_COMPLETION:
                 assert split in ['train', 'valid', 'test']
-                source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
-                target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
+                source_path = os.path.join(self.dataset_dir, f'source_tokenized_methods_{split}.txt')
+                target_path = os.path.join(self.dataset_dir, f'target_tokenized_methods_{split}.txt')
                 self.paths['source'] = source_path
                 self.paths['target'] = target_path
+                ast_path = os.path.join(self.dataset_dir, f'raw_methods_asts_{split}.txt')
+                nl_path = os.path.join(self.dataset_dir, f'NL_methods_{split}.txt')
                 set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-                self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
-                                                                                       target_path=target_path)
+                self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
                 assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
+                print("size:", self.size)
                 print("Codes:", self.codes)
                 print("Targets:", self.targets)
+                print("Asts:", self.asts)
+                print("Names:", self.names)
+
+            #     print("parsing for debug:")
+            #     source_path_debug = os.path.join(self.dataset_dir, f'source_methods_valid.txt')
+            #     target_path_debug = os.path.join(self.dataset_dir, f'target_methods_valid.txt')
+            #     self.paths['source'] = source_path
+            #     self.paths['target'] = target_path
+            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
+            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path_debug,
+            #                                                                            target_path=target_path_debug)
+            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+            #     self.size = len(self.codes)
+            #     print("size:",self.size)
+            #     print("Codes:", self.codes)
+            #     print("Targets debug:", self.targets)
+
             # elif task == enums.TASK_COMPLETION:
             #     assert split in ['train', 'valid', 'test']
             #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
@@ -202,10 +232,11 @@ class CodeDataset(Dataset):
             #         print(len(self.codes), len(self.asts), len(self.names), len(self.targets), "**")
             #         assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
 
+#recent modifications
             # elif task == enums.TASK_COMPLETION:
             #     assert split in ['train', 'valid', 'test']
-            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
-            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
+            #     source_path = os.path.join(self.dataset_dir, f'source_methods_{split}.txt')
+            #     target_path = os.path.join(self.dataset_dir, f'target_methods_{split}.txt')
             #     self.paths['source'] = source_path
             #     self.paths['target'] = target_path
             #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
@@ -217,13 +248,15 @@ class CodeDataset(Dataset):
             #     print(len(self.names))
             #     print(len(self.targets))
             #     print("**")
-            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
             #     if args.ast_type == "jdt":
-            #         self.ast_file_path = os.path.join(args.ast_file_path, f'finetune_methods_{split}.txt')  # Customize path as needed
+            #         self.ast_file_path = os.path.join(args.ast_file_path, f'raw_methods_asts_{split}.txt')  # Customize path as needed
             #         print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
-            #         sources_from_file, self.asts = load_ast_from_file_jdt(self.ast_file_path, context = 'parse_for_completion')
+            #         #sources_from_file, self.asts = load_ast_from_file_jdt(self.ast_file_path, context = 'parse_for_completion')
+            #         self.asts = load_lines_from_file(self.ast_file_path)
                     
-            #         compare_and_save_sources(self, sources_from_file, self.asts, 'codes', 'mismatched_sources_completion.txt')
+            #         #compare_and_save_sources(self, sources_from_file, self.asts, 'codes', 'mismatched_sources_completion.txt')
+            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+            #     self.size = len(self.codes)
 
             #     # JDT's AST expression with 6 text files in CODE-SPT-Code/dataset/fine_tune/completion
             #     # Given 'split', self.asts can be updated.

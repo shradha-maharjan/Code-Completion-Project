@@ -1,5 +1,6 @@
-
 from prettytable import PrettyTable
+import os
+import pandas as pd
 
 
 def to_time(float_time):
@@ -46,3 +47,10 @@ def layer_wise_parameters(model):
         if parameters.requires_grad:
             table.add_row([name, str(list(parameters.shape)), parameters.numel()])
     return table
+
+
+def save_log_history(trainer, log_dir, task_name):
+    log_file = os.path.join(log_dir, f'{task_name}_training_log.csv')
+    log_history = trainer.state.log_history
+    if log_history:
+        pd.DataFrame(log_history).to_csv(log_file, index=False)

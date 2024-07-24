@@ -967,13 +967,115 @@ def parse_for_clone(path, mapping):
                 continue
     return codes_1, asts_1, names_1, codes_2, asts_2, names_2, labels
 
-def parse_for_completion(source_path, target_path):
+# def parse_for_completion(source_path, target_path):
+#     """
+#     Load and parse for code completion.
+
+#     Args:
+#         source_path (str): Path of source
+#         target_path (str): Path of target
+
+#     Returns:
+#         (list[str], list[str], list[str], list[str]):
+#             - List of strings: source code
+#             - List of strings: AST sequence
+#             - List of strings: name sequence
+#             - List of strings: target code
+
+#     """
+#     # def restore_source(sub_source):
+#     #     """
+#     #     Transfer split source to source code, which can be parsed into AST.
+
+#     #     Args:
+#     #         sub_source (str): Split code
+
+#     #     Returns:
+#     #         str: Source code that can be parsed
+
+#     #     """
+#     #     tokens = sub_source.split()
+#     #     is_subtoken = False
+#     #     restored_source = ''
+#     #     for token in tokens:
+#     #         if token == '_':
+#     #             is_subtoken = True
+#     #             continue
+#     #         if token == 'PRED':
+#     #             token = Vocab.MSK_TOKEN
+#     #         if is_subtoken:
+#     #             restored_source += token.capitalize()
+#     #         else:
+#     #             restored_source += f' {token}'
+#     #         is_subtoken = False
+#     #     return restored_source.strip()
+
+#     source_lines = load_lines(source_path)
+#     target_lines = load_lines(target_path)
+#     assert len(source_lines) == len(target_lines)
+
+#     # #######################################################################
+#     #Updated to reduce the time to parse, myoungkyu song, 03/31/2024
+#     # if main_args.parse_subset_ratio:
+#     #     line_counter = 0
+#     #     lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
+
+#     #     if len(source_lines) > 10_000:
+#     #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+#     #     if len(source_lines) > 100_000:
+#     #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+
+#     #     logger.info('*' * 100)
+#     #     logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
+#     # #######################################################################
+
+#     codes = []
+#     asts = []
+#     names = []
+#     targets = []
+#     for idx, (source, target) in enumerate(tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines))):
+#         try:
+#             # if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+#             #     if line_counter > lines_to_extract:
+#             #         break
+#             #     line_counter += 1
+
+#             # source = restore_source(source)
+#             #target = restore_source(target)
+#             if main_args.ast_type != "jdt":
+#                             ast, nl = generate_single_ast_nl(source=source,
+#                                                                          lang=enums.LANG_JAVA,
+#                                                                          replace_method_name=False)
+#             else:
+#                             root = parse_ast(source=source, lang=enums.LANG_JAVA)
+#                             ast = None  # Explicitly set ast to None when JDT is enabled
+#                             nl = extract_nl_from_code(source=source,
+#                                                                      root=root,
+#                                                                      lang=enums.LANG_JAVA,
+#                                                                      replace_method_name=False)
+#             #ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+#             source = tokenize_source(source=source, lang=enums.LANG_JAVA, use_regular=True)
+#             tokenized_target = tokenize_source(source=target, lang=enums.LANG_JAVA, use_regular=True)
+#             codes.append(source)
+#             asts.append(ast)
+#             #names.append(name)
+#             names.append(nl)
+#             targets.append(tokenized_target)
+#         except Exception as e:
+#             formatted_source = handle_error(str(e), context= "parse_for_completion",index=idx, file_path=source_path, source=source)
+#             logger.error(f"Failed to parse {source_path} at index {idx}. Error: {formatted_source}")
+#             continue
+#     return codes, asts, names, targets
+
+def parse_for_completion(source_path, target_path, ast_path=None, nl_path=None):
     """
     Load and parse for code completion.
 
     Args:
         source_path (str): Path of source
         target_path (str): Path of target
+        ast_path (str): Path of ASTs (required if ast_type is 'jdt')
+        nl_path (str): Path of NLs (required if ast_type is 'jdt')
 
     Returns:
         (list[str], list[str], list[str], list[str]):
@@ -981,75 +1083,44 @@ def parse_for_completion(source_path, target_path):
             - List of strings: AST sequence
             - List of strings: name sequence
             - List of strings: target code
-
     """
-    def restore_source(sub_source):
-        """
-        Transfer split source to source code, which can be parsed into AST.
-
-        Args:
-            sub_source (str): Split code
-
-        Returns:
-            str: Source code that can be parsed
-
-        """
-        tokens = sub_source.split()
-        is_subtoken = False
-        restored_source = ''
-        for token in tokens:
-            if token == '_':
-                is_subtoken = True
-                continue
-            if token == 'PRED':
-                token = Vocab.MSK_TOKEN
-            if is_subtoken:
-                restored_source += token.capitalize()
-            else:
-                restored_source += f' {token}'
-            is_subtoken = False
-        return restored_source.strip()
-
     source_lines = load_lines(source_path)
     target_lines = load_lines(target_path)
-    assert len(source_lines) == len(target_lines)
 
-    # #######################################################################
-    # Updated to reduce the time to parse, myoungkyu song, 03/31/2024
-    # if main_args.parse_subset_ratio:
-    #     line_counter = 0
-    #     lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
-
-    #     if len(source_lines) > 10_000:
-    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-    #     if len(source_lines) > 100_000:
-    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-
-    #     logger.info('*' * 100)
-    #     logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
-    # #######################################################################
+    if main_args.ast_type == "jdt":
+        if not ast_path or not nl_path:
+            raise ValueError("AST path and NL path must be provided when ast_type is 'jdt'.")
+        ast_lines = load_lines(ast_path)
+        nl_lines = load_lines(nl_path)
+        assert len(source_lines) == len(target_lines) == len(ast_lines) == len(nl_lines)
+    else:
+        assert len(source_lines) == len(target_lines)
 
     codes = []
     asts = []
     names = []
     targets = []
-    for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
-        try:
-            # if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
-            #     if line_counter > lines_to_extract:
-            #         break
-            #     line_counter += 1
 
-            source = restore_source(source)
-            target = restore_source(target)
-            ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+    for idx, (source, target) in enumerate(tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines))):
+        try:
+            if main_args.ast_type != "jdt":
+                ast, nl = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA, replace_method_name=False)
+            else:
+                ast = ast_lines[idx]
+                nl = nl_lines[idx]
+                
+            # source = tokenize_source(source=source, lang=enums.LANG_JAVA, use_regular=True)
+            # tokenized_target = tokenize_source(source=target, lang=enums.LANG_JAVA, use_regular=True)
             codes.append(source)
             asts.append(ast)
-            names.append(name)
+            names.append(nl)
             targets.append(target)
-        except Exception:
+        except Exception as e:
+            formatted_source = handle_error(str(e), context="parse_for_completion", index=idx, file_path=source_path, source=source)
+            logger.error(f"Failed to parse {source_path} at index {idx}. Error: {formatted_source}")
             continue
     return codes, asts, names, targets
+
 # def parse_for_completion(source_path, target_path):
 #     """
 #     Load and parse for code completion.
@@ -1099,17 +1170,17 @@ def parse_for_completion(source_path, target_path):
 
 #     # #######################################################################
 #     # Updated to reduce the time to parse, myoungkyu song, 03/31/2024
-#     # if main_args.parse_subset_ratio:
-#     #     line_counter = 0
-#     #     lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
+#     if main_args.parse_subset_ratio:
+#         line_counter = 0
+#         lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
 
-#     #     if len(source_lines) > 10_000:
-#     #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-#     #     if len(source_lines) > 100_000:
-#     #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+#         if len(source_lines) > 10_000:
+#             lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+#         if len(source_lines) > 100_000:
+#             lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
 
-#     #     logger.info('*' * 100)
-#     #     logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
+#         logger.info('*' * 100)
+#         logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
 #     # #######################################################################
 
 #     codes = []
@@ -1118,31 +1189,31 @@ def parse_for_completion(source_path, target_path):
 #     targets = []
 #     for idx, (source, target) in enumerate(tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines))):
 #         try:
-#             # if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
-#             #     if line_counter > lines_to_extract:
-#             #         break
-#             #     line_counter += 1
+#             if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+#                 if line_counter > lines_to_extract:
+#                     break
+#                 line_counter += 1
 
 #             source = restore_source(source)
 #             target = restore_source(target)
-#             #ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
-#             if main_args.ast_type != "jdt":
-#                 ast, name = generate_single_ast_nl(source=source,
-#                                                    lang=enums.LANG_JAVA)
-#             else:
-#                 root = parse_ast(source=source, lang=enums.LANG_JAVA)
-#                 ast = None  # Explicitly set ast to None when JDT is enabled
-#                 name = extract_nl_from_code(source=source,
-#                                             root=root,
-#                                             lang=enums.LANG_JAVA,
-#                                             replace_method_name=False)
+#             ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
+#             # if main_args.ast_type != "jdt":
+#             #     ast, name = generate_single_ast_nl(source=source,
+#             #                                        lang=enums.LANG_JAVA)
+#             # else:
+#             #     root = parse_ast(source=source, lang=enums.LANG_JAVA)
+#             #     ast = None  # Explicitly set ast to None when JDT is enabled
+#             #     name = extract_nl_from_code(source=source,
+#             #                                 root=root,
+#             #                                 lang=enums.LANG_JAVA,
+#             #                                 replace_method_name=False)
 #             codes.append(source)
 #             asts.append(ast)
 #             names.append(name)
 #             targets.append(target)
-#         except Exception as e:
-#             formatted_source = handle_error(str(e), context= "parse_for_completion",index=idx, file_path=source_path, source=source)
-#             logger.error(f"Failed to parse {source_path} at index {idx}. Error: {formatted_source}")
+#         except Exception: # as e:
+#         #     formatted_source = handle_error(str(e), context= "parse_for_completion",index=idx, file_path=source_path, source=source)
+#         #     logger.error(f"Failed to parse {source_path} at index {idx}. Error: {formatted_source}")
 #             continue
 #     return codes, asts, names, targets
 
