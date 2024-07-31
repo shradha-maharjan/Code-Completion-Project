@@ -182,21 +182,23 @@ class CodeDataset(Dataset):
             #     self.size = len(self.codes)
             elif task == enums.TASK_COMPLETION:
                 assert split in ['train', 'valid', 'test']
-                source_path = os.path.join(self.dataset_dir, f'source_tokenized_methods_{split}.txt')
-                target_path = os.path.join(self.dataset_dir, f'target_tokenized_methods_{split}.txt')
+                self.source_target_file_path = args.source_target_file_path
+                self.asts_nl_file_path = args.asts_nl_file_path
+                source_path = os.path.join(self.source_target_file_path, f'source_tokenized_methods_{split}.txt')
+                target_path = os.path.join(self.source_target_file_path, f'target_tokenized_methods_{split}.txt')
                 self.paths['source'] = source_path
                 self.paths['target'] = target_path
-                ast_path = os.path.join(self.dataset_dir, f'raw_methods_asts_{split}.txt')
-                nl_path = os.path.join(self.dataset_dir, f'NL_methods_{split}.txt')
+                ast_path = os.path.join(self.asts_nl_file_path, f'raw_methods_asts_{split}.txt')
+                nl_path = os.path.join(self.asts_nl_file_path, f'NL_methods_{split}.txt')
                 set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
                 self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
                 assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
-                print("size:", self.size)
-                print("Codes:", self.codes)
-                print("Targets:", self.targets)
-                print("Asts:", self.asts)
-                print("Names:", self.names)
+                # print("size:", self.size)
+                # print("Codes:", self.codes)
+                # print("Targets:", self.targets)
+                # print("Asts:", self.asts)
+                # print("Names:", self.names)
 
             #     print("parsing for debug:")
             #     source_path_debug = os.path.join(self.dataset_dir, f'source_methods_valid.txt')

@@ -151,6 +151,16 @@ class DatasetArguments:
         metadata={'help': 'Path to JDT AST file'}
     )
 
+    source_target_file_path: str = field(
+        default='/home/user1-selab3/Documents/data_shradha/spt-code-new-data/tokenized_no_javakw',
+        metadata={'help': 'Path to JDT AST file'}
+    )
+
+    asts_nl_file_path: str = field(
+        default='/home/user1-selab3/Documents/data_shradha/spt-code-new-data',
+        metadata={'help': 'Path to JDT AST file'}
+    )
+
 @dataclass
 class SavingArguments:
     """Arguments for saving and loading."""
