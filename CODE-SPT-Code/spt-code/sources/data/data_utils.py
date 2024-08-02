@@ -1092,7 +1092,7 @@ def parse_for_completion(source_path, target_path, ast_path=None, nl_path=None):
             raise ValueError("AST path and NL path must be provided when ast_type is 'jdt'.")
         ast_lines = load_lines(ast_path)
         nl_lines = load_lines(nl_path)
-        #source_lines, target_lines, ast_lines, nl_lines = source_lines[:1000], target_lines[:1000], ast_lines[:1000], nl_lines[:1000]
+        source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
         assert len(source_lines) == len(target_lines) == len(ast_lines) == len(nl_lines)
     else:
         assert len(source_lines) == len(target_lines)

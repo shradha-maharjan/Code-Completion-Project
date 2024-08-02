@@ -46,14 +46,14 @@ def trim_spaces(string):
 
 def remove_java_keywords(source: str):
     for keyword in JAVA_KEYWORDS:
-        source = re.sub(r'\b' + re.escape(keyword) + r'\b', '', source, flags=re.IGNORECASE)
+        source = re.sub(r'\b' + re.escape(keyword) + r'\b\s', '', source, flags=re.IGNORECASE)
     return source
 
 def lowercase_first_char_of_each_word(source: str):
     return ' '.join(word[0].lower() + word[1:] if word else '' for word in source.split())
 
 def replace_pred_with_msk(source: str):
-    return source.replace('pRED', '[MSK]')
+    return source.replace('PRED', '[MSK]')
 
 def replace_override_keywords(source: str):
     overrides = ['overrideprotected', 'overridepublic', 'overrideprivate']
@@ -61,10 +61,19 @@ def replace_override_keywords(source: str):
         source = re.sub(r'\b' + re.escape(override) + r'\b', 'override', source, flags=re.IGNORECASE)
     return source
 
-def tokenize_source(source, lang='enums.LANG_JAVA', use_regular=False):
-    if use_regular:
-        code = regular_tokenize(source)
-        return trim_spaces(code)
+def fix_override_keywords(source: str):
+    overrides = ['overrideprotected', 'overridepublic', 'overrideprivate']
+    for override in overrides:
+        # Regular expression captures the part after 'override' and inserts a space
+        pattern = r'\boverride(' + re.escape(override[8:]) + r')\b'
+        source = re.sub(pattern, r'override \1', source, flags=re.IGNORECASE)
+    return source
+
+def tokenize_source(source, lang, use_regular=False):
+    # if use_regular:
+    #     code = replace_string_literal(regular_tokenize(source))
+    #     code = regular_tokenize(source)
+    #     return trim_spaces(code)
 
     if lang in [enums.LANG_JAVA, enums.LANG_JAVASCRIPT, enums.LANG_PHP, enums.LANG_GO]:
         input_stream = InputStream(source)
@@ -72,22 +81,23 @@ def tokenize_source(source, lang='enums.LANG_JAVA', use_regular=False):
         tokens = [token.text for token in lexer.getAllTokens()]
         code = ' '.join(tokens)
         return trim_spaces(code)
-    else:
-        code = regular_tokenize(source)
-        return trim_spaces(code)
+        # input_stream = InputStream(source)
+        # lexer = MAPPING_LANG_LEXER[lang](input_stream)
+        # tokens = [token.text for token in lexer.getAllTokens()]
+        # code = ' '.join(tokens)
+        # return trim_spaces(code)
+    # else:
+    #     code = replace_string_literal(regular_tokenize(source))
+    #     return trim_spaces(code)
 
 def read_and_tokenize_file(input_file_path, output_file_path):
     with open(input_file_path, 'r') as infile, open(output_file_path, 'w') as outfile:
         for line in infile:
-            # Tokenize the line
-            tokenized_line = tokenize_source(line.strip())
-            # Remove Java keywords
-            cleaned_line = remove_java_keywords(tokenized_line)
-            overridden_line = replace_override_keywords(cleaned_line)
-            # Lowercase the first character of each word
-            lowered_line = lowercase_first_char_of_each_word(overridden_line)
-            # Replace "pRED" with "[MSK]"
-            final_line = replace_pred_with_msk(lowered_line)
+            tokenized_line = tokenize_source(line.strip(),lang=enums.LANG_JAVA)
+            #cleaned_line = remove_java_keywords(tokenized_line)
+            overridden_line = replace_override_keywords(tokenized_line)#fix_override_keywords(tokenized_line)
+            #lowered_line = lowercase_first_char_of_each_word(overridden_line)
+            final_line = replace_pred_with_msk(overridden_line)
             outfile.write(final_line + '\n')
 
 if __name__ == "__main__":

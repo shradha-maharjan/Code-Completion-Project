@@ -192,6 +192,8 @@ def run_completion(
     # decode_preds decodes the predictions and labels obtained from evaluation.
     def decode_preds(preds):
         preds, labels = preds
+        print("preds",preds)
+        print("labels",labels)
         decoded_preds = code_vocab.decode_batch(preds)
         decoded_labels = code_vocab.decode_batch(labels)
         return decoded_labels, decoded_preds
