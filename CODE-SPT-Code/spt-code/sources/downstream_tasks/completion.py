@@ -12,7 +12,7 @@ import enums
 from models.bart import BartForClassificationAndGeneration
 from data.vocab import Vocab, load_vocab, init_vocab
 from data.dataset import init_dataset
-from utils.general import count_params, human_format, layer_wise_parameters
+from utils.general import count_params, human_format, layer_wise_parameters, save_log_history
 from eval.metrics import bleu, meteor, rouge_l, avg_ir_metrics, accuracy_for_sequence, accuracy_top_k_for_sequence
 from utils.callbacks import LogStateCallBack
 from utils.trainer import CodeTrainer
@@ -192,8 +192,6 @@ def run_completion(
     # decode_preds decodes the predictions and labels obtained from evaluation.
     def decode_preds(preds):
         preds, labels = preds
-        print("preds",preds)
-        print("labels",labels)
         decoded_preds = code_vocab.decode_batch(preds)
         decoded_labels = code_vocab.decode_batch(labels)
         return decoded_labels, decoded_preds
@@ -231,7 +229,7 @@ def run_completion(
                                              do_train=True,
                                              do_eval=True,
                                              do_predict=True,
-                                             evaluation_strategy=IntervalStrategy.EPOCH,
+                                             evaluation_strategy=IntervalStrategy.STEPS,#IntervalStrategy.EPOCH,
                                              prediction_loss_only=False,
                                              per_device_train_batch_size=args.batch_size,
                                              per_device_eval_batch_size=args.eval_batch_size,
@@ -245,7 +243,7 @@ def run_completion(
                                              logging_dir=os.path.join(args.tensor_board_root, enums.TASK_COMPLETION),
                                              logging_strategy=IntervalStrategy.STEPS,
                                              logging_steps=args.logging_steps,
-                                             save_strategy=IntervalStrategy.EPOCH,
+                                             save_strategy=IntervalStrategy.STEPS,#IntervalStrategy.EPOCH,
                                              save_total_limit=2,
                                              seed=args.random_seed,
                                              fp16=args.fp16,
@@ -278,6 +276,10 @@ def run_completion(
                               LogStateCallBack()])
     logger.info('Running configurations initialized successfully')
 
+    
+    log_dir = 'logs'
+    os.makedirs(log_dir, exist_ok=True)
+
     # --------------------------------------------------
     # train
     # --------------------------------------------------
@@ -286,15 +288,17 @@ def run_completion(
         logger.info('-' * 100)
         logger.info('Start training')
         train_result = trainer.train()
+        task = "Completion_train"
+        save_log_history(trainer, log_dir, task)
         logger.info('Training finished')
-        # Saves the trained model and its state.
+        #Saves the trained model and its state.
         trainer.save_model(args.model_root)
         trainer.save_state()
         metrics = train_result.metrics
         # Logs and saves the training metrics.
         trainer.log_metrics(split='train', metrics=metrics)
         trainer.save_metrics(split='train', metrics=metrics)
-
+       # save_metrics(metrics,split='train')
     # --------------------------------------------------
     # predict
     # --------------------------------------------------
@@ -390,11 +394,24 @@ def run_completion(
         for name, score in scores.items():
             f.write(f'{name}: {score}')
 
+
+# def save_metrics(metrics, split):
+#     """Save the metrics to a CSV file."""
+#     output_root = 'logss'
+#     os.makedirs(output_root, exist_ok=True)
+#     df = pd.DataFrame([metrics])
+#     metrics_file = os.path.join(output_root, f'{enums.TASK_COMPLETION}_{split}_metrics.csv')
+
+#     if not os.path.exists(metrics_file):
+#         df.to_csv(metrics_file, index=False)
+#     else:
+#         df.to_csv(metrics_file, mode='a', header=False, index=False)
+
      # Save log history
 
-    log_history = trainer.state.log_history
-    if log_history:
-        pd.DataFrame(log_history).to_csv(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_log_history.csv'), index=False)
+    # log_history = trainer.state.log_history
+    # if log_history:
+    #     pd.DataFrame(log_history).to_csv(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_log_history.csv'), index=False)
 
 # def run_completion(
 #         args,

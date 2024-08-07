@@ -11,7 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources, compare_similarity #, compare_and_save_sources_completion
+from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources,load_files_for_completion, compare_similarity #, compare_and_save_sources_completion
 from eval.bleu.google_bleu import avg_bleu
 from data.vocab import Vocab
 
@@ -53,18 +53,12 @@ class CodeDataset(Dataset):
             print("Loading dataset from directory:", self.dataset_dir)
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir)
-            self.size = len(self.codes)
-
-            # with open('pre_train_sources.txt', 'w') as src_file:
-            #     for source in self.sources:
-            #         formatted_source = source.replace('\n', ' ').replace('\t', ' ').replace('\r', ' ')
-            #         src_file.write(f"{formatted_source}\n")
             
             if args.ast_type == "jdt":
                 self.jdt_file_path = args.jdt_file_path
                 print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
                 # Unpacking both sources and ASTs returned by the method
-                sources_from_file, self.asts = load_ast_from_file_jdt(self.jdt_file_path, context = 'load_dataset')
+                sources_from_file, self.asts  = load_ast_from_file_jdt(self.jdt_file_path, context = 'load_dataset')
 
                 # # Save loaded sources and ASTs to a file on a single line
                 # with open('loaded_data.txt', 'w') as file:
@@ -72,8 +66,21 @@ class CodeDataset(Dataset):
                 #         file.write(f"Loaded source: {source}, Loaded AST: {ast}\n")
                     
                 # compare_and_save_sources(self,sources_from_file, self.asts)
-
                 compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
+
+                sample_size = int(len(self.codes) * 0.5)
+                sample_indices = random.sample(range(len(self.codes)), k=sample_size)
+
+                self.codes = [self.codes[i] for i in sample_indices]
+                self.names = [self.names[i] for i in sample_indices]
+                self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
+                self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
+                self.only_names = [self.only_names[i] for i in sample_indices]
+                # self.docs = [self.docs[i] for i in sample_indices]
+                # self.languages = [self.languages[i] for i in sample_indices]
+                self.sources = [self.sources[i] for i in sample_indices]
+                self.asts = [self.asts[i] for i in sample_indices]
+            self.size = len(self.codes)
 
             # # Optional saving of source-AST pairs for verification
             # print("Saving source-AST pairs for verification...")
@@ -182,18 +189,53 @@ class CodeDataset(Dataset):
             #     self.size = len(self.codes)
             elif task == enums.TASK_COMPLETION:
                 assert split in ['train', 'valid', 'test']
-                self.source_target_file_path = args.source_target_file_path
-                self.asts_nl_file_path = args.asts_nl_file_path
-                source_path = os.path.join(self.source_target_file_path, f'source_tokenized_methods_{split}.txt')
-                target_path = os.path.join(self.source_target_file_path, f'target_tokenized_methods_{split}.txt')
-                self.paths['source'] = source_path
-                self.paths['target'] = target_path
-                ast_path = os.path.join(self.asts_nl_file_path, f'raw_methods_asts_{split}.txt')
-                nl_path = os.path.join(self.asts_nl_file_path, f'NL_methods_{split}.txt')
-                set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-                self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
+                if args.ast_type == "jdt":
+                    self.source_target_file_path = args.source_target_file_path
+                    self.asts_nl_file_path = args.asts_nl_file_path
+
+                    set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
+                    
+                    self.codes, self.asts, self.names, self.targets = load_files_for_completion(self.source_target_file_path, self.asts_nl_file_path, split)
+                else:
+                    source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
+                    target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
+                    self.paths['source'] = source_path
+                    self.paths['target'] = target_path
+
+                    self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
+                # Sample 50% of the data
+                sample_size = int(len(self.codes) * 0.5)
+                sample_indices = random.sample(range(len(self.codes)), k=sample_size)
+
+                self.codes = [self.codes[i] for i in sample_indices]
+                self.asts = [self.asts[i] for i in sample_indices]
+                self.names = [self.names[i] for i in sample_indices]
+                self.targets = [self.targets[i] for i in sample_indices]
+
                 assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
+                
+                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+                self.size = len(self.codes)
+
+                # self.source_target_file_path = args.source_target_file_path
+                # self.asts_nl_file_path = args.asts_nl_file_path
+                # source_path = os.path.join(self.source_target_file_path, f'source_tokenized_methods_{split}.txt')
+                # target_path = os.path.join(self.source_target_file_path, f'target_tokenized_methods_{split}.txt')
+                # self.paths['source'] = source_path
+                # self.paths['target'] = target_path
+                # ast_path = os.path.join(self.asts_nl_file_path, f'raw_methods_asts_{split}.txt')
+                # nl_path = os.path.join(self.asts_nl_file_path, f'NL_methods_{split}.txt')
+                # set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
+
+                # # Update suggestion.
+                # # if JDT then call "load"
+                # # else call "org func"
+
+
+                # self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
+                # assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
+                # self.size = len(self.codes)
                 # print("size:", self.size)
                 # print("Codes:", self.codes)
                 # print("Targets:", self.targets)

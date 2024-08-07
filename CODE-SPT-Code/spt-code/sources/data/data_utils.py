@@ -244,10 +244,10 @@ def parse_json_file(file, lang):
 
     with open(file, encoding='utf-8') as f:
         for line in f.readlines():
-            # if main_args.parse_subset_ratio:
-            #     if line_counter > lines_to_extract:
-            #         break
-            #     line_counter += 1
+        #     if main_args.parse_subset_ratio:
+        #         if line_counter > lines_to_extract:
+        #             break
+        #         line_counter += 1
 
             data = json.loads(line.strip())
             name = trim_method_name(data['func_name'])
@@ -334,9 +334,7 @@ def load_pre_train_dataset(file, lang):
 
 def handle_error(error_message, context, index=None, file_path=None, source=None):
     # error_log_path = "error_sources.txt"  # Change to store sources
-    if context == 'parse_for_completion':
-        error_log_path = "error_parse_for_completion.txt"  # Specific file for parse_for_completion errors
-    elif context == 'load_dataset':
+    if context == 'load_dataset':
         error_log_path = "error_sources.txt"
 
     # Format the source to remove newlines, carriage returns, and tabs
@@ -1086,32 +1084,20 @@ def parse_for_completion(source_path, target_path, ast_path=None, nl_path=None):
     """
     source_lines = load_lines(source_path)
     target_lines = load_lines(target_path)
-
-    if main_args.ast_type == "jdt":
-        if not ast_path or not nl_path:
-            raise ValueError("AST path and NL path must be provided when ast_type is 'jdt'.")
-        ast_lines = load_lines(ast_path)
-        nl_lines = load_lines(nl_path)
-        source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
-        assert len(source_lines) == len(target_lines) == len(ast_lines) == len(nl_lines)
-    else:
-        assert len(source_lines) == len(target_lines)
+    assert len(source_lines) == len(target_lines)
 
     codes = []
     asts = []
     names = []
     targets = []
 
-    for idx, (source, target) in enumerate(tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines))):
+    for idx, (source, target) in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
         try:
             if main_args.ast_type != "jdt":
                 ast, nl = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA, replace_method_name=False)
             else:
-                ast = ast_lines[idx]
-                nl = nl_lines[idx]
-                
-            # source = tokenize_source(source=source, lang=enums.LANG_JAVA, use_regular=True)
-            # tokenized_target = tokenize_source(source=target, lang=enums.LANG_JAVA, use_regular=True)
+                ast = None
+                nl = None
             codes.append(source)
             asts.append(ast)
             names.append(nl)

@@ -62,7 +62,160 @@ class CodeTrainer(Seq2SeqTrainer):
 
     def set_task(self, task):
         self.task = task
+        
+# from data.data_collator import collate_fn
+# import argparse
+# from typing import Optional, Dict
+# import logging
+# import torch
+# from torch.utils.data import DataLoader, Dataset
+# from transformers import Seq2SeqTrainer, Trainer, TrainerCallback, TrainingArguments, TrainerState, TrainerControl, EvalPrediction
+# from data.data_collator import collate_fn
 
+# logger = logging.getLogger(__name__)
+
+# class CodeTrainer(Seq2SeqTrainer):
+
+#     def __init__(self, main_args: argparse.Namespace, code_vocab, ast_vocab, nl_vocab, task, **kwargs):
+#         super(CodeTrainer, self).__init__(**kwargs)
+#         self.main_args = main_args
+#         self.code_vocab = code_vocab
+#         self.ast_vocab = ast_vocab
+#         self.nl_vocab = nl_vocab
+#         self.task = task
+#         self.eval_losses = []  # List to store evaluation losses
+
+#         # Ensure optimizer and lr_scheduler are initialized
+#         if self.optimizer is None or self.lr_scheduler is None:
+#             self.create_optimizer_and_scheduler(num_training_steps=self.args.max_steps)
+#             self.optimizer = self.optimizer
+#             self.lr_scheduler = self.lr_scheduler
+
+#     def get_train_dataloader(self) -> DataLoader:
+#         return DataLoader(dataset=self.train_dataset,
+#                           batch_size=self.main_args.batch_size,
+#                           shuffle=True,
+#                           collate_fn=lambda batch: collate_fn(batch,
+#                                                               args=self.main_args,
+#                                                               task=self.task,
+#                                                               code_vocab=self.code_vocab,
+#                                                               nl_vocab=self.nl_vocab,
+#                                                               ast_vocab=self.ast_vocab))
+
+#     def get_eval_dataloader(self, eval_dataset: Optional[Dataset] = None) -> DataLoader:
+#         if eval_dataset:
+#             self.eval_dataset = eval_dataset
+#         return DataLoader(dataset=self.eval_dataset,
+#                           batch_size=self.main_args.eval_batch_size,
+#                           collate_fn=lambda batch: collate_fn(batch,
+#                                                               args=self.main_args,
+#                                                               task=self.task,
+#                                                               code_vocab=self.code_vocab,
+#                                                               nl_vocab=self.nl_vocab,
+#                                                               ast_vocab=self.ast_vocab))
+
+#     def get_test_dataloader(self, test_dataset: Dataset) -> DataLoader:
+#         return DataLoader(dataset=test_dataset,
+#                           batch_size=self.main_args.eval_batch_size,
+#                           collate_fn=lambda batch: collate_fn(batch,
+#                                                               args=self.main_args,
+#                                                               task=self.task,
+#                                                               code_vocab=self.code_vocab,
+#                                                               nl_vocab=self.nl_vocab,
+#                                                               ast_vocab=self.ast_vocab))
+
+#     def set_task(self, task):
+#         self.task = task
+
+#     def training_step(self, model, inputs):
+#         model.train()
+#         inputs = self._prepare_inputs(inputs)
+#         loss = self.compute_loss(model, inputs)
+#         loss = loss / self.args.gradient_accumulation_steps
+#         loss.backward()
+
+#         lr = self.lr_scheduler.get_last_lr()[0] if self.lr_scheduler is not None else 0.0
+
+#         self.log({
+#             'train_loss': loss.item(),
+#             'learning_rate': lr,
+#             'epoch': self.state.epoch,
+#             'step': self.state.global_step
+#         })
+
+#         return loss
+    
+#     def evaluation_step(self, model, inputs, prediction_loss_only):
+#         model.eval()
+#         inputs = self._prepare_inputs(inputs)
+#         with torch.no_grad():
+#             outputs = model(**inputs)
+#             if prediction_loss_only:
+#                 loss = outputs[0]
+#             else:
+#                 loss, logits = outputs[:2]
+
+#         lr = self.lr_scheduler.get_last_lr()[0] if self.lr_scheduler is not None else 0.0
+
+#         self.log({
+#             'eval_loss': loss.item(),
+#             'learning_rate': lr,
+#             'epoch': self.state.epoch,
+#             'step': self.state.global_step
+#         })
+
+#         # Append loss to eval_losses list
+#         self.eval_losses.append({'eval_loss': loss.item(), 'epoch': self.state.epoch, 'step': self.state.global_step})
+
+#         return loss if prediction_loss_only else (loss, logits)
+
+#     def evaluate(self, eval_dataset: Optional[Dataset] = None):
+#         eval_dataloader = self.get_eval_dataloader(eval_dataset)
+#         eval_loss = 0
+#         all_preds = []
+#         all_labels = []
+#         self.eval_losses = []  # Reset eval_losses before evaluation
+#         for step, batch in enumerate(eval_dataloader):
+#             loss, logits = self.evaluation_step(self.model, batch, prediction_loss_only=False)
+#             eval_loss += loss.item()
+#             all_preds.extend(logits.cpu().numpy())
+#             all_labels.extend(batch['labels'].cpu().numpy())
+
+#         eval_loss /= len(eval_dataloader)
+#         logger.info(f"Evaluation Loss: {eval_loss}")
+
+#         self.log({
+#             'eval_loss': eval_loss,
+#             'learning_rate': self.lr_scheduler.get_last_lr()[0] if self.lr_scheduler is not None else 0.0,
+#             'epoch': self.state.epoch,
+#             'step': self.state.global_step
+#         })
+
+#         # Log each evaluation step loss
+#         for eval_step in self.eval_losses:
+#             logger.info(f"Step {eval_step['step']} Eval Loss: {eval_step['eval_loss']} (Epoch: {eval_step['epoch']})")
+
+#         return EvalPrediction(predictions=all_preds, label_ids=all_labels)
+
+#     def training_epoch(self):
+#         for epoch in range(int(self.args.num_train_epochs)):
+#             for step, batch in enumerate(self.get_train_dataloader()):
+#                 loss = self.training_step(self.model, batch)
+#                 self.optimizer.step()
+#                 if self.lr_scheduler is not None:
+#                     self.lr_scheduler.step()
+#                 self.optimizer.zero_grad()
+#                 self.state.global_step += 1  # Ensure global_step is updated
+
+#             # Call evaluate at the end of each epoch
+#             if self.args.do_eval:
+#                 self.evaluate()
+#             self.state.epoch += 1  # Increment epoch after evaluation
+
+#     def train(self):
+#         self.state.global_step = 0
+#         self.state.epoch = 0
+#         self.training_epoch()
 
 class CodeCLSTrainer(Trainer):
 
