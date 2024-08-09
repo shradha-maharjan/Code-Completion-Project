@@ -202,8 +202,8 @@ class CodeDataset(Dataset):
                     self.paths['source'] = source_path
                     self.paths['target'] = target_path
 
-                    self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
-                # Sample 50% of the data
+                    self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path)
+                #Sample 50% of the data
                 sample_size = int(len(self.codes) * 0.5)
                 sample_indices = random.sample(range(len(self.codes)), k=sample_size)
 
@@ -211,9 +211,6 @@ class CodeDataset(Dataset):
                 self.asts = [self.asts[i] for i in sample_indices]
                 self.names = [self.names[i] for i in sample_indices]
                 self.targets = [self.targets[i] for i in sample_indices]
-
-                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-                self.size = len(self.codes)
                 
                 assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)

@@ -1065,7 +1065,7 @@ def parse_for_clone(path, mapping):
 #             continue
 #     return codes, asts, names, targets
 
-def parse_for_completion(source_path, target_path, ast_path=None, nl_path=None):
+def parse_for_completion(source_path, target_path):
     """
     Load and parse for code completion.
 
