@@ -210,9 +210,6 @@ LICENSE
 *.html
 
 
-CODE-SPT-Code/kube2
-
-kube/
 deploy-spt-code/
 
 

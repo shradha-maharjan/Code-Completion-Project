@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job09-train-mlm-model-gp-engine-unoselab01
+spec:
+  ttlSecondsAfterFinished: 86400 # a day
+  template:
+    spec:
+      containers:
+        - name: job-mlm-model-train-container
+          image: gitlab-registry.nrp-nautilus.io/msong/research/env_mlm:v1
+          workingDir: /data
+          command: ["/bin/bash","-c"]
+          args: ["cd /data;
+                source activate env_mlm;
+                pip install psutil gputil;
+                accelerate env;
+                accelerate launch --multi_gpu --num_processes=${NGPU} train_mlm.py -train ${TRAIN} -test ${TEST} -ngpu ${NGPU} -epoch ${EPOCH} -logfile ${LOGFILE}"]
+                # python py_ver.py"]
+          env:
+            - name: TRAIN
+              value: "100000"
+            - name: TEST
+              value: "10000"
+            - name: NGPU
+              value: "8"
+            - name: EPOCH
+              value: "10"
+            - name: LOGFILE
+              value: "log.txt"
+          volumeMounts:
+            - name: pvc-gp-engine-unoselab01
+              mountPath: /data
+          resources:
+            limits:
+              memory: 32Gi
+              cpu: "4"
+              nvidia.com/gpu: 8
+              ephemeral-storage: 48Gi
+            requests:
+              memory: 32Gi
+              cpu: "4"
+              nvidia.com/gpu: 8
+              ephemeral-storage: 48Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+      volumes:
+        - name: pvc-gp-engine-unoselab01
+          persistentVolumeClaim:
+            claimName: pvc-gp-engine-unoselab01
+      restartPolicy: Never
+  backoffLimit: 1
