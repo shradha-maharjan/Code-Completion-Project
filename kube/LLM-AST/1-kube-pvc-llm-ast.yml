@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-shradha-sptcode-gp-engine-unoselab01
+  name: pvc-shradha-llmast-gp-engine-unoselab01
 spec:
   storageClassName: rook-cephfs-central
   accessModes:

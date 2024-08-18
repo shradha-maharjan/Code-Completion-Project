@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job04-llmast-shradha-gp-engine-unoselab01
+spec:
+  ttlSecondsAfterFinished: 86400 # a day
+  template:
+    spec:
+      containers:
+        - name: job-llmast-model-train-container
+          image: gitlab-registry.nrp-nautilus.io/msong/research/env_mlm:v1
+          workingDir: /data
+          command: ["sh", "-c"]
+          args: ["cd /data;
+              source activate env_mlm;
+              conda install -c conda-forge tensorboard;
+              pip install psutil gputil dataclasses chardet rouge==1.0.0 typing antlr4-tools;
+              pip install tree_sitter==0.19.0 antlr4-python3-runtime==4.9.2 nltk;
+              cd /data/deploy-spt-code/spt-code/sources;
+              python main.py --do-pre-train --pre-train-tasks cap --batch-size 16 --eval-batch-size 32 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 1 --n-epoch-pre-train 1 --pre-train-subset-ratio 0.1 --parse-subset-ratio 0.01 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\""]
+          volumeMounts:
+            - name: pvc-shradha-llmast-gp-engine-unoselab01
+              mountPath: /data
+          resources:
+            limits:
+              memory: 32Gi
+              cpu: "4"
+              nvidia.com/gpu: 8
+              ephemeral-storage: 48Gi
+            requests:
+              memory: 32Gi
+              cpu: "4"
+              nvidia.com/gpu: 8
+              ephemeral-storage: 48Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+      volumes:
+        - name: pvc-shradha-llmast-gp-engine-unoselab01
+          persistentVolumeClaim:
+            claimName: pvc-shradha-llmast-gp-engine-unoselab01
+      restartPolicy: Never
+  backoffLimit: 1
