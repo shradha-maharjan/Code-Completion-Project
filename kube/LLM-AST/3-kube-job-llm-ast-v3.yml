@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job13-llmast-shradha-gp-engine-unoselab01
+  name: job21-llmast-shradha-gp-engine-unoselab01
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -11,29 +11,33 @@ spec:
           image: gitlab-registry.nrp-nautilus.io/msong/research/env_mlm:v1
           workingDir: /data
           command: ["sh", "-c"]
-          args: ["cd /data;
-              source activate env_mlm;
-              python -c "import torch; print(torch.__version__)";
+          args:
+            - |
+              cd /data;
+              python -m venv old_version_env;
+              source old_version_env/bin/activate;
+              source activate old_version_env;
+              pip install scikit-learn==1.3.2 transformers==4.36.2 datasets==2.16.1 sentencepiece==0.1.99 sacremoses==0.1.1 accelerate==0.25.0 torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 prettytable==3.10.0;
               pip install nltk psutil gputil dataclasses chardet rouge==1.0.0 typing antlr4-tools;
               conda install -c conda-forge tensorboard;
               pip install tensorboardX;
               pip show transformers torch;
               pip check;
-              pip install tree_sitter==0.21.0; 
+              pip install tree_sitter==0.21.0;
               pip install antlr4-python3-runtime==4.9.2;
               cd /data/deploy-spt-code/spt-code/sources;
-              python main.py --do-pre-train --pre-train-tasks cap --batch-size 16 --eval-batch-size 32 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 1 --n-epoch-pre-train 1 --pre-train-subset-ratio 0.1 --parse-subset-ratio 0.01 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\""]
+              python main.py --do-pre-train --pre-train-tasks cap --batch-size 16 --eval-batch-size 32 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 1 --n-epoch-pre-train 1 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type "jdt";
           volumeMounts:
             - name: pvc-shradha-llmast-gp-engine-unoselab01
               mountPath: /data
           resources:
             limits:
-              memory: 32Gi
+              memory: 64Gi #32Gi
               cpu: "4"
               nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
             requests:
-              memory: 32Gi
+              memory: 64Gi #32Gi
               cpu: "4"
               nvidia.com/gpu: 8
               ephemeral-storage: 48Gi

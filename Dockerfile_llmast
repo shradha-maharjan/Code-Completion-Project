@@ -1,0 +1,58 @@
+ARG CUDA=11.7
+FROM nvidia/cuda:${CUDA}.1-cudnn8-devel-ubuntu20.04 AS build
+ARG CUDA
+
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      build-essential \
+      cmake \
+      cuda-command-line-tools-${CUDA/./-} \
+      git \
+      tzdata \
+      wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q -P /tmp https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda \
+    && rm /tmp/Miniconda3-latest-Linux-x86_64.sh
+ENV PATH="/opt/conda/bin:$PATH"
+
+RUN conda install -c conda-forge mamba && mamba create -y -n env_llmast -c pytorch -c nvidia -c defaults -c conda-forge -c bioconda \
+    python=3.11.7 pip && conda clean -ya
+
+RUN echo "source activate env_llmast" > ~/.bashrc && \
+    /bin/bash -c "source activate env_llmast && pip install scikit-learn==1.3.2 transformers==4.36.2 datasets==2.16.1 sentencepiece==0.1.99 sacremoses==0.1.1 accelerate==0.25.0 torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 prettytable==3.10.0;"
+
+ENV PATH /opt/conda/envs/env_llmast/bin:$PATH
+
+# COPY start.sh /start.sh
+# RUN chmod +x /start.sh
+# ENTRYPOINT ["/start.sh"]
+
+# COPY scripts/py_ver.py /py_ver.py
+# COPY scripts/train_mlm.py /train_mlm.py
+# ENTRYPOINT ["/bin/bash", "-c", "source activate env_llmast && accelerate launch --multi_gpu --num_processes 1 train_mlm.py -train 1000 -test 100 -ngpu 1 -epoch 3 -logfile log.txt"]
+
+# sudo docker run --rm --name my-env-mlm-container env_llmast:v1
+# ------------------------------------------------------------------- 
+# 
+# ------------------------------------------------------------------- 
+# sudo docker login ghcr.io
+# sudo docker tag env_llmast:v1 ghcr.io/unose/env_llmast:v1
+# sudo docker image push ghcr.io/unose/env_llmast:v1
+# sudo docker pull ghcr.io/unose/env_llmast:v1
+# sudo docker run ghcr.io/unose/env_llmast:v1
+# 
+# ------------------------------------------------------------------- 
+# In google cloud, needed to push to GHCR (failed for gitlab-registry) 
+# ------------------------------------------------------------------- 
+# docker pull ghcr.io/unose/env_llmast:v1
+# 
+# docker tag ghcr.io/unose/env_llmast:v1 gitlab-registry.nrp-nautilus.io/msong/research/env_llmast:v1
+# 
+# echo "glpat-R_5t-scfxqEYQBwtRseL" | docker login gitlab-registry.nrp-nautilus.io -u msong --password-stdin
+# 
+# docker push gitlab-registry.nrp-nautilus.io/msong/research/env_llmast:v1
+# 
+# ----------------------------------------------------------------------

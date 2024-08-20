@@ -1,0 +1,5 @@
+/target/
+# Unignore
+!pom-mac.xml
+!pom-ubuntu.xml
+!pom-win.xml

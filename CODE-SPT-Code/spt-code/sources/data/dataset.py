@@ -68,18 +68,18 @@ class CodeDataset(Dataset):
                 # compare_and_save_sources(self,sources_from_file, self.asts)
                 compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
 
-                # sample_size = int(len(self.codes) * 0.5)
-                # sample_indices = random.sample(range(len(self.codes)), k=sample_size)
+                sample_size = int(len(self.codes) * 0.25)
+                sample_indices = random.sample(range(len(self.codes)), k=sample_size)
 
-                # self.codes = [self.codes[i] for i in sample_indices]
-                # self.names = [self.names[i] for i in sample_indices]
-                # self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
-                # self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
-                # self.only_names = [self.only_names[i] for i in sample_indices]
-                # # self.docs = [self.docs[i] for i in sample_indices]
-                # # self.languages = [self.languages[i] for i in sample_indices]
-                # self.sources = [self.sources[i] for i in sample_indices]
-                # self.asts = [self.asts[i] for i in sample_indices]
+                self.codes = [self.codes[i] for i in sample_indices]
+                self.names = [self.names[i] for i in sample_indices]
+                self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
+                self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
+                self.only_names = [self.only_names[i] for i in sample_indices]
+                # self.docs = [self.docs[i] for i in sample_indices]
+                # self.languages = [self.languages[i] for i in sample_indices]
+                self.sources = [self.sources[i] for i in sample_indices]
+                self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)
 
             # # Optional saving of source-AST pairs for verification
@@ -204,13 +204,13 @@ class CodeDataset(Dataset):
 
                     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path)
                 #Sample 50% of the data
-                # sample_size = int(len(self.codes) * 0.5)
-                # sample_indices = random.sample(range(len(self.codes)), k=sample_size)
+                sample_size = int(len(self.codes) * 0.25)
+                sample_indices = random.sample(range(len(self.codes)), k=sample_size)
 
-                # self.codes = [self.codes[i] for i in sample_indices]
-                # self.asts = [self.asts[i] for i in sample_indices]
-                # self.names = [self.names[i] for i in sample_indices]
-                # self.targets = [self.targets[i] for i in sample_indices]
+                self.codes = [self.codes[i] for i in sample_indices]
+                self.asts = [self.asts[i] for i in sample_indices]
+                self.names = [self.names[i] for i in sample_indices]
+                self.targets = [self.targets[i] for i in sample_indices]
                 
                 assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
