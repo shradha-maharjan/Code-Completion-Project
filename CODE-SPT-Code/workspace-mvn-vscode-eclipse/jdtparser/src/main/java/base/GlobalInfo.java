@@ -8,6 +8,7 @@ public interface GlobalInfo {
 
    String DIR_INPUT = "input";
    String INPUT_JAVA_SMALL_JSON = DIR_INPUT + "/java-small.val.json";// "/valid-test.json";//
+   String INPUT_DATA = DIR_INPUT + "/test.txt";
    // String DIR_TRAINING_DATA = DIR_INPUT + "training";
    String DIR_JAVA_SMALL = "java-small";
 
@@ -15,6 +16,7 @@ public interface GlobalInfo {
    // ### Output : Raw methods corresponding to masked methods of input 1
    //
    String DIR_OUTPUT = "output/";
+   String OUTPUT_DATA = "MethodCalls.txt";
    String OUTPUT_JAVA_SMALL_JSON_SER = "java-small-train-json.ser";
    String OUTPUT_UNPARSED = DIR_OUTPUT + "nok-unparsed-train.txt";
    String OUTPUT_PARSE_FAILED = DIR_OUTPUT + "nok-parse-failed-train.txt";

@@ -46,7 +46,8 @@ echo "###########################################"
 java -version
 
 #BASE_PATH="/home/user1-selab3/Documents/research-spt-code-data/workspace-mvn-vscode-eclipse/jdtparser-sptcode-data/"
-BASE_PATH="/home/user1-selab3/work-dream/research-dream/CODE/research-dream-spt-code-data/workspace-mvn-vscode-eclipse/jdtparser-sptcode-data"
+#BASE_PATH="/home/user1-selab3/work-dream/research-dream/CODE/research-dream-spt-code-data/workspace-mvn-vscode-eclipse/jdtparser-sptcode-data"
+BASE_PATH="/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser"
 if [ ! -d "$BASE_PATH" ]; then
   echo "Error: Base path '$BASE_PATH' does not exist."
   exit 1
@@ -62,7 +63,8 @@ fi
 echo "###########################################"
 echo "Java version '$JAVA_VERSION' is compatible."
 
-JAR_FILE="$BASE_PATH/target/jdtparser-sptcode-data-jar-with-dependencies.jar"
+# JAR_FILE="$BASE_PATH/target/jdtparser-sptcode-data-jar-with-dependencies.jar"
+JAR_FILE="$BASE_PATH/target/jdtparser-jar-with-dependencies.jar"
 
 # Ensure the JAR file exists
 if [ ! -f "$JAR_FILE" ]; then
@@ -78,7 +80,9 @@ echo "Using CLASSPATH: $CLASSPATH"
 echo "Running MainParserJavaSmallJson with parameters: $@"
 #java -cp "$CLASSPATH" rawmethod.gentraindata.MainParserJavaSmallJson "$@"
 #java -cp "$CLASSPATH" rawmethod.genast.ASTExprGenerator "$@"
-java -cp "$CLASSPATH" rawmethod.genast.TokenCounter "$@"
+# java -cp "$CLASSPATH" rawmethod.genast.TokenCounter "$@" -recent
+
+java -cp "$CLASSPATH" dataflow.MainDataFlowAnalysis "$@"
 
 #java -cp "$CLASSPATH" rawmethod.genast.ExtractNL "$@"
 #java -cp "$CLASSPATH" rawmethod.gentraindata.MainParserJavaSmallJson "$@"

@@ -2,14 +2,15 @@
 
 POD_NAME="shradha-llmast-gp-engine-unoselab01-pod01"
 SCRIPT_PATH="/data"
-JOB_YAML="./3-kube-job-llm-ast-v2.yml"
-LLM_AST_DIR="/home/user1-selab3/Documents/research-shradha/deploy-spt-code"
+JOB_YAML="./3-kube-job-llm-ast-v3.yml"
+TAR_File="/home/user1-selab3/Documents/research-shradha/llm_ast_code.tar.gz"
 # PYTHON_PROGRAM=""
 # PYTHON_PROGRAM="py_ver.py"
 
 echo "----------------------------------------------------------------------------"
-echo "Copying $LLM_AST_DIR to the pod $POD_NAME"
-kubectl cp $LLM_AST_DIR $POD_NAME:$SCRIPT_PATH/
+echo "Copying $TAR_File to the pod $POD_NAME"
+kubectl cp $TAR_File $POD_NAME:$SCRIPT_PATH/
+#kubectl exec -it $POD_NAME -- tar -xzf $SCRIPT_PATH/llm_ast_sptcode.tar.gz -C $SCRIPT_PATH
 # kubectl cp ./scripts/$PYTHON_PROGRAM $POD_NAME:$SCRIPT_PATH/$PYTHON_PROGRAM
 echo "----------------------------------------------------------------------------"
 echo "----------------------------------------------------------------------------"
