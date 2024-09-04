@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: shradha-llmast-gp-engine-unoselab01-pod01
+  name: shradha-llmast-gp-engine-unoselab01-pod04
 spec:
   automountServiceAccountToken: false
   affinity:
@@ -19,10 +19,10 @@ spec:
     command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
     resources:
       limits:
-        memory: 16Gi #12Gi
+        memory: 12Gi
         cpu: 2
       requests:
-        memory: 16Gi #10Gi
+        memory: 10Gi
         cpu: 2
     volumeMounts:
     - mountPath: /data

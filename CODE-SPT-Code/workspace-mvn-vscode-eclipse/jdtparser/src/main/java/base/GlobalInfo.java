@@ -16,7 +16,7 @@ public interface GlobalInfo {
    // ### Output : Raw methods corresponding to masked methods of input 1
    //
    String DIR_OUTPUT = "output/";
-   String OUTPUT_DATA = "MethodCalls.txt";
+   String OUTPUT_DATA = "Outputs.txt";
    String OUTPUT_JAVA_SMALL_JSON_SER = "java-small-train-json.ser";
    String OUTPUT_UNPARSED = DIR_OUTPUT + "nok-unparsed-train.txt";
    String OUTPUT_PARSE_FAILED = DIR_OUTPUT + "nok-parse-failed-train.txt";
