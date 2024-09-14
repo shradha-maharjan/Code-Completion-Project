@@ -1,31 +1,65 @@
 #!/bin/bash
 
-# Namespace to clean up
-NAMESPACE="pvc-shradha-llmast-gp-engine-unoselab01"
+Namespace to clean up
+NAMESPACE="pvc-shradha-llmast-gp-engine-unoselab03"
 
-# echo "Deleting all jobs in namespace $NAMESPACE..."
-# kubectl delete jobs --all -n $NAMESPACE
+echo "Deleting all jobs in namespace $NAMESPACE..."
+kubectl delete jobs --all -n $NAMESPACE
 
 echo "Deleting all pods in namespace $NAMESPACE..."
 kubectl delete pods --all -n $NAMESPACE
 
-# Delete all PVCs in the namespace
-# echo "Deleting all PVCs in namespace $NAMESPACE..."
-# kubectl delete pvc --all -n $NAMESPACE
+Delete all PVCs in the namespace
+echo "Deleting all PVCs in namespace $NAMESPACE..."
+kubectl delete pvc --all -n $NAMESPACE
 
-# Uncomment the following lines if you also want to delete PVs
-# echo "Deleting all PVs..."
-# kubectl delete pv --all
+Uncomment the following lines if you also want to delete PVs
+echo "Deleting all PVs..."
+kubectl delete pv --all
 
 echo "Cleanup completed."
 
 kubectl get ns | grep uno
 echo "----------------------------------------------------------------------------"
-# kubectl apply -f 1-kube-pvc-llm-ast.yml
-# kubectl get pvc
+kubectl apply -f 1-kube-pvc-llm-ast.yml
+kubectl get pvc
 echo "----------------------------------------------------------------------------"
 kubectl apply -f 2-kube-pod-llm-ast.yml
 kubectl get pods
 echo "----------------------------------------------------------------------------"
 
 # kubectl exec  --stdin --tty <POD NAME> -- /bin/bash
+
+
+
+# !/bin/bash
+
+# # Namespace to clean up
+# NAMESPACE="pvc-shradha-llmast-gp-engine-unoselab02"
+
+# # echo "Deleting all jobs in namespace $NAMESPACE..."
+# # kubectl delete jobs --all -n $NAMESPACE
+
+# echo "Deleting all pods in namespace $NAMESPACE..."
+# kubectl delete pods --all -n $NAMESPACE
+
+# # Delete all PVCs in the namespace
+# # echo "Deleting all PVCs in namespace $NAMESPACE..."
+# # kubectl delete pvc --all -n $NAMESPACE
+
+# # Uncomment the following lines if you also want to delete PVs
+# # echo "Deleting all PVs..."
+# # kubectl delete pv --all
+
+# echo "Cleanup completed."
+
+# # kubectl get ns | grep uno
+# # echo "----------------------------------------------------------------------------"
+# # kubectl apply -f 1-kube-pvc-llm-ast.yml
+# # kubectl get pvc
+# echo "----------------------------------------------------------------------------"
+# kubectl apply -f 2-kube-pod-llm-ast.yml
+# kubectl get pods
+# echo "----------------------------------------------------------------------------"
+
+# # kubectl exec  --stdin --tty <POD NAME> -- /bin/bash

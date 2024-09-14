@@ -1,7 +1,42 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: shradha-llmast-gp-engine-unoselab01-pod-new01
+# spec:
+#   automountServiceAccountToken: false
+#   affinity:
+#     nodeAffinity:
+#       requiredDuringSchedulingIgnoredDuringExecution:
+#         nodeSelectorTerms:
+#         - matchExpressions:
+#           - key: topology.kubernetes.io/region
+#             operator: In
+#             values:
+#             - us-central 
+#   containers:
+#   - name: pod-name-sso
+#     image: ubuntu:20.04
+#     command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
+#     resources:
+#       limits:
+#         memory: 12Gi
+#         cpu: 2
+#       requests:
+#         memory: 10Gi
+#         cpu: 2
+#     volumeMounts:
+#     - mountPath: /data
+#       name: data-shradha-llmast-gp-engine-unoselab02
+#   volumes:
+#     - name: data-shradha-llmast-gp-engine-unoselab02
+#       persistentVolumeClaim:
+#         claimName: pvc-shradha-llmast-gp-engine-unoselab02
+
+
 apiVersion: v1
 kind: Pod
 metadata:
-  name: shradha-llmast-gp-engine-unoselab01-pod04
+  name: shradha-llmast-gp-engine-unoselab03-pod01
 spec:
   automountServiceAccountToken: false
   affinity:
@@ -25,9 +60,9 @@ spec:
         memory: 10Gi
         cpu: 2
     volumeMounts:
-    - mountPath: /data
-      name: data-shradha-llmast-gp-engine-unoselab01
+    - mountPath: /datasmall
+      name: data-shradha-llmast-gp-engine-unoselab03
   volumes:
-    - name: data-shradha-llmast-gp-engine-unoselab01
+    - name: data-shradha-llmast-gp-engine-unoselab03
       persistentVolumeClaim:
-        claimName: pvc-shradha-llmast-gp-engine-unoselab01
+        claimName: pvc-shradha-llmast-gp-engine-unoselab03

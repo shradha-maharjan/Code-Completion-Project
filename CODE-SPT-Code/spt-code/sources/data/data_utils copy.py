@@ -253,10 +253,10 @@ def parse_json_file(file, lang):
             name = trim_method_name(data['func_name'])
             source = data['code'].strip()
             source = remove_comments_and_docstrings(source, lang)
-            source = replace_string_literal(source)
-            code = replace_string_literal(' '.join(data['code_tokens']))
-            # source = source
-            # code = ' '.join(data['code_tokens'])
+            # source = replace_string_literal(source)
+            # code = replace_string_literal(' '.join(data['code_tokens']))
+            source = source
+            code = ' '.join(data['code_tokens'])
 
             sources.append(source)
             codes.append(code)
@@ -512,30 +512,30 @@ def tokenize_source(source, lang, use_regular=False):
 
     """
     if use_regular:
-        code = replace_string_literal(regular_tokenize(source))
-        # code = regular_tokenize(source)
+        # code = replace_string_literal(regular_tokenize(source))
+        code = regular_tokenize(source)
         return trim_spaces(code)
     if lang == enums.LANG_PYTHON:
         tokens = tokenize.generate_tokens(StringIO(source).readline)
         code = ' '.join([token.string for token in tokens])
-        code = replace_string_literal(code)
+        # code = replace_string_literal(code)
         return trim_spaces(code)
     if lang in [enums.LANG_JAVA, enums.LANG_JAVASCRIPT, enums.LANG_PHP, enums.LANG_GO]:
         input_stream = InputStream(source)
         lexer = MAPPING_LANG_LEXER[lang](input_stream)
         tokens = [token.text for token in lexer.getAllTokens()]
-        code = replace_string_literal(' '.join(tokens))
-        # code = ' '.join(tokens)
+        # code = replace_string_literal(' '.join(tokens))
+        code = ' '.join(tokens)
         return trim_spaces(code)
     elif lang == enums.LANG_RUBY:
         tokens = MAPPING_LANG_LEXER[lang].get_pure_tokens(source)
-        code = replace_string_literal(' '.join([token[0] for token in tokens]))
-        # code = ' '.join([token[0] for token in tokens])
+        # code = replace_string_literal(' '.join([token[0] for token in tokens]))
+        code = ' '.join([token[0] for token in tokens])
         return trim_spaces(code)
     else:
         # TODO: c# tokenize
-        code = replace_string_literal(regular_tokenize(source))
-        # code = regular_tokenize(source)
+        # code = replace_string_literal(regular_tokenize(source))
+        code = regular_tokenize(source)
         return trim_spaces(code)
 
 

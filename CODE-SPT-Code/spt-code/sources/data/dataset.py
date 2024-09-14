@@ -54,18 +54,24 @@ class CodeDataset(Dataset):
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir)
             
+            sample_size = int(len(self.codes) * 0.25)
+            sample_indices = random.sample(range(len(self.codes)), k=sample_size)
+
+            self.codes = [self.codes[i] for i in sample_indices]
+            self.names = [self.names[i] for i in sample_indices]
+            self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
+            self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
+            self.only_names = [self.only_names[i] for i in sample_indices]
+            # self.docs = [self.docs[i] for i in sample_indices]
+            # self.languages = [self.languages[i] for i in sample_indices]
+            self.sources = [self.sources[i] for i in sample_indices]
+            self.asts = [self.asts[i] for i in sample_indices]
             if args.ast_type == "jdt":
                 self.jdt_file_path = args.jdt_file_path
                 print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
                 # Unpacking both sources and ASTs returned by the method
                 sources_from_file, self.asts  = load_ast_from_file_jdt(self.jdt_file_path, context = 'load_dataset')
 
-                # # Save loaded sources and ASTs to a file on a single line
-                # with open('loaded_data.txt', 'w') as file:
-                #     for source, ast in zip(sources_from_file, self.asts):
-                #         file.write(f"Loaded source: {source}, Loaded AST: {ast}\n")
-                    
-                # compare_and_save_sources(self,sources_from_file, self.asts)
                 compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
 
                 sample_size = int(len(self.codes) * 0.25)
@@ -81,21 +87,6 @@ class CodeDataset(Dataset):
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)
-
-            # # Optional saving of source-AST pairs for verification
-            # print("Saving source-AST pairs for verification...")
-            # self.save_source_ast_pairs()
-
-            # comparing two results b/w JDT result and self.sourses
-            # for i in jdt_result, self.sources:
-            #   code, ast = jdt_result[i]
-            #   src = self.sources[i]
-            #   code = remove_whitespaces(lowercase(code))
-            #   src = remove_whitespaces(lowercase(src))
-            #   if compare(code, src) == False:
-            #      save(code, src, ast)
-            
-            # sys.exit(0)
 
         # load fine-tuning dataset
         else:
@@ -175,18 +166,7 @@ class CodeDataset(Dataset):
                 assert len(self.codes_1) == len(self.asts_1) == len(self.names_1) \
                        == len(self.codes_2) == len(self.asts_2) == len(self.names_2) == len(self.labels)
                 self.size = len(self.codes_1)
-            #completion old
-            # elif task == enums.TASK_COMPLETION:
-            #     assert split in ['train', 'valid', 'test']
-            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
-            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
-            #     self.paths['source'] = source_path
-            #     self.paths['target'] = target_path
-            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
-            #                                                                         target_path=target_path)
-            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-            #     self.size = len(self.codes)
+            #completion 
             elif task == enums.TASK_COMPLETION:
                 assert split in ['train', 'valid', 'test']
                 if args.ast_type == "jdt":
@@ -203,6 +183,8 @@ class CodeDataset(Dataset):
                     self.paths['target'] = target_path
 
                     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path)
+
+                    assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 #Sample 50% of the data
                 sample_size = int(len(self.codes) * 0.25)
                 sample_indices = random.sample(range(len(self.codes)), k=sample_size)
@@ -212,112 +194,8 @@ class CodeDataset(Dataset):
                 self.names = [self.names[i] for i in sample_indices]
                 self.targets = [self.targets[i] for i in sample_indices]
                 
-                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 self.size = len(self.codes)
 
-                # self.source_target_file_path = args.source_target_file_path
-                # self.asts_nl_file_path = args.asts_nl_file_path
-                # source_path = os.path.join(self.source_target_file_path, f'source_tokenized_methods_{split}.txt')
-                # target_path = os.path.join(self.source_target_file_path, f'target_tokenized_methods_{split}.txt')
-                # self.paths['source'] = source_path
-                # self.paths['target'] = target_path
-                # ast_path = os.path.join(self.asts_nl_file_path, f'raw_methods_asts_{split}.txt')
-                # nl_path = os.path.join(self.asts_nl_file_path, f'NL_methods_{split}.txt')
-                # set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-
-                # # Update suggestion.
-                # # if JDT then call "load"
-                # # else call "org func"
-
-
-                # self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path, ast_path=ast_path, nl_path=nl_path)
-                # assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-                # self.size = len(self.codes)
-                # print("size:", self.size)
-                # print("Codes:", self.codes)
-                # print("Targets:", self.targets)
-                # print("Asts:", self.asts)
-                # print("Names:", self.names)
-
-            #     print("parsing for debug:")
-            #     source_path_debug = os.path.join(self.dataset_dir, f'source_methods_valid.txt')
-            #     target_path_debug = os.path.join(self.dataset_dir, f'target_methods_valid.txt')
-            #     self.paths['source'] = source_path
-            #     self.paths['target'] = target_path
-            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path_debug,
-            #                                                                            target_path=target_path_debug)
-            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-            #     self.size = len(self.codes)
-            #     print("size:",self.size)
-            #     print("Codes:", self.codes)
-            #     print("Targets debug:", self.targets)
-
-            # elif task == enums.TASK_COMPLETION:
-            #     assert split in ['train', 'valid', 'test']
-            #     source_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.source.txt')
-            #     target_path = os.path.join(self.dataset_dir, f'data.TargetType.seq.{split}.target.txt')
-            #     self.paths['source'] = source_path
-            #     self.paths['target'] = target_path
-            #     set_args(args=args)  # Passing args
-            #     self.codes, _, self.names, self.targets = parse_for_completion(source_path=source_path,
-            #                                                                 target_path=target_path)
-                
-            #     if args.ast_type == "jdt":
-            #         self.ast_file_path = os.path.join(args.ast_file_path, f'finetune_methods_{split}.txt')
-            #         print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
-            #         # Compare and get indices of matches
-            #         matched_indices = compare_similarity(self.ast_file_path, self.codes)
-            #         # Load ASTs only for matched indices
-            #         self.asts = load_ast_from_file_jdt(self.ast_file_path, matched_indices, context='parse_for_completion')
-            #         print(len(self.codes), len(self.asts), len(self.names), len(self.targets), "**")
-            #         assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-
-#recent modifications
-            # elif task == enums.TASK_COMPLETION:
-            #     assert split in ['train', 'valid', 'test']
-            #     source_path = os.path.join(self.dataset_dir, f'source_methods_{split}.txt')
-            #     target_path = os.path.join(self.dataset_dir, f'target_methods_{split}.txt')
-            #     self.paths['source'] = source_path
-            #     self.paths['target'] = target_path
-            #     set_args(args=args) # Added to pass args, myoungkyu song, 03/31/2024
-            #     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path,
-            #                                                                            target_path=target_path)
-                
-            #     print(len(self.codes))
-            #     print(len(self.asts))
-            #     print(len(self.names))
-            #     print(len(self.targets))
-            #     print("**")
-            #     if args.ast_type == "jdt":
-            #         self.ast_file_path = os.path.join(args.ast_file_path, f'raw_methods_asts_{split}.txt')  # Customize path as needed
-            #         print(f"JDT flag is set, loading ASTs from: {self.ast_file_path} for {split} split")
-            #         #sources_from_file, self.asts = load_ast_from_file_jdt(self.ast_file_path, context = 'parse_for_completion')
-            #         self.asts = load_lines_from_file(self.ast_file_path)
-                    
-            #         #compare_and_save_sources(self, sources_from_file, self.asts, 'codes', 'mismatched_sources_completion.txt')
-            #     assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-            #     self.size = len(self.codes)
-
-            #     # JDT's AST expression with 6 text files in CODE-SPT-Code/dataset/fine_tune/completion
-            #     # Given 'split', self.asts can be updated.
-            #     # To parse data.TargetType.seq.test.source.txt (INPUT), find the corresponding raw java methods.
-            #     # HOW
-            #     # for method_raw in methods_of_raw_data:
-            #     #    for input_method in methods_of_INPUT:
-            #     #        when comparing 2 strings, use similarity values (threshold .7 .8 .9 ...) https://www.baeldung.com/java-apache-commons-text
-            #     #        compare (remove_whitecase_undersc(lowercases(method_raw)), remove_whitecase_undersc(input_method)) == true
-            #     #           return jdt_ast(method_raw)
-            #     #  
-            #     # self.asts = self.load_ast_from_file_jdt(self.jdt_file_path)
-            #     # Do the similar logic.
-
-            #     print(len(self.codes))
-            #     print(len(self.asts))
-            #     print(len(self.names))
-            #     print(len(self.targets))
-            #     # assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
-            #     self.size = len(self.codes)
             # bug fix
             elif task == enums.TASK_BUG_FIX:
                 assert split in ['train', 'valid', 'test']

@@ -152,12 +152,12 @@ class DatasetArguments:
     )
 
     source_target_file_path: str = field(
-        default='/home/user1-selab3/Documents/data_shradha/spt-code-new-data/tokenized_no_javakw',
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data/gen',
         metadata={'help': 'Path to JDT AST file'}
     )
 
     asts_nl_file_path: str = field(
-        default='/home/user1-selab3/Documents/data_shradha/spt-code-new-data',
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data',
         metadata={'help': 'Path to JDT AST file'}
     )
 
