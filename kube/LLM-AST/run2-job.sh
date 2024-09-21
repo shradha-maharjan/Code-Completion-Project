@@ -1,11 +1,11 @@
-# # #!/bin/bash
+# #!/bin/bash
 
 
 # POD_NAME="shradha-llmast-gp-engine-unoselab01-pod-new01"
 # SCRIPT_PATH="/data"
 # JOB_YAML="./3-kube-job-llm-ast-v2.yml"
 # #JOB_YAML="./3-kube-job-llm-ast-v3.yml"
-# TAR_File="/home/user1-selab3/Documents/research-shradha/llm_ast_code_gen_small.tar.gz"
+# TAR_File="/home/user1-selab3/Documents/research-shradha/llm_asnongen_large_epoch.tar.gz"
 # # PYTHON_PROGRAM=""
 # # PYTHON_PROGRAM="py_ver.py"
 
@@ -29,7 +29,7 @@
 POD_NAME="shradha-llmast-gp-engine-unoselab03-pod01"
 SCRIPT_PATH="/datasmall"
 JOB_YAML="./3-kube-job-llm-ast.yml"
-LLM_AST_DIR="/home/user1-selab3/Documents/research-shradha/llm_ast_code_gen_mid.tar.gz"
+LLM_AST_DIR="/home/user1-selab3/Documents/research-shradha/llm_asnongen_large_epoch_nojava.tar.gz"
 # PYTHON_PROGRAM=""
 # PYTHON_PROGRAM="py_ver.py"
 

@@ -232,16 +232,16 @@ class CodeDataset(Dataset):
                 return self.codes[index], other_ast, self.names[index], 0
         # mass
         elif self.task == enums.TASK_MASS:
-            print(f'[DBG] index: {index}')
+            # print(f'[DBG] index: {index}')
 
             code_tokens = self.codes[index].split()
             mask_len = int(self.args.mass_mask_ratio * len(code_tokens))
             mask_start = random.randint(0, len(code_tokens) - mask_len)
             mask_tokens = code_tokens[mask_start: mask_start + mask_len]
             input_tokens = code_tokens[:mask_start] + [Vocab.MSK_TOKEN] + code_tokens[mask_start + mask_len:]
-            print(f'[DBG] code {code_tokens}')
-            print(f'[DBG] input {input_tokens}')
-            print(f'[DBG] mask {mask_tokens}')
+            # print(f'[DBG] code {code_tokens}')
+            # print(f'[DBG] input {input_tokens}')
+            # print(f'[DBG] mask {mask_tokens}')
             return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
         # mnp
         elif self.task == enums.TASK_METHOD_NAME_PREDICTION:

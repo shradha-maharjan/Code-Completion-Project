@@ -117,6 +117,12 @@ class RuntimeArguments:
                   'choices': ['tree-sitter', 'jdt']}
     )
 
+    dataset_size: str = field(
+        default='small',
+        metadata={'help': 'Sample dataset size',
+                  'choices': ['mid', 'large']}
+    )
+
 @dataclass
 class DatasetArguments:
     """Arguments for dataset loading."""
@@ -152,7 +158,7 @@ class DatasetArguments:
     )
 
     source_target_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data/gen',
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data/tokenized_methods_with_javakw',
         metadata={'help': 'Path to JDT AST file'}
     )
 

@@ -12,8 +12,8 @@ from .asts.ast_parser import generate_single_ast_nl, split_identifier,parse_ast,
 import enums
 from data.vocab import Vocab
 # from data.antlr_parsers.go.GoLexer import GoLexer
-from data.antlr_parsers.java.Java8Lexer import Java8Lexer
-# from data.antlr_parsers.python3.Python3Lexer import Python3Lexer
+# from data.antlr_parsers.java.Java8Lexer import Java8Lexer
+from data.antlr_parsers.python3.Python3Lexer import Python3Lexer
 # from data.antlr_parsers.php.PhpLexer import PhpLexer
 # from data.antlr_parsers.javascript.JavaScriptLexer import JavaScriptLexer
 #from data.code_tokenizers.ruby.ruby_tokenizer import RubyTokenizer
@@ -25,8 +25,8 @@ NON_SPACE_MATCHING_PATTERN = re.compile(r'\S')
 
 MAPPING_LANG_LEXER = {
     # enums.LANG_GO: GoLexer,
-    enums.LANG_JAVA: Java8Lexer#,
-    # enums.LANG_PYTHON: Python3Lexer,
+    #enums.LANG_JAVA: Java8Lexer#,
+    enums.LANG_PYTHON: Python3Lexer#,
     # enums.LANG_PHP: PhpLexer,
     # enums.LANG_JAVASCRIPT: JavaScriptLexer,
     #enums.LANG_RUBY: RubyTokenizer()
@@ -223,7 +223,7 @@ def parse_json_file(file, lang):
     docs = []
 
     # #######################################################################
-    # Updated to reduce the time to parse, myoungkyu song, 03/23/2024
+    #Updated to reduce the time to parse, myoungkyu song, 03/23/2024
     if main_args.parse_subset_ratio:
         lines_to_extract = 0
         line_counter = 0
@@ -306,10 +306,10 @@ def iter_pre_train_dataset_files(lang_dir, lang):
     #     for file in iter_all_files(base=lang_dir):
     #         if file.endswith('.jsonl'):
     #             return [file]
-    # if lang in [enums.LANG_PYTHON]:
-    #     return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
-    if lang in [enums.LANG_JAVA]:
+    if lang in [enums.LANG_PYTHON]:
         return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
+    # if lang in [enums.LANG_JAVA]:
+    #     return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
     return []
 
 
@@ -330,7 +330,7 @@ def load_pre_train_dataset(file, lang):
             - List of doc strings, not every sample has it
 
     """
-    if lang in [enums.LANG_JAVA]:
+    if lang in [enums.LANG_PYTHON]:
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
@@ -394,7 +394,7 @@ def load_dataset_from_dir(dataset_dir):
 
     for file in os.listdir(dataset_dir):
 
-        path = os.path.join(dataset_dir, 'java')
+        path = os.path.join(dataset_dir, 'python')
         if os.path.isfile(path):
             continue
 
@@ -677,8 +677,8 @@ def parse_for_summarization(source_path, code_path, nl_path, lang):
     paths = {'source': source_path}
     logger.info(f'    Source code file: {source_path}')
     sources = load_lines(source_path)
-    # if lang == enums.LANG_PYTHON:
-    #     sources = [convert_python_source_classical_summarization(source) for source in sources]
+    if lang == enums.LANG_PYTHON:
+        sources = [convert_python_source_classical_summarization(source) for source in sources]
 
     if not os.path.isfile(code_path):
         paths['code'] = source_path
@@ -691,7 +691,7 @@ def parse_for_summarization(source_path, code_path, nl_path, lang):
     paths['nl'] = nl_path
     logger.info(f'    Summarization file: {nl_path}')
     nls = load_lines(nl_path)
-    # sources, codes, nls = sources[:1000], codes[:1000], nls[:1000]
+    sources, codes, nls = sources[:1000], codes[:1000], nls[:1000]
     assert len(sources) == len(codes) == len(nls)
 
     new_codes = []
@@ -979,6 +979,19 @@ def parse_for_completion(source_path, target_path):
     target_lines = load_lines(target_path)
     assert len(source_lines) == len(target_lines)
 
+     # Updated to reduce the time to parse, myoungkyu song, 03/31/2024
+    if main_args.parse_subset_ratio:
+        line_counter = 0
+        lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
+
+        if len(source_lines) > 10_000:
+            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+        if len(source_lines) > 100_000:
+            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+
+        logger.info('*' * 100)
+        logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
+
     codes = []
     asts = []
     names = []
@@ -986,17 +999,21 @@ def parse_for_completion(source_path, target_path):
 
     for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
         try:
-            if main_args.ast_type != "jdt":
-                source = restore_source(source)
-                target = restore_source(target)
-                ast, nl = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA, replace_method_name=False)
-            else:
-                ast = None
-                nl = None
-            codes.append(source)
-            asts.append(ast)
-            names.append(nl)
-            targets.append(target)
+            if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+                if line_counter > lines_to_extract:
+                    break
+                line_counter += 1
+                if main_args.ast_type != "jdt":
+                    source = restore_source(source)
+                    target = restore_source(target)
+                    ast, nl = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA, replace_method_name=False)
+                else:
+                    ast = None
+                    nl = None
+                codes.append(source)
+                asts.append(ast)
+                names.append(nl)
+                targets.append(target)
         except Exception:
             continue
     return codes, asts, names, targets

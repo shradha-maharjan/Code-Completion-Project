@@ -24,8 +24,8 @@ def load_files_for_completion(source_target_file_path, asts_nl_file_path, split)
     target_lines = load_lines(target_path)
     ast_lines = load_lines(ast_path)
     nl_lines = load_lines(nl_path)
-    #source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
-    source_lines, target_lines, ast_lines, nl_lines = source_lines, target_lines, ast_lines, nl_lines
+    source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
+    #source_lines, target_lines, ast_lines, nl_lines = source_lines, target_lines, ast_lines, nl_lines
     assert len(source_lines) == len(target_lines) == len(ast_lines) == len(nl_lines)
 
     return source_lines, ast_lines, nl_lines, target_lines

@@ -48,6 +48,10 @@ spec:
             operator: In
             values:
             - us-central 
+          # - key: nvidia.com/gpu.product #topology.kubernetes.io/region
+          #   operator: In
+          #   values:
+          #   - NVIDIA-A100-SXM4-80GB 
   containers:
   - name: pod-name-sso
     image: ubuntu:20.04
