@@ -70,8 +70,8 @@ class CodeDataset(Dataset):
                 self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
                 self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
                 self.only_names = [self.only_names[i] for i in sample_indices]
-                # self.docs = [self.docs[i] for i in sample_indices]
-                # self.languages = [self.languages[i] for i in sample_indices]
+                self.docs = [self.docs[i] for i in sample_indices]
+                self.languages = [self.languages[i] for i in sample_indices]
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)

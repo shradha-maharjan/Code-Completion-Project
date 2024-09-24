@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shradha-llmast-gp-engine-unoselab0a-pod01
+spec:
+  automountServiceAccountToken: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/region
+            operator: In
+            values:
+            - us-central 
+  containers:
+  - name: pod-name-sso
+    image: ubuntu:20.04
+    command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
+    resources:
+      limits:
+        memory: 12Gi
+        cpu: 2
+      requests:
+        memory: 10Gi
+        cpu: 2
+    volumeMounts:
+    - mountPath: /datasmall
+      name: data-shradha-llmast-gp-engine-unoselab03a
+  volumes:
+    - name: data-shradha-llmast-gp-engine-unoselab03a
+      persistentVolumeClaim:
+        claimName: pvc-shradha-llmast-gp-engine-unoselab0a

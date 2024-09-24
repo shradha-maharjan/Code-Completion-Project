@@ -21,11 +21,12 @@ echo "Cleanup completed."
 
 kubectl get ns | grep uno
 echo "----------------------------------------------------------------------------"
-# kubectl apply -f 1-kube-pvc-llm-ast.yml
+# kubectl apply -f 1-kube-pvc-llm-ast.yml --kubeconfig ~/kube2/config
+# kubectl apply -f 2-kube-pod-llm-ast.yml --kubeconfig ~/kube2/config
 kubectl apply -f 1-kube-pvc-llm-ast.yml --kubeconfig ~/kube2/config
 kubectl get pvc
 echo "----------------------------------------------------------------------------"
-kubectl apply -f 2-kube-pod-llm-ast.yml --kubeconfig ~/kube2/config
+kubectl apply -f 2-kube-pod-llm-ast.yml
 kubectl get pods
 echo "----------------------------------------------------------------------------"
 

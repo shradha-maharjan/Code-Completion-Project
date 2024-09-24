@@ -8,6 +8,7 @@ import os
 import sys
 import time
 from prettytable import PrettyTable
+from logging.handlers import RotatingFileHandler
 
 from args import add_args
 from train import train
@@ -78,6 +79,13 @@ if __name__ == '__main__':
     console = logging.StreamHandler()
     console.setLevel(level=logging.INFO)
     logger.addHandler(console)
+
+    # log_file = os.path.join(main_args.output_root, 'info.log')
+    # rotating_file = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=3)  # 5MB per log file, keep 3 backups
+    # rotating_file.setLevel(logging.DEBUG)
+    # formatter = logging.Formatter('[%(asctime)s | %(filename)s | line %(lineno)d] - %(levelname)s: %(message)s')
+    # rotating_file.setFormatter(formatter)
+    # logger.addHandler(rotating_file)
 
     file = logging.FileHandler(os.path.join(main_args.output_root, 'info.log'))
     file.setLevel(level=logging.DEBUG)

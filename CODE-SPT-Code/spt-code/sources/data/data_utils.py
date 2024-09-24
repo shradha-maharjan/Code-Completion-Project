@@ -11,12 +11,12 @@ import nltk
 from .asts.ast_parser import generate_single_ast_nl, split_identifier,parse_ast, extract_nl_from_code
 import enums
 from data.vocab import Vocab
-# from data.antlr_parsers.go.GoLexer import GoLexer
+from data.antlr_parsers.go.GoLexer import GoLexer
 from data.antlr_parsers.java.Java8Lexer import Java8Lexer
-# from data.antlr_parsers.python3.Python3Lexer import Python3Lexer
-# from data.antlr_parsers.php.PhpLexer import PhpLexer
-# from data.antlr_parsers.javascript.JavaScriptLexer import JavaScriptLexer
-#from data.code_tokenizers.ruby.ruby_tokenizer import RubyTokenizer
+from data.antlr_parsers.python3.Python3Lexer import Python3Lexer
+from data.antlr_parsers.php.PhpLexer import PhpLexer
+from data.antlr_parsers.javascript.JavaScriptLexer import JavaScriptLexer
+from data.code_tokenizers.ruby.ruby_tokenizer import RubyTokenizer
 
 logger = logging.getLogger(__name__)
 
@@ -24,12 +24,12 @@ STRING_MATCHING_PATTERN = re.compile(r'([bruf]*)(\"\"\"|\'\'\'|\"|\')(?:(?!\2)(?
 NON_SPACE_MATCHING_PATTERN = re.compile(r'\S')
 
 MAPPING_LANG_LEXER = {
-    # enums.LANG_GO: GoLexer,
-    enums.LANG_JAVA: Java8Lexer#,
-    # enums.LANG_PYTHON: Python3Lexer,
-    # enums.LANG_PHP: PhpLexer,
-    # enums.LANG_JAVASCRIPT: JavaScriptLexer,
-    #enums.LANG_RUBY: RubyTokenizer()
+    enums.LANG_GO: GoLexer,
+    enums.LANG_JAVA: Java8Lexer,
+    enums.LANG_PYTHON: Python3Lexer,
+    enums.LANG_PHP: PhpLexer,
+    enums.LANG_JAVASCRIPT: JavaScriptLexer,
+    enums.LANG_RUBY: RubyTokenizer()
 }
 
 main_args = None
@@ -308,7 +308,8 @@ def iter_pre_train_dataset_files(lang_dir, lang):
     #             return [file]
     # if lang in [enums.LANG_PYTHON]:
     #     return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
-    if lang in [enums.LANG_JAVA]:
+    if lang in [enums.LANG_GO, enums.LANG_JAVA, enums.LANG_PYTHON, enums.LANG_JAVASCRIPT, enums.LANG_PHP,
+                enums.LANG_RUBY]:
         return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
     return []
 
@@ -330,7 +331,8 @@ def load_pre_train_dataset(file, lang):
             - List of doc strings, not every sample has it
 
     """
-    if lang in [enums.LANG_JAVA]:
+    if lang in [enums.LANG_JAVA, enums.LANG_PYTHON, enums.LANG_GO,
+                enums.LANG_JAVASCRIPT, enums.LANG_PHP, enums.LANG_RUBY]:
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
@@ -391,22 +393,21 @@ def load_dataset_from_dir(dataset_dir):
         logger.info('Directory Not Exist: %s', dataset_dir)
         logger.info('-' * 100)
         sys.exit()
-
-    for file in os.listdir(dataset_dir):
-
+    if main_args.ast_type == "jdt":
+    # Directly set the path for Java if ast_type is jdt
         path = os.path.join(dataset_dir, 'java')
-        if os.path.isfile(path):
-            continue
-
-        lang = file
-        dataset_files = iter_pre_train_dataset_files(path, lang=lang)
+        if not os.path.exists(path):
+            logger.error(f'Java directory not found in {dataset_dir}')
+            sys.exit()
+        
+        dataset_files = iter_pre_train_dataset_files(path, lang=enums.LANG_JAVA)
         if len(dataset_files) > 0:
-            logger.info(f'  Language: {lang}')
-            paths[lang] = dataset_files
+            logger.info(f'  Language: Java')
+            paths['java'] = dataset_files
             n_sample = 0
             for dataset_file_path in dataset_files:
-                sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path,
-                                                                                    lang=lang)
+                sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path, lang=enums.LANG_JAVA)
+                
                 new_sources = []
                 new_codes = []
                 new_codes_wo_name = []
@@ -416,25 +417,15 @@ def load_dataset_from_dir(dataset_dir):
                 asts = []
 
                 for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
-                                                             desc=f'Parsing {os.path.basename(dataset_file_path)}',
-                                                             leave=False,
-                                                             total=len(sources))):
-                
+                                                            desc=f'Parsing {os.path.basename(dataset_file_path)}',
+                                                            leave=False,
+                                                            total=len(sources))):
+                    
                     try:
-                       
-                        if main_args.ast_type != "jdt":
-                            ast, nl, nl_wo_name = generate_single_ast_nl(source=source,
-                                                                         lang=lang,
-                                                                         name=name,
-                                                                         replace_method_name=True)
-                        else:
-                            root = parse_ast(source=source, lang=lang)
-                            ast = None  # Explicitly set ast to None when JDT is enabled
-                            nl, nl_wo_name = extract_nl_from_code(source=source,
-                                                                     root=root,
-                                                                     lang=lang,
-                                                                     name=name,
-                                                                     replace_method_name=True)
+                        root = parse_ast(source=source, lang=enums.LANG_JAVA)
+                        ast = None  # Explicitly set ast to None when JDT is enabled
+                        nl, nl_wo_name = extract_nl_from_code(source=source, root=root, lang=enums.LANG_JAVA, name=name, replace_method_name=True)
+
                         new_sources.append(source)
                         new_codes.append(code)
                         new_codes_wo_name.append(code_wo_name)
@@ -443,7 +434,7 @@ def load_dataset_from_dir(dataset_dir):
                         asts.append(ast)
                         only_names.append(name)
                     except Exception as e:
-                        handle_error(str(e), context= "load_dataset", index=idx, file_path=dataset_file_path, source=source)
+                        handle_error(str(e), context="load_dataset", index=idx, file_path=dataset_file_path, source=source)
                         logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
                         continue
 
@@ -457,12 +448,74 @@ def load_dataset_from_dir(dataset_dir):
                 all_docs += docs
 
                 n_line = len(new_sources)
-                languages += [lang for _ in range(n_line)]
+                languages += ['java' for _ in range(n_line)]
                 n_sample += n_line
 
                 logger.info(f'    File: {dataset_file_path}, {n_line} samples')
 
-            logger.info(f'  {lang} dataset size: {n_sample}')
+            logger.info(f'  Java dataset size: {n_sample}')
+
+    else:
+        # Iterate over all directories in dataset_dir if ast_type is not jdt
+        for file in os.listdir(dataset_dir):
+            path = os.path.join(dataset_dir, file)
+
+            if os.path.isfile(path):  # Skip if it's a file, we want directories
+                continue
+
+            # Determine the language
+            lang = file
+            if lang in MAPPING_LANG_LEXER:
+                dataset_files = iter_pre_train_dataset_files(path, lang=lang)
+                if len(dataset_files) > 0:
+                    logger.info(f'  Language: {lang}')
+                    paths[lang] = dataset_files
+                    n_sample = 0
+                    for dataset_file_path in dataset_files:
+                        sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path, lang=lang)
+                        
+                        new_sources = []
+                        new_codes = []
+                        new_codes_wo_name = []
+                        new_names = []
+                        new_names_wo_name = []
+                        only_names = []
+                        asts = []
+
+                        for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
+                                                                    desc=f'Parsing {os.path.basename(dataset_file_path)}',
+                                                                    leave=False,
+                                                                    total=len(sources)):
+
+                            try:
+                                ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
+
+                                new_sources.append(source)
+                                new_codes.append(code)
+                                new_codes_wo_name.append(code_wo_name)
+                                new_names.append(nl)
+                                new_names_wo_name.append(nl_wo_name)
+                                asts.append(ast)
+                                only_names.append(name)
+                            except Exception as e:
+                                continue
+
+                        all_sources += new_sources
+                        all_codes += new_codes
+                        all_codes_wo_name += new_codes_wo_name
+                        all_names += new_names
+                        all_names_wo_name += new_names_wo_name
+                        all_only_names += only_names
+                        all_asts += asts
+                        all_docs += docs
+
+                        n_line = len(new_sources)
+                        languages += [lang for _ in range(n_line)]
+                        n_sample += n_line
+
+                        logger.info(f'    File: {dataset_file_path}, {n_line} samples')
+
+                    logger.info(f'  {lang} dataset size: {n_sample}')
 
     assert len(languages) == len(all_sources) == len(all_codes) == len(all_codes_wo_name) == len(all_asts) ==\
            len(all_names) == len(all_names_wo_name) == len(all_only_names)
