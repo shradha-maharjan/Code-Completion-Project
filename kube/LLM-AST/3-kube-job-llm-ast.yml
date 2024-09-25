@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job04-llmast-shradha-gp-engine-unoselab03
+  name: job15-llmast-shradha-gp-engine-unoselab03
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -33,12 +33,12 @@ spec:
             limits:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/a100: 8 #nvidia.com/gpu: 8
+              nvidia.com/gpu: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
             requests:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/a100: 8 #nvidia.com/gpu: 8
+              nvidia.com/gpu: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
           securityContext:
             allowPrivilegeEscalation: false
@@ -48,6 +48,15 @@ spec:
           persistentVolumeClaim:
             claimName: pvc-shradha-llmast-gp-engine-unoselab03
       restartPolicy: Never
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: nvidia.com/gpu.product
+                  operator: In
+                  values:
+                    - NVIDIA-A100-SXM4-80GB
   backoffLimit: 1
 
 # apiVersion: batch/v1
