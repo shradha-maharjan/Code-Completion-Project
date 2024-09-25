@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job02-llmast-shradha-gp-engine-unoselab03
+  name: job04-llmast-shradha-gp-engine-unoselab03
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -33,12 +33,12 @@ spec:
             limits:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/rtxa6000: 8 #nvidia.com/gpu: 8
+              nvidia.com/a100: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
             requests:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/rtxa6000: 8 #nvidia.com/gpu: 8
+              nvidia.com/a100: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
           securityContext:
             allowPrivilegeEscalation: false
