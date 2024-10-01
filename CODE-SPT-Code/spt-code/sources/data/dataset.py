@@ -52,7 +52,7 @@ class CodeDataset(Dataset):
             set_args(args=args)
             print("Loading dataset from directory:", self.dataset_dir)
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
-                self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir)
+                self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir, lang='java')
             if args.ast_type == "jdt":
                 self.jdt_file_path = args.jdt_file_path
                 print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
@@ -70,8 +70,8 @@ class CodeDataset(Dataset):
                 self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
                 self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
                 self.only_names = [self.only_names[i] for i in sample_indices]
-                self.docs = [self.docs[i] for i in sample_indices]
-                self.languages = [self.languages[i] for i in sample_indices]
+                # self.docs = [self.docs[i] for i in sample_indices]
+                # self.languages = [self.languages[i] for i in sample_indices]
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)
@@ -171,8 +171,6 @@ class CodeDataset(Dataset):
                     self.paths['target'] = target_path
 
                     self.codes, self.asts, self.names, self.targets = parse_for_completion(source_path=source_path, target_path=target_path)
-
-                    assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)
                 #Sample 50% of the data
                 sample_ratio = self.get_sample_ratio(args.dataset_size)
                 if sample_ratio < 1.0: 
@@ -183,7 +181,7 @@ class CodeDataset(Dataset):
                     self.asts = [self.asts[i] for i in sample_indices]
                     self.names = [self.names[i] for i in sample_indices]
                     self.targets = [self.targets[i] for i in sample_indices]
-                    
+                assert len(self.codes) == len(self.asts) == len(self.names) == len(self.targets)   
                 self.size = len(self.codes)
 
             # bug fix

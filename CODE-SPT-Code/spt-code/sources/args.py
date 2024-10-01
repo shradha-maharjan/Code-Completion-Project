@@ -120,7 +120,7 @@ class RuntimeArguments:
     dataset_size: str = field(
         default='small',
         metadata={'help': 'Sample dataset size',
-                  'choices': ['mid', 'large']}
+                  'choices': ['small','mid', 'large']}
     )
 
 @dataclass

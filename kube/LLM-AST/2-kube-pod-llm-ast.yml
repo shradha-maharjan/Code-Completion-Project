@@ -1,7 +1,7 @@
 # apiVersion: v1
 # kind: Pod
 # metadata:
-#   name: shradha-llmast-gp-engine-unoselab01-pod-new01
+#   name: shradha-llmast-gp-engine-unoselab02-pod01
 # spec:
 #   automountServiceAccountToken: false
 #   affinity:
@@ -12,7 +12,7 @@
 #           - key: topology.kubernetes.io/region
 #             operator: In
 #             values:
-#             - us-central 
+#             - us-west
 #   containers:
 #   - name: pod-name-sso
 #     image: ubuntu:20.04
@@ -32,11 +32,10 @@
 #       persistentVolumeClaim:
 #         claimName: pvc-shradha-llmast-gp-engine-unoselab02
 
-
 apiVersion: v1
 kind: Pod
 metadata:
-  name: shradha-llmast-gp-engine-unoselab03-pod01
+  name: shradha-llmast-gp-engine-unoselab02-pod02
 spec:
   automountServiceAccountToken: false
   affinity:
@@ -47,11 +46,7 @@ spec:
           - key: topology.kubernetes.io/region
             operator: In
             values:
-            - us-central 
-          # - key: nvidia.com/gpu.product #topology.kubernetes.io/region
-          #   operator: In
-          #   values:
-          #   - NVIDIA-A100-SXM4-80GB 
+            - us-west #us-central
   containers:
   - name: pod-name-sso
     image: ubuntu:20.04
@@ -64,9 +59,9 @@ spec:
         memory: 10Gi
         cpu: 2
     volumeMounts:
-    - mountPath: /datasmall
-      name: data-shradha-llmast-gp-engine-unoselab03
+    - mountPath: /datamid
+      name: data-shradha-llmast-gp-engine-unoselab02a
   volumes:
-    - name: data-shradha-llmast-gp-engine-unoselab03
+    - name: data-shradha-llmast-gp-engine-unoselab02a
       persistentVolumeClaim:
-        claimName: pvc-shradha-llmast-gp-engine-unoselab03
+        claimName: pvc-shradha-llmast-gp-engine-unoselab02a
