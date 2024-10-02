@@ -38,7 +38,7 @@
 # !/bin/bash
 
 Namespace to clean up
-NAMESPACE="pvc-shradha-llmast-gp-engine-unoselab02a"
+NAMESPACE="pvc-shra-llmast-gp-engine-unoselab02"
 
 # echo "Deleting all jobs in namespace $NAMESPACE..."
 # kubectl delete jobs --all -n $NAMESPACE
@@ -50,9 +50,9 @@ NAMESPACE="pvc-shradha-llmast-gp-engine-unoselab02a"
 # echo "Deleting all PVCs in namespace $NAMESPACE..."
 # kubectl delete pvc --all -n $NAMESPACE
 
-Uncomment the following lines if you also want to delete PVs
-echo "Deleting all PVs..."
-kubectl delete pv --all
+# Uncomment the following lines if you also want to delete PVs
+# echo "Deleting all PVs..."
+# kubectl delete pv --all
 
 echo "Cleanup completed."
 

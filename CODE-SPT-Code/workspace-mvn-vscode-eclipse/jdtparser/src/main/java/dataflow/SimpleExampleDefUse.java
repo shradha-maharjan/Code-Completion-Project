@@ -1,68 +1,61 @@
 package dataflow;
 
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldAccess;
+import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
+
 import util.UtilAST;
 import visitor.DefUseASTVisitor;
 import visitor.MethodNameVisitor;
 import data.DefUseModel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map.Entry;
-
 public class SimpleExampleDefUse {
 
     private static final String UNIT_NAME = "DummyClass";
     private static final String INPUT_FILE_PATH = "input/pretrain_source.txt";
-    private static final String OUTPUT_FILE_PATH = "output/pretrain_output.csv";
-    private static final String MASKED_OUTPUT_FILE_PATH = "output/masked_output.txt"; // New masked output file
-    private static final int METHOD_CALL_THRESHOLD = 2;  // Method call threshold for masking
+    private static final String OUTPUT_METHODS_FILE_PATH = "output/methods_with_max_calls.txt";  
+    private static final String OUTPUT_LONGEST_SEQUENCES_PATH = "output/longest_sequences.txt";  
 
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));
-             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);
-             FileWriter maskedWriter = new FileWriter(MASKED_OUTPUT_FILE_PATH)) { // Writer for masked lines
+             FileWriter methodsWriter = new FileWriter(OUTPUT_METHODS_FILE_PATH);
+             FileWriter sequenceWriter = new FileWriter(OUTPUT_LONGEST_SEQUENCES_PATH)) {
 
             String line;
-            boolean writeHeaders = true;
-            int index = 1; // CSV row index
-
-            // Write headers for CSV
-            if (writeHeaders) {
-                writer.write("Index,func,# method calls (longest sequence),# field access,# calls + accesses,longest sequence of calls + field access,masked line\n");
-                writeHeaders = false;
-            }
+            int index = 1;  
 
             while ((line = reader.readLine()) != null) {
                 String formattedCode = formatCode(line);
 
-                // Parse the formatted code using UtilAST (or ASTParser directly)
                 ASTParser parser = UtilAST.parseSrcCode(formattedCode, UNIT_NAME + ".java");
                 CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-                // Extract the method name using a custom AST visitor
                 MethodNameVisitor methodNameVisitor = new MethodNameVisitor();
                 cu.accept(methodNameVisitor);
                 String methodName = methodNameVisitor.getMethodName();
 
-                // Analyze the parsed code
                 DefUseASTVisitor defUseVisitor = new DefUseASTVisitor(cu);
                 cu.accept(defUseVisitor);
 
-                // Process the analysis, count method calls, and mask method calls for objects with more than threshold
-                String maskedLine = processAndMask(cu, line, defUseVisitor.getdefUseMap());
+                MethodData methodData = processLongestSequence(defUseVisitor.getdefUseMap(), methodName, index, line);
 
-                // Write the masked line to the separate masked output file
-                maskedWriter.write(maskedLine + "\n");
+                if (methodData.maxTotalCallsAndAccesses >= 2) {
+                    methodsWriter.write(methodData.inputLine + "\n");  
+                    sequenceWriter.write(methodData.longestSequence + "\n"); 
+                }
 
-                // Process the analysis and display the longest sequence for that method
-                displayLongestSequencePerMethod(defUseVisitor.getdefUseMap(), methodName, index, writer, maskedLine);
                 index++;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,31 +65,46 @@ public class SimpleExampleDefUse {
         return "public class " + UNIT_NAME + " {\n" + codeSnippet + "\n}";
     }
 
-    
-    static void displayLongestSequencePerMethod(Map<IVariableBinding, DefUseModel> analysisDataMap, String methodName, int index, FileWriter writer, String maskedLine) throws IOException {
+    static MethodData processLongestSequence(Map<IVariableBinding, DefUseModel> analysisDataMap, String methodName, int index, String inputLine) {
         StringBuilder longestSequence = new StringBuilder();
+        String longestSequenceVariable = "";
+
         int maxMethodCalls = 0;
         int maxFieldAccesses = 0;
         int maxTotalCallsAndAccesses = 0;
 
-        // Loop through each variable to find the longest sequence
         for (Entry<IVariableBinding, DefUseModel> entry : analysisDataMap.entrySet()) {
             IVariableBinding iBinding = entry.getKey();
             DefUseModel iVariableAnal = entry.getValue();
-            List<String> callSequence = new ArrayList<>();  // Sequence of calls and field accesses
-            Set<String> distinctMethods = new HashSet<>();  // Count distinct method calls
-            Set<String> distinctFieldAccesses = new HashSet<>();  // Count distinct field accesses
 
-            // Track distinct method invocations
-            for (MethodInvocation method : iVariableAnal.getMethodInvocations()) {
-                String methodCall = method.getExpression().toString() + "." + method.getName().toString() + "()";
-                distinctMethods.add(methodCall);
-                callSequence.add(methodCall);
+            String variableName = "";
+            List<String> callSequence = new ArrayList<>();
+            Set<String> distinctMethods = new HashSet<>();
+            Set<String> distinctFieldAccesses = new HashSet<>();
+
+            if (iVariableAnal.getSingleVarDecl() != null) {
+                SingleVariableDeclaration paramDecl = iVariableAnal.getSingleVarDecl();
+                variableName = paramDecl.getName().getIdentifier();
             }
 
-            // Track distinct field accesses
+            if (iVariableAnal.getVarDeclFrgt() != null) {
+                VariableDeclarationFragment varDecl = iVariableAnal.getVarDeclFrgt();
+                variableName = varDecl.getName().getIdentifier();
+            }
+
+            for (MethodInvocation method : iVariableAnal.getMethodInvocations()) {
+                if (method.getExpression() instanceof SimpleName) {
+                    SimpleName variable = (SimpleName) method.getExpression();
+                    if (variable.getIdentifier().equals(variableName)) {
+                        String methodCall = variable.getIdentifier() + "." + method.getName() + "()";
+                        distinctMethods.add(methodCall);
+                        callSequence.add(methodCall);
+                    }
+                }
+            }
+
             for (FieldAccess fieldAccess : iVariableAnal.getFieldAccesses()) {
-                String fieldAccessCall = fieldAccess.getExpression().toString() + "." + fieldAccess.getName().toString();
+                String fieldAccessCall = variableName + "." + fieldAccess.getName().getIdentifier();
                 distinctFieldAccesses.add(fieldAccessCall);
                 callSequence.add(fieldAccessCall);
             }
@@ -105,60 +113,198 @@ public class SimpleExampleDefUse {
                 maxMethodCalls = distinctMethods.size();
                 maxFieldAccesses = distinctFieldAccesses.size();
                 maxTotalCallsAndAccesses = maxMethodCalls + maxFieldAccesses;
-                longestSequence.setLength(0);  // Clear current sequence
+                longestSequence.setLength(0);  
                 longestSequence.append(String.join("; ", callSequence));
+                longestSequenceVariable = variableName;
             }
         }
 
-        if (maxTotalCallsAndAccesses == 0) {
-            writer.write(index + "," + methodName + ",0,0,0,\n");
-        } else {
-            writer.write(index + "," + methodName + "," + maxMethodCalls + "," + maxFieldAccesses + "," + maxTotalCallsAndAccesses + "," + longestSequence + "," + maskedLine + "\n");
-        }
+        return new MethodData(index, methodName, inputLine, maxMethodCalls, maxFieldAccesses, maxTotalCallsAndAccesses, longestSequence.toString());
     }
 
-private static String processAndMask(CompilationUnit cu, String originalLine, Map<IVariableBinding, DefUseModel> analysisDataMap) {
-    Map<String, Integer> methodCallCounts = new HashMap<>();  
-    List<int[]> rangesToMask = new ArrayList<>();  
+    static class MethodData {
+        int index;
+        String methodName;
+        String inputLine;
+        int maxMethodCalls;
+        int maxFieldAccesses;
+        int maxTotalCallsAndAccesses;
+        String longestSequence;
 
-    cu.accept(new ASTVisitor() {
-        @Override
-        public boolean visit(MethodInvocation node) {
-            String objectName = node.getExpression() != null ? node.getExpression().toString() : null;
-            if (objectName != null) {
-                methodCallCounts.put(objectName, methodCallCounts.getOrDefault(objectName, 0) + 1);
-            }
-            return super.visit(node);
+        MethodData(int index, String methodName, String inputLine, int maxMethodCalls, int maxFieldAccesses, int maxTotalCallsAndAccesses, String longestSequence) {
+            this.index = index;
+            this.methodName = methodName;
+            this.inputLine = inputLine;
+            this.maxMethodCalls = maxMethodCalls;
+            this.maxFieldAccesses = maxFieldAccesses;
+            this.maxTotalCallsAndAccesses = maxTotalCallsAndAccesses;
+            this.longestSequence = longestSequence;
         }
-    });
-
-    cu.accept(new ASTVisitor() {
-        @Override
-        public boolean visit(MethodInvocation node) {
-            String objectName = node.getExpression() != null ? node.getExpression().toString() : null;
-            if (objectName != null && methodCallCounts.getOrDefault(objectName, 0) > METHOD_CALL_THRESHOLD) {
-                int nameStartPosition = node.getName().getStartPosition();
-                int nameLength = node.getName().getLength();
-                if (nameStartPosition >= 0 && nameStartPosition + nameLength <= originalLine.length()) {
-                    rangesToMask.add(new int[]{nameStartPosition, nameStartPosition + nameLength});
-                }
-            }
-            return super.visit(node);
-        }
-    });
-
-    rangesToMask.sort((range1, range2) -> Integer.compare(range2[0], range1[0]));
-
-    StringBuilder maskedLine = new StringBuilder(originalLine);
-    for (int[] range : rangesToMask) {
-        int start = range[0];
-        int end = range[1];
-        maskedLine.replace(start, end, "[mask]");
     }
+}
 
-    return maskedLine.toString();
-}
-}
+
+// package dataflow;
+
+// import org.eclipse.jdt.core.dom.*;
+// import java.io.*;
+// import java.util.*;
+// import util.UtilAST;
+// import visitor.DefUseASTVisitor;
+// import visitor.MethodNameVisitor;
+// import data.DefUseModel;
+
+// import java.io.BufferedReader;
+// import java.io.FileReader;
+// import java.io.FileWriter;
+// import java.io.IOException;
+// import java.util.Map.Entry;
+
+// public class SimpleExampleDefUse {
+
+//     private static final String UNIT_NAME = "DummyClass";
+//     private static final String INPUT_FILE_PATH = "input/pretrain_source.txt";
+//     private static final String OUTPUT_FILE_PATH = "output/pretrain_output.csv";
+//     private static final String MASKED_OUTPUT_FILE_PATH = "output/masked_output.txt"; // New masked output file
+//     private static final int METHOD_CALL_THRESHOLD = 2;  // Method call threshold for masking
+
+//     public static void main(String[] args) {
+//         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));
+//              FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);
+//              FileWriter maskedWriter = new FileWriter(MASKED_OUTPUT_FILE_PATH)) { // Writer for masked lines
+
+//             String line;
+//             boolean writeHeaders = true;
+//             int index = 1; // CSV row index
+
+//             // Write headers for CSV
+//             if (writeHeaders) {
+//                 writer.write("Index,func,# method calls (longest sequence),# field access,# calls + accesses,longest sequence of calls + field access,masked line\n");
+//                 writeHeaders = false;
+//             }
+
+//             while ((line = reader.readLine()) != null) {
+//                 String formattedCode = formatCode(line);
+
+//                 // Parse the formatted code using UtilAST (or ASTParser directly)
+//                 ASTParser parser = UtilAST.parseSrcCode(formattedCode, UNIT_NAME + ".java");
+//                 CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+
+//                 // Extract the method name using a custom AST visitor
+//                 MethodNameVisitor methodNameVisitor = new MethodNameVisitor();
+//                 cu.accept(methodNameVisitor);
+//                 String methodName = methodNameVisitor.getMethodName();
+
+//                 // Analyze the parsed code
+//                 DefUseASTVisitor defUseVisitor = new DefUseASTVisitor(cu);
+//                 cu.accept(defUseVisitor);
+
+//                 // Process the analysis, count method calls, and mask method calls for objects with more than threshold
+//                 String maskedLine = processAndMask(cu, line, defUseVisitor.getdefUseMap());
+
+//                 // Write the masked line to the separate masked output file
+//                 maskedWriter.write(maskedLine + "\n");
+
+//                 // Process the analysis and display the longest sequence for that method
+//                 displayLongestSequencePerMethod(defUseVisitor.getdefUseMap(), methodName, index, writer, maskedLine);
+//                 index++;
+//             }
+//         } catch (IOException e) {
+//             e.printStackTrace();
+//         }
+//     }
+
+//     private static String formatCode(String codeSnippet) {
+//         return "public class " + UNIT_NAME + " {\n" + codeSnippet + "\n}";
+//     }
+
+    
+//     static void displayLongestSequencePerMethod(Map<IVariableBinding, DefUseModel> analysisDataMap, String methodName, int index, FileWriter writer, String maskedLine) throws IOException {
+//         StringBuilder longestSequence = new StringBuilder();
+//         int maxMethodCalls = 0;
+//         int maxFieldAccesses = 0;
+//         int maxTotalCallsAndAccesses = 0;
+
+//         // Loop through each variable to find the longest sequence
+//         for (Entry<IVariableBinding, DefUseModel> entry : analysisDataMap.entrySet()) {
+//             IVariableBinding iBinding = entry.getKey();
+//             DefUseModel iVariableAnal = entry.getValue();
+//             List<String> callSequence = new ArrayList<>();  // Sequence of calls and field accesses
+//             Set<String> distinctMethods = new HashSet<>();  // Count distinct method calls
+//             Set<String> distinctFieldAccesses = new HashSet<>();  // Count distinct field accesses
+
+//             // Track distinct method invocations
+//             for (MethodInvocation method : iVariableAnal.getMethodInvocations()) {
+//                 String methodCall = method.getExpression().toString() + "." + method.getName().toString() + "()";
+//                 distinctMethods.add(methodCall);
+//                 callSequence.add(methodCall);
+//             }
+
+//             // Track distinct field accesses
+//             for (FieldAccess fieldAccess : iVariableAnal.getFieldAccesses()) {
+//                 String fieldAccessCall = fieldAccess.getExpression().toString() + "." + fieldAccess.getName().toString();
+//                 distinctFieldAccesses.add(fieldAccessCall);
+//                 callSequence.add(fieldAccessCall);
+//             }
+
+//             if (callSequence.size() > maxTotalCallsAndAccesses) {
+//                 maxMethodCalls = distinctMethods.size();
+//                 maxFieldAccesses = distinctFieldAccesses.size();
+//                 maxTotalCallsAndAccesses = maxMethodCalls + maxFieldAccesses;
+//                 longestSequence.setLength(0);  // Clear current sequence
+//                 longestSequence.append(String.join("; ", callSequence));
+//             }
+//         }
+
+//         if (maxTotalCallsAndAccesses == 0) {
+//             writer.write(index + "," + methodName + ",0,0,0,\n");
+//         } else {
+//             writer.write(index + "," + methodName + "," + maxMethodCalls + "," + maxFieldAccesses + "," + maxTotalCallsAndAccesses + "," + longestSequence + "," + maskedLine + "\n");
+//         }
+//     }
+
+// private static String processAndMask(CompilationUnit cu, String originalLine, Map<IVariableBinding, DefUseModel> analysisDataMap) {
+//     Map<String, Integer> methodCallCounts = new HashMap<>();  
+//     List<int[]> rangesToMask = new ArrayList<>();  
+
+//     cu.accept(new ASTVisitor() {
+//         @Override
+//         public boolean visit(MethodInvocation node) {
+//             String objectName = node.getExpression() != null ? node.getExpression().toString() : null;
+//             if (objectName != null) {
+//                 methodCallCounts.put(objectName, methodCallCounts.getOrDefault(objectName, 0) + 1);
+//             }
+//             return super.visit(node);
+//         }
+//     });
+
+//     cu.accept(new ASTVisitor() {
+//         @Override
+//         public boolean visit(MethodInvocation node) {
+//             String objectName = node.getExpression() != null ? node.getExpression().toString() : null;
+//             if (objectName != null && methodCallCounts.getOrDefault(objectName, 0) > METHOD_CALL_THRESHOLD) {
+//                 int nameStartPosition = node.getName().getStartPosition();
+//                 int nameLength = node.getName().getLength();
+//                 if (nameStartPosition >= 0 && nameStartPosition + nameLength <= originalLine.length()) {
+//                     rangesToMask.add(new int[]{nameStartPosition, nameStartPosition + nameLength});
+//                 }
+//             }
+//             return super.visit(node);
+//         }
+//     });
+
+//     rangesToMask.sort((range1, range2) -> Integer.compare(range2[0], range1[0]));
+
+//     StringBuilder maskedLine = new StringBuilder(originalLine);
+//     for (int[] range : rangesToMask) {
+//         int start = range[0];
+//         int end = range[1];
+//         maskedLine.replace(start, end, "[mask]");
+//     }
+
+//     return maskedLine.toString();
+// }
+// }
 
 // package dataflow;
 
