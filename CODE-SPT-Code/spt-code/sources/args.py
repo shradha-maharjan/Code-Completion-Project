@@ -152,18 +152,18 @@ class DatasetArguments:
         metadata={'help': 'Path to JDT AST file'}
     )
 
-    ast_file_path: str = field(
-        default='../../asts/finetune',
+    pretrain_asts_nl_file_path: str = field(
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/pretrain',
         metadata={'help': 'Path to JDT AST file'}
     )
 
     source_target_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data/tokenized_methods_with_javakw',
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/tokenized_methods_with_javakw',
         metadata={'help': 'Path to JDT AST file'}
     )
 
     asts_nl_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/spt-code-new-data',
+        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune',
         metadata={'help': 'Path to JDT AST file'}
     )
 

@@ -11,7 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources,load_files_for_completion, compare_similarity #, compare_and_save_sources_completion
+from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources,load_files_for_completion, load_files_for_pretrain,compare_similarity #, compare_and_save_sources_completion
 from eval.bleu.google_bleu import avg_bleu
 from data.vocab import Vocab
 
@@ -54,12 +54,9 @@ class CodeDataset(Dataset):
             self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir, lang='java')
             if args.ast_type == "jdt":
-                self.jdt_file_path = args.jdt_file_path
-                print("JDT flag is set, loading ASTs from:", self.jdt_file_path)
-                # Unpacking both sources and ASTs returned by the method
-                sources_from_file, self.asts  = load_ast_from_file_jdt(self.jdt_file_path, context = 'load_dataset')
-
-                compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
+                self.pretrain_asts_nl_file_path = args.pretrain_asts_nl_file_path
+                self.asts,self.names,self.names_wo_name = load_files_for_pretrain(self.pretrain_asts_nl_file_path )
+                # compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
             sample_ratio = self.get_sample_ratio(args.dataset_size)
             if sample_ratio < 1.0: 
                 sample_size = int(len(self.codes) * sample_ratio)
@@ -75,6 +72,13 @@ class CodeDataset(Dataset):
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)
+
+            # print(f"\nSample of Loaded Sources (up to 5):\n{self.sources[:5]}")
+            # print(f"\nSample of Loaded Codes (up to 5):\n{self.codes[:5]}")
+            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.asts[:5]}")
+            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.names[:5]}")
+            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.codes_wo_name[:5]}")
+            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.names_wo_name[:5]}")
 
         # load fine-tuning dataset
         else:

@@ -224,30 +224,30 @@ def parse_json_file(file, lang):
 
     # #######################################################################
     # Updated to reduce the time to parse, myoungkyu song, 03/23/2024
-    if main_args.parse_subset_ratio:
-        lines_to_extract = 0
-        line_counter = 0
-        total_lines = 0
+    # if main_args.parse_subset_ratio:
+    #     lines_to_extract = 0
+    #     line_counter = 0
+    #     total_lines = 0
 
-        with open(file, encoding='utf-8') as f:
-            total_lines = sum(1 for _ in f)
-            lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
+    #     with open(file, encoding='utf-8') as f:
+    #         total_lines = sum(1 for _ in f)
+    #         lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
 
-        # if total_lines > 10_000:
-        #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-        if total_lines > 100_000:
-            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     # if total_lines > 10_000:
+    #     #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if total_lines > 100_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
 
-        logger.info('*' * 100)
-        logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
+    #     logger.info('*' * 100)
+    #     logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
     # #######################################################################
 
     with open(file, encoding='utf-8') as f:
         for line in f.readlines():
-            if main_args.parse_subset_ratio:
-                if line_counter > lines_to_extract:
-                    break
-                line_counter += 1
+            # if main_args.parse_subset_ratio:
+            #     if line_counter > lines_to_extract:
+            #         break
+            #     line_counter += 1
 
             data = json.loads(line.strip())
             name = trim_method_name(data['func_name'])
@@ -336,23 +336,23 @@ def load_pre_train_dataset(file, lang):
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
 
-def handle_error(error_message, context, index=None, file_path=None, source=None):
-    # error_log_path = "error_sources.txt"  # Change to store sources
-    if context == 'load_dataset':
-        error_log_path = "error_sources.txt"
+# def handle_error(error_message, context, index=None, file_path=None, source=None):
+#     # error_log_path = "error_sources.txt"  # Change to store sources
+#     if context == 'load_dataset':
+#         error_log_path = "error_sources.txt"
 
-    # Format the source to remove newlines, carriage returns, and tabs
-    formatted_source = source.replace('\n', '').replace('\r', '').replace('\t', '') if source else "No source available"
+#     # Format the source to remove newlines, carriage returns, and tabs
+#     formatted_source = source.replace('\n', '').replace('\r', '').replace('\t', '') if source else "No source available"
 
-    # Log the error with formatted source information
-    logger.error(f"Error at index {index} in file {file_path}: {formatted_source}\nError Message: {error_message}")
+#     # Log the error with formatted source information
+#     logger.error(f"Error at index {index} in file {file_path}: {formatted_source}\nError Message: {error_message}")
 
-    # Write the error index and formatted source to a file if not already logged
-    with open(error_log_path, 'a') as f:
-        if index is not None:
-            f.write(f"{formatted_source}\n")
+#     # Write the error index and formatted source to a file if not already logged
+#     with open(error_log_path, 'a') as f:
+#         if index is not None:
+#             f.write(f"{formatted_source}\n")
 
-    return formatted_source  # Return the formatted source for further processing or logging
+#     return formatted_source  # Return the formatted source for further processing or logging
 
 def load_dataset_from_dir(dataset_dir, lang=None):
     """
@@ -427,10 +427,7 @@ def load_dataset_from_dir(dataset_dir, lang=None):
                     if main_args.ast_type != "jdt":
                         ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
                     else:
-                        root = parse_ast(source=source, lang=lang)
-                        ast = None  # Explicitly set ast to None when JDT is enabled
-                        nl, nl_wo_name = extract_nl_from_code(source=source, root=root, lang=lang, name=name, replace_method_name=True)
-
+                        ast, nl, nl_wo_name = None, None, None
                     new_sources.append(source)
                     new_codes.append(code)
                     new_codes_wo_name.append(code_wo_name)
@@ -440,8 +437,8 @@ def load_dataset_from_dir(dataset_dir, lang=None):
                     only_names.append(name)
 
                 except Exception as e:
-                    handle_error(str(e), context="load_dataset", index=idx, file_path=dataset_file_path, source=source)
-                    logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
+                    # handle_error(str(e), context="load_dataset", index=idx, file_path=dataset_file_path, source=source)
+                    # logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
                     continue
 
             all_sources += new_sources

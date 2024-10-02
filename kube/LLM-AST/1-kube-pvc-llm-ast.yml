@@ -3,7 +3,7 @@
 # metadata:
 #   name: pvc-shradha-llmast-gp-engine-unoselab02
 # spec:
-#   storageClassName: rook-cephfs
+#   storageClassName: rook-cephfs-central
 #   accessModes:
 #   - ReadWriteMany
 #   resources:
@@ -15,7 +15,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-shradha-llmast-gp-engine-unoselab02a
 spec:
-  storageClassName: rook-cephfs #rook-cephfs-central
+  storageClassName: rook-cephfs-central
   accessModes:
   - ReadWriteMany
   resources:

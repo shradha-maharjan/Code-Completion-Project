@@ -6,7 +6,7 @@ import logging
 import difflib
 import re
 
-from .data_utils import  handle_error, load_lines
+from .data_utils import load_lines
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 def load_files_for_completion(source_target_file_path, asts_nl_file_path, split):
     source_path = os.path.join(source_target_file_path, f'source_tokenized_methods_{split}.txt')
     target_path = os.path.join(source_target_file_path, f'target_tokenized_methods_{split}.txt')
-    ast_path = os.path.join(asts_nl_file_path, f'raw_methods_asts_{split}.txt')
+    ast_path = os.path.join(asts_nl_file_path, f'raw_methods_asts_{split}_PR.txt')
     nl_path = os.path.join(asts_nl_file_path, f'NL_methods_{split}.txt')
 
     if not asts_nl_file_path:
@@ -24,11 +24,27 @@ def load_files_for_completion(source_target_file_path, asts_nl_file_path, split)
     target_lines = load_lines(target_path)
     ast_lines = load_lines(ast_path)
     nl_lines = load_lines(nl_path)
-    source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
-    #source_lines, target_lines, ast_lines, nl_lines = source_lines, target_lines, ast_lines, nl_lines
+    #source_lines, target_lines, ast_lines, nl_lines = source_lines[:100], target_lines[:100], ast_lines[:100], nl_lines[:100]
+    source_lines, target_lines, ast_lines, nl_lines = source_lines, target_lines, ast_lines, nl_lines
     assert len(source_lines) == len(target_lines) == len(ast_lines) == len(nl_lines)
 
     return source_lines, ast_lines, nl_lines, target_lines
+
+def load_files_for_pretrain(pretrain_asts_nl_file_path):
+    ast_path = os.path.join(pretrain_asts_nl_file_path, f'pretrain_methods_asts_PR.txt')
+    nl_path = os.path.join(pretrain_asts_nl_file_path, f'NL_pretrain_source_wname.txt')
+    nl_wo_name_path = os.path.join(pretrain_asts_nl_file_path, f'NL_pretrain_source_wo_name.txt')
+
+    if not pretrain_asts_nl_file_path:
+        raise ValueError("AST path and NL path must be provided when ast_type is 'jdt'.")
+    ast_lines = load_lines(ast_path)
+    nl_lines = load_lines(nl_path)
+    nl_wo_name_lines = load_lines(nl_wo_name_path)
+    #ast_lines, nl_lines,nl_wo_name_lines = ast_lines[:100], nl_lines[:100], nl_wo_name_lines[:100]
+    ast_lines, nl_lines,nl_wo_name_lines = ast_lines, nl_lines, nl_wo_name_lines
+    assert len(ast_lines) == len(nl_lines) == len(nl_wo_name_lines)
+
+    return ast_lines, nl_lines,nl_wo_name_lines
 
 def load_lines_from_file(file_path):
     lines = []
