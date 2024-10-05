@@ -1,7 +1,8 @@
+
 # apiVersion: v1
 # kind: Pod
 # metadata:
-#   name: shradha-llmast-gp-engine-unoselab02-pod01
+#   name: shradha-llmast-gp-engine-unoselab02-pod02-new-02
 # spec:
 #   automountServiceAccountToken: false
 #   affinity:
@@ -25,12 +26,12 @@
 #         memory: 10Gi
 #         cpu: 2
 #     volumeMounts:
-#     - mountPath: /data
-#       name: data-shradha-llmast-gp-engine-unoselab02
+#     - mountPath: /datamid
+#       name: data-shra-llmast-gp-engine-unoselab02a
 #   volumes:
-#     - name: data-shradha-llmast-gp-engine-unoselab02
+#     - name: data-shra-llmast-gp-engine-unoselab02a
 #       persistentVolumeClaim:
-#         claimName: pvc-shradha-llmast-gp-engine-unoselab02
+#         claimName: pvc-shra-llmast-gp-engine-unoselab02a
 
 apiVersion: v1
 kind: Pod

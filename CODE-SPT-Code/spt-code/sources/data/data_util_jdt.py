@@ -88,7 +88,7 @@ def load_ast_from_file_jdt(jdt_file_path, context):
                     sources.append(source_part)
                     asts.append(ast_part)
             except Exception as e:
-                handle_error(str(e), source=source_part, file_path=jdt_file_path)
+                #handle_error(str(e), source=source_part, file_path=jdt_file_path)
                 continue
                 
     valid_sources.extend(sources)

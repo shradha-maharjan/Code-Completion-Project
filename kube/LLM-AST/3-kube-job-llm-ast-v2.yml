@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job03-llmast-shradha-gp-engine-unoselab02
+  name: job02-llmast-shradha-gp-engine-unoselab02-new-02
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -23,9 +23,9 @@ spec:
               pip check;
               pip install tree_sitter==0.21.0; 
               pip install antlr4-python3-runtime==4.9.2;
-              tar xf llm_ast_code_nongen_PR.tar.gz;
+              tar xf llm_ast_nongen_PR.tar.gz;
               cd deploy-spt-code/spt-code/sources;
-              python main.py --do-pre-train --pre-train-tasks cap --batch-size 64 --eval-batch-size 64 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 1 --n-epoch-pre-train 1 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"mid\""]
+              python main.py --do-pre-train --pre-train-tasks cap --batch-size 96 --eval-batch-size 96 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 10 --n-epoch-pre-train 10 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"mid\""]
           volumeMounts:
             - name: pvc-shra-llmast-gp-engine-unoselab02
               mountPath: /datamid

@@ -9,7 +9,7 @@ NC='\033[0m' # No Color
 # Function to display the available pods with index numbers
 display_pods() {
   echo -e "${GREEN}Available pods:${NC}"
-  pods=($(kubectl get pods --no-headers -o custom-columns=":metadata.name"))
+  pods=($(kubectl get pods --no-headers -o custom-columns=":metadata.name" --kubeconfig ~/kube2/config))
   for i in "${!pods[@]}"; do
     echo -e "[$i] ${YELLOW}${pods[$i]}${NC}"
   done
@@ -33,7 +33,7 @@ validate_index() {
 # Function to check the current status of the selected pod
 check_pod_status() {
   selected_pod="${pods[$selected_index]}"
-  status=$(kubectl get pod "$selected_pod" -o jsonpath='{.status.phase}')
+  status=$(kubectl get pod "$selected_pod" -o jsonpath='{.status.phase}' --kubeconfig ~/kube2/config)
 
   case $status in
     "Running")
@@ -91,7 +91,7 @@ fetch_logs() {
 
     if [ $status_code -eq 0 ]; then
       echo -e "${GREEN}Logs fetched successfully.${NC}"
-      kubectl logs "$selected_pod" -f
+      kubectl logs "$selected_pod" -f --kubeconfig ~/kube2/config
       return 0
     elif [ $status_code -eq 1 ]; then
       echo -e "${YELLOW}Waiting for $wait_time seconds before checking status again...${NC}"
@@ -104,7 +104,7 @@ fetch_logs() {
       read -r log_file
 
       # Save logs to file
-      kubectl logs "$selected_pod" > "$log_file"
+      kubectl logs "$selected_pod" > "$log_file" --kubeconfig ~/kube2/config
 
       echo "Logs saved to $log_file"
       return 0

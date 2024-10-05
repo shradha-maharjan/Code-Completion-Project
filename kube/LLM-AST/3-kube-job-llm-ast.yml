@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job01-llmast-shradha-gp-engine-unoselab02a
+  name: job06-llmast-shradha-gp-engine-unoselab02a
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -23,40 +23,40 @@ spec:
               pip check;
               pip install tree_sitter==0.21.0; 
               pip install antlr4-python3-runtime==4.9.2;
-              tar xf llm_ast_code_nongen_PR.tar.gz;
+              tar xf llm_ast_nongen_PR.tar.gz;
               cd deploy-spt-code/spt-code/sources;
-              python main.py --do-pre-train --pre-train-tasks cap --batch-size 64 --eval-batch-size 64 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 1 --n-epoch-pre-train 1 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
+              python main.py --do-pre-train --pre-train-tasks cap --batch-size 96 --eval-batch-size 96 --cuda-visible-devices 0,1,2,3,4,5,6,7 --fp16 --model-name pre_train --n-epoch 10 --n-epoch-pre-train 10 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
           volumeMounts:
-            - name: pvc-shra-llmast-gp-engine-unoselab02
+            - name: pvc-shra-llmast-gp-engine-unoselab02a
               mountPath: /datasmall
           resources:
             limits:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/gpu: 8 #nvidia.com/gpu: 8
+              nvidia.com/rtxa6000: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
             requests:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/gpu: 8 #nvidia.com/gpu: 8
+              nvidia.com/rtxa6000: 8 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 0
       volumes:
-        - name: pvc-shra-llmast-gp-engine-unoselab02
+        - name: pvc-shra-llmast-gp-engine-unoselab02a
           persistentVolumeClaim:
-            claimName: pvc-shra-llmast-gp-engine-unoselab02
+            claimName: pvc-shra-llmast-gp-engine-unoselab02a
       restartPolicy: Never
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: nvidia.com/gpu.product
-                  operator: In
-                  values:
-                    - NVIDIA-A100-SXM4-80GB
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #         - matchExpressions:
+      #           - key: nvidia.com/gpu.product
+      #             operator: In
+      #             values:
+      #               - NVIDIA-A100-SXM4-80GB
   backoffLimit: 1
 
 # apiVersion: batch/v1
