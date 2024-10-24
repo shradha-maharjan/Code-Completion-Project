@@ -79,6 +79,11 @@ class RuntimeArguments:
         metadata={'help': 'Batch size for evaluation on each device'}
     )
 
+    test_batch_size: int = field(
+        default=16,
+        metadata={'help': 'Batch size for evaluation on each device'}
+    )
+
     beam_width: int = field(
         default=5,
         metadata={'help': 'Beam width when using beam decoding, 1 to greedy decode'}

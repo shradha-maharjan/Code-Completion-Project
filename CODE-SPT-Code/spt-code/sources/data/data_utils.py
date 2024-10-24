@@ -223,31 +223,31 @@ def parse_json_file(file, lang):
     docs = []
 
     # #######################################################################
-    # Updated to reduce the time to parse, myoungkyu song, 03/23/2024
-    # if main_args.parse_subset_ratio:
-    #     lines_to_extract = 0
-    #     line_counter = 0
-    #     total_lines = 0
+    #Updated to reduce the time to parse, myoungkyu song, 03/23/2024
+    if main_args.parse_subset_ratio:
+        lines_to_extract = 0
+        line_counter = 0
+        total_lines = 0
 
-    #     with open(file, encoding='utf-8') as f:
-    #         total_lines = sum(1 for _ in f)
-    #         lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
+        with open(file, encoding='utf-8') as f:
+            total_lines = sum(1 for _ in f)
+            lines_to_extract = int(total_lines * main_args.parse_subset_ratio)
 
-    #     # if total_lines > 10_000:
-    #     #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
-    #     if total_lines > 100_000:
-    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+        # if total_lines > 10_000:
+        #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+        if total_lines > 100_000:
+            lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
 
-    #     logger.info('*' * 100)
-    #     logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
+        logger.info('*' * 100)
+        logger.info(f'{lang} => The size of trimmed / original pre_train set to parse: {lines_to_extract} / {total_lines}')
     # #######################################################################
 
     with open(file, encoding='utf-8') as f:
         for line in f.readlines():
-            # if main_args.parse_subset_ratio:
-            #     if line_counter > lines_to_extract:
-            #         break
-            #     line_counter += 1
+            if main_args.parse_subset_ratio:
+                if line_counter > lines_to_extract:
+                    break
+                line_counter += 1
 
             data = json.loads(line.strip())
             name = trim_method_name(data['func_name'])

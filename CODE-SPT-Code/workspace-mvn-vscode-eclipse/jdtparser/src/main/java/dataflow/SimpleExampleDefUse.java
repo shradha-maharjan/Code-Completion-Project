@@ -21,9 +21,9 @@ import data.DefUseModel;
 public class SimpleExampleDefUse {
 
     private static final String UNIT_NAME = "DummyClass";
-    private static final String INPUT_FILE_PATH = "input/pretrain_source.txt";
-    private static final String OUTPUT_METHODS_FILE_PATH = "output/methods_with_max_calls.txt";  
-    private static final String OUTPUT_LONGEST_SEQUENCES_PATH = "output/longest_sequences.txt";  
+    private static final String INPUT_FILE_PATH = "input/input_pretrainsource.txt";
+    private static final String OUTPUT_METHODS_FILE_PATH = "output/test_methods_with_max_calls.txt";  
+    private static final String OUTPUT_LONGEST_SEQUENCES_PATH = "output/test_longest_sequences.txt";  
 
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));

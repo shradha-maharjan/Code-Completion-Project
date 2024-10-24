@@ -25,6 +25,7 @@ public class DefUseModel {
    private List<MethodInvocation> methodInvocations = new ArrayList<MethodInvocation>(); // Added for method invocations
    private List<FieldAccess> fieldAccesses = new ArrayList<FieldAccess>(); // Added for field accesses
    private List<String> qualifiedNames = new ArrayList<>();
+   private List<SimpleName> localVarUsages = new ArrayList<>();
    private CompilationUnit compilationUnit;
 
    public DefUseModel(VariableDeclarationStatement vds, VariableDeclarationFragment vdf) {
@@ -88,6 +89,14 @@ public class DefUseModel {
 	    public List<String> getQualifiedNames() {
 	        return qualifiedNames;
 	    }
+      // Add getter and setter for localVarUsages
+      public void addLocalVarUsage(SimpleName var) {
+         localVarUsages.add(var);
+   }
+
+   public List<SimpleName> getLocalVarUsages() {
+         return localVarUsages;
+   }
 	    
    public CompilationUnit getCompilationUnit() {
       return compilationUnit;

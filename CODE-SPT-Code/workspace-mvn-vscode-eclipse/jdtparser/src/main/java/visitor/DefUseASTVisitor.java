@@ -3,18 +3,7 @@ package visitor;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.ArrayAccess;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldAccess;
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.*;
 import data.DefUseModel;
 
 public class DefUseASTVisitor extends ASTVisitor {
@@ -30,6 +19,8 @@ public class DefUseASTVisitor extends ASTVisitor {
         for (Iterator<?> iter = varDecSta.fragments().iterator(); iter.hasNext();) {
             VariableDeclarationFragment varDecFra = (VariableDeclarationFragment) iter.next();
             IVariableBinding varBin = varDecFra.resolveBinding();
+
+            System.out.println("Visited VariableDeclarationFragment: " + varDecFra);
             
             if (varBin == null || varBin.getType().isPrimitive()) {
                 continue;
@@ -49,9 +40,9 @@ public class DefUseASTVisitor extends ASTVisitor {
         IVariableBinding varBin = varDec.resolveBinding();
 
         // Skip primitive type variables like int, float, etc.
-        if (varBin == null || varBin.getType().isPrimitive()) {
-            return true; // Continue the visit
-        }
+        // if (varBin == null || varBin.getType().isPrimitive()) {
+        //     return true; // Continue the visit
+        // }
 
         DefUseModel defUseModel = new DefUseModel(varDec, this.compilationUnit);
         defUseMap.put(varBin, defUseModel);
@@ -60,6 +51,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(SimpleName node) {
+        System.out.println("Visited SimpleName: " + node.getIdentifier());
         if (node.getParent() instanceof VariableDeclarationFragment || node.getParent() instanceof SingleVariableDeclaration) {
             return true;  
         }
@@ -78,6 +70,7 @@ public class DefUseASTVisitor extends ASTVisitor {
         if (node.getQualifier() instanceof SimpleName) {
             SimpleName qualifier = (SimpleName) node.getQualifier();
             IBinding binding = qualifier.resolveBinding();
+            System.out.println("Visited QualifiedName: " + node.getFullyQualifiedName());
 
             if (binding != null && defUseMap.containsKey(binding)) {
                 String qualifiedName = qualifier.getIdentifier() + "." + node.getName().getIdentifier();
@@ -95,6 +88,7 @@ public class DefUseASTVisitor extends ASTVisitor {
     @Override
     public boolean visit(ArrayAccess node) {
         // Handle array access like 'dirs[index]'
+         System.out.println("Visited ArrayAccess: " + node);
         if (node.getArray() instanceof SimpleName) {
             SimpleName arrayName = (SimpleName) node.getArray();
             IBinding binding = arrayName.resolveBinding();
@@ -107,6 +101,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(MethodInvocation node) {
+        System.out.println("Visited MethodInvocation: " + node);
         if (node.getExpression() != null && node.getExpression() instanceof SimpleName) {
             SimpleName expr = (SimpleName) node.getExpression();
             IBinding binding = expr.resolveBinding();
@@ -119,6 +114,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(FieldAccess node) {
+        System.out.println("Visited FieldAccess: " + node.getName().getIdentifier());
         IVariableBinding varBinding = node.resolveFieldBinding();
         if (varBinding != null && defUseMap.containsKey(varBinding)) {
             defUseMap.get(varBinding).addFieldAccess(node);  // Add field access to the group
