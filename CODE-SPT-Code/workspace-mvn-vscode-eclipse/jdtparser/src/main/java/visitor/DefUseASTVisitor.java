@@ -20,7 +20,7 @@ public class DefUseASTVisitor extends ASTVisitor {
             VariableDeclarationFragment varDecFra = (VariableDeclarationFragment) iter.next();
             IVariableBinding varBin = varDecFra.resolveBinding();
 
-            System.out.println("Visited VariableDeclarationFragment: " + varDecFra);
+            //System.out.println("Visited VariableDeclarationFragment: " + varDecFra);
             
             if (varBin == null || varBin.getType().isPrimitive()) {
                 continue;
@@ -51,7 +51,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(SimpleName node) {
-        System.out.println("Visited SimpleName: " + node.getIdentifier());
+        //System.out.println("Visited SimpleName: " + node.getIdentifier());
         if (node.getParent() instanceof VariableDeclarationFragment || node.getParent() instanceof SingleVariableDeclaration) {
             return true;  
         }
@@ -70,7 +70,7 @@ public class DefUseASTVisitor extends ASTVisitor {
         if (node.getQualifier() instanceof SimpleName) {
             SimpleName qualifier = (SimpleName) node.getQualifier();
             IBinding binding = qualifier.resolveBinding();
-            System.out.println("Visited QualifiedName: " + node.getFullyQualifiedName());
+            //System.out.println("Visited QualifiedName: " + node.getFullyQualifiedName());
 
             if (binding != null && defUseMap.containsKey(binding)) {
                 String qualifiedName = qualifier.getIdentifier() + "." + node.getName().getIdentifier();
@@ -88,7 +88,7 @@ public class DefUseASTVisitor extends ASTVisitor {
     @Override
     public boolean visit(ArrayAccess node) {
         // Handle array access like 'dirs[index]'
-         System.out.println("Visited ArrayAccess: " + node);
+        //System.out.println("Visited ArrayAccess: " + node);
         if (node.getArray() instanceof SimpleName) {
             SimpleName arrayName = (SimpleName) node.getArray();
             IBinding binding = arrayName.resolveBinding();
@@ -101,7 +101,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(MethodInvocation node) {
-        System.out.println("Visited MethodInvocation: " + node);
+        //System.out.println("Visited MethodInvocation: " + node);
         if (node.getExpression() != null && node.getExpression() instanceof SimpleName) {
             SimpleName expr = (SimpleName) node.getExpression();
             IBinding binding = expr.resolveBinding();
@@ -114,7 +114,7 @@ public class DefUseASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(FieldAccess node) {
-        System.out.println("Visited FieldAccess: " + node.getName().getIdentifier());
+        //System.out.println("Visited FieldAccess: " + node.getName().getIdentifier());
         IVariableBinding varBinding = node.resolveFieldBinding();
         if (varBinding != null && defUseMap.containsKey(varBinding)) {
             defUseMap.get(varBinding).addFieldAccess(node);  // Add field access to the group

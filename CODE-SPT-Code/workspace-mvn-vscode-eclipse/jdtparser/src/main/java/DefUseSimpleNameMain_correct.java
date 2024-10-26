@@ -413,11 +413,15 @@ public class DefUseSimpleNameMain_correct {
 
     static CompilationUnit cuInput1, cuInput2;
 
-    // Input 1 and Input 2 file paths
+    //Input 1 and Input 2 file paths
     static final String DIR = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/";
     static final String INPUT1_FILE_PATH = DIR + "input/input_raw.txt";
     static final String INPUT2_FILE_PATH = DIR + "input/input_pred.txt";
     static final String OUTPUT_FILE_PATH = DIR + "output/output1.txt";
+
+    // static final String INPUT1_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/raw_methods_valid.txt";
+    // static final String INPUT2_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/source_methods_valid.txt";
+    // static final String OUTPUT_FILE_PATH = "output/valid_targettype_output_new.txt";
 
     public static void main(String[] args) throws IOException {
 

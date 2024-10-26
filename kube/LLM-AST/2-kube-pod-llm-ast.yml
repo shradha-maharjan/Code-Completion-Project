@@ -1,37 +1,37 @@
 
-apiVersion: v1
-kind: Pod
-metadata:
-  name: shradha-llmast-gp-engine-unoselab02-pod02-new-02
-spec:
-  automountServiceAccountToken: false
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: topology.kubernetes.io/region
-            operator: In
-            values:
-            - us-central
-  containers:
-  - name: pod-name-sso
-    image: ubuntu:20.04
-    command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
-    resources:
-      limits:
-        memory: 12Gi
-        cpu: 2
-      requests:
-        memory: 10Gi
-        cpu: 2
-    volumeMounts:
-    - mountPath: /datalargeSB
-      name: data-shra-llmast-gp-engine-unoselab02-ea
-  volumes:
-    - name: data-shra-llmast-gp-engine-unoselab02-ea
-      persistentVolumeClaim:
-        claimName: pvc-shra-llmast-gp-engine-unoselab02-ea
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: shradha-llmast-gp-engine-unoselab02-pod02-new-02
+# spec:
+#   automountServiceAccountToken: false
+#   affinity:
+#     nodeAffinity:
+#       requiredDuringSchedulingIgnoredDuringExecution:
+#         nodeSelectorTerms:
+#         - matchExpressions:
+#           - key: topology.kubernetes.io/region
+#             operator: In
+#             values:
+#             - us-central
+#   containers:
+#   - name: pod-name-sso
+#     image: ubuntu:20.04
+#     command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
+#     resources:
+#       limits:
+#         memory: 12Gi
+#         cpu: 2
+#       requests:
+#         memory: 10Gi
+#         cpu: 2
+#     volumeMounts:
+#     - mountPath: /datalargeSB
+#       name: data-shra-llmast-gp-engine-unoselab02-ea
+#   volumes:
+#     - name: data-shra-llmast-gp-engine-unoselab02-ea
+#       persistentVolumeClaim:
+#         claimName: pvc-shra-llmast-gp-engine-unoselab02-ea
 
 # apiVersion: v1
 # kind: Pod
@@ -60,9 +60,45 @@ spec:
 #         memory: 10Gi
 #         cpu: 2
 #     volumeMounts:
-#     - mountPath: /datalarge
+#     - mountPath: /datamid
 #       name: data-shra-llmast-gp-engine-unoselab02
 #   volumes:
 #     - name: data-shra-llmast-gp-engine-unoselab02
 #       persistentVolumeClaim:
 #         claimName: pvc-shra-llmast-gp-engine-unoselab02
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shradha-llmast-gp-engine-unoselab02-pod02-new-03
+spec:
+  automountServiceAccountToken: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/region
+            operator: In
+            values:
+            - us-central
+  containers:
+  - name: pod-name-sso
+    image: ubuntu:20.04
+    command: ["sh", "-c", "echo 'Im a new pod' && sleep infinity"]
+    resources:
+      limits:
+        memory: 12Gi
+        cpu: 2
+      requests:
+        memory: 10Gi
+        cpu: 2
+    volumeMounts:
+    - mountPath: /datasmall
+      name: data-shra-llmast-gp-engine-unoselab02-03
+  volumes:
+    - name: data-shra-llmast-gp-engine-unoselab02-03
+      persistentVolumeClaim:
+        claimName: pvc-shra-llmast-gp-engine-unoselab02-03

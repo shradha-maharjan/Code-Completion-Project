@@ -57,6 +57,14 @@ public class AllASTVisitor extends ASTVisitor {
     }
 
     @Override
+    public boolean visit(VariableDeclarationExpression node) {
+        if (isMatchingPred(node)) {
+            log("[DBG] VariableDeclarationExpression: " + node);
+        }
+        return super.visit(node);
+    }
+
+    @Override
     public boolean visit(MethodInvocation node) {
         if (isMatchingPred(node)) {
             log("[DBG] MethodInvocation: " + node.getName());
@@ -309,6 +317,8 @@ public class AllASTVisitor extends ASTVisitor {
         if (isMatchingPred(node)) {
             log("[DBG] EnhancedForStatement: " + node);
         }
+        // node.getParameter().accept(this);
+        // node.getBody().accept(this);
         return super.visit(node);
     }
 
@@ -349,6 +359,8 @@ public class AllASTVisitor extends ASTVisitor {
         if (isMatchingPred(node)) {
             log("[DBG] ForStatement: " + node);
         }
+        // node.getExpression().accept(this);
+        // node.getBody().accept(this);
         return super.visit(node);
     }
 
@@ -356,6 +368,22 @@ public class AllASTVisitor extends ASTVisitor {
     public boolean visit(InfixExpression node) {
         if (isMatchingPred(node)) {
             log("[DBG] InfixExpression: " + node);//.getLeftOperand() + " " + node.getOperator() + " " + node.getRightOperand());
+        }
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PrefixExpression node) {
+        if (isMatchingPred(node)) {
+            log("[DBG] PrefixExpression: " + node);//.getLeftOperand() + " " + node.getOperator() + " " + node.getRightOperand());
+        }
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(PostfixExpression node) {
+        if (isMatchingPred(node)) {
+            log("[DBG] PostfixExpression: " + node);//.getLeftOperand() + " " + node.getOperator() + " " + node.getRightOperand());
         }
         return super.visit(node);
     }
