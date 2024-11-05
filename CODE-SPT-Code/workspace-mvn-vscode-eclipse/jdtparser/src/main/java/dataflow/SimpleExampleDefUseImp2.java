@@ -12,14 +12,20 @@ import util.UtilAST;
 
 public class SimpleExampleDefUseImp2 {
     private static final String UNIT_NAME = "DummyClass";
-    private static final String INPUT_FILE_PATH = "output/single_access_sequences.txt";
-    private static final String OUTPUT_FILE_PATH = "output/single_access_output.txt";
+    // private static final String INPUT_FILE_PATH = "output/single_access_sequences.txt";
+    // private static final String OUTPUT_FILE_PATH = "output/single_access_output.txt";
+    // private static final String NO_USAGE_FILE_PATH = "output/no_usage_sequences.txt";
+
+    private static final String INPUT_FILE_PATH = "output/no_usage_sequences_output_2.txt";
+    private static final String OUTPUT_FILE_PATH = "output/no_usage_sequences_masked.txt";
+    private static final String NO_USAGE_FILE_PATH = "output/no_usage_sequences_new.txt";
 
     public static void main(String[] args) {
         int noUsageCount = 0; 
 
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));
-             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH)) {
+             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH) ;
+             FileWriter noUsageWriter = new FileWriter(NO_USAGE_FILE_PATH)) {
 
             String line;
             int index = 1;
@@ -40,19 +46,23 @@ public class SimpleExampleDefUseImp2 {
                 cu.accept(myVisitor);
 
                 if (example.longestUsageCounts.isEmpty()) {
+                    // Write the line without variable usage to no_usage_count.txt
+                    noUsageWriter.write(line + "\n");
                     noUsageCount++;
+                } else {
+                    int offsetAdjustment = formattedCode.indexOf(line);
+                    String maskedLine = example.maskVariableWithLongestUsageSequence(line, offsetAdjustment);
+
+                    // Only write to output if a successful masking occurred
+                    if (!maskedLine.equals(line)) {
+                        writer.write(maskedLine + "\n");
+                    }
                 }
-
-                int offsetAdjustment = formattedCode.indexOf(line);
-
-                String maskedLine = example.maskVariableWithLongestUsageSequence(line, offsetAdjustment);
-
-                writer.write(maskedLine + "\n");
                 index++;
             }
 
             System.out.println("\nTotal lines without variable usage: " + noUsageCount);
-            System.out.println("Masked code saved to " + OUTPUT_FILE_PATH);
+            System.out.println("Lines without variable usage saved to " + NO_USAGE_FILE_PATH);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,9 +94,20 @@ public class SimpleExampleDefUseImp2 {
             return true;
         }
 
+        public boolean visit(SingleVariableDeclaration node) {
+            SimpleName name = node.getName();
+            IBinding binding = name.resolveBinding();
+            bindings.add(binding);
+            longestUsageCounts.put(binding, 0); // Initialize the longest sequence count for each variable
+            usageOffsets.put(binding, new ArrayList<>()); // Initialize offsets list
+            System.out.println("[DBG] Declaration2 of '" + name + "' at line " + cu.getLineNumber(name.getStartPosition()));
+            return true;
+        }
+
         public boolean visit(SimpleName node) {
-            if (node.getParent() instanceof VariableDeclarationFragment ||
-                node.getParent() instanceof SingleVariableDeclaration) {
+            if (node.getParent() instanceof VariableDeclarationFragment )//||
+              //  node.getParent() instanceof SingleVariableDeclaration)
+            	{
                 return true;
             }
 
@@ -140,4 +161,156 @@ public class SimpleExampleDefUseImp2 {
     }
 }
 
-    
+
+
+
+//import java.io.IOException;
+//import java.nio.file.Files;
+//import java.nio.file.Path;
+//import java.nio.file.Paths;
+//import java.util.Collections;
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.HashSet;
+//import java.util.List;
+//import java.util.Map;
+//import java.util.Set;
+//
+//import org.eclipse.jdt.core.dom.ASTNode;
+//import org.eclipse.jdt.core.dom.ASTParser;
+//import org.eclipse.jdt.core.dom.ASTVisitor;
+//import org.eclipse.jdt.core.dom.CompilationUnit;
+//import org.eclipse.jdt.core.dom.IBinding;
+//import org.eclipse.jdt.core.dom.SimpleName;
+//import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+//import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+//
+//import util.UtilAST;
+//
+//public class SimpleExampleDefUse {
+//    static CompilationUnit cu;
+//
+//    // Track longest sequence count and offsets of each variable
+//    Map<IBinding, Integer> longestUsageCounts = new HashMap<>();
+//    Map<IBinding, List<Integer>> usageOffsets = new HashMap<>();
+//
+//    public static void main(String args[]) throws IOException {
+//        String javaFilePath = "input/ClassA.java";
+//        ASTParser parser = UtilAST.parse(javaFilePath);
+//        cu = (CompilationUnit) parser.createAST(null);
+//
+//        SimpleExampleDefUse example = new SimpleExampleDefUse();
+//        MyVisitor myVisitor = example.new MyVisitor();
+//        cu.accept(myVisitor);
+//        
+//        example.printLongestUsageSequence();
+//
+//        // Mask and output the modified code
+//        example.maskVariableWithLongestUsageSequence(javaFilePath);
+//    }
+//
+//    class MyVisitor extends ASTVisitor {
+//        Set<IBinding> bindings = new HashSet<>();
+//
+//        public boolean visit(VariableDeclarationFragment node) {
+//            SimpleName name = node.getName();
+//            IBinding binding = name.resolveBinding();
+//            bindings.add(binding);
+//            longestUsageCounts.put(binding, 0); // Initialize the longest sequence count for each variable
+//            usageOffsets.put(binding, new ArrayList<>()); // Initialize offsets list
+//            System.out.println("[DBG] Declaration of '" + name + "' at line " + cu.getLineNumber(name.getStartPosition()));
+//            return true;
+//        }
+//
+//        public boolean visit(SimpleName node) {
+//            if (node.getParent() instanceof VariableDeclarationFragment ||
+//                node.getParent() instanceof SingleVariableDeclaration) {
+//                return true;
+//            }
+//
+//            IBinding binding = node.resolveBinding();
+//            if (binding != null && bindings.contains(binding)) {
+//                int lineNumber = cu.getLineNumber(node.getStartPosition());
+//                System.out.println("[DBG] Usage of '" + node + "' at line " + lineNumber);
+//
+//                // Update the longest usage count and store offset for each occurrence
+//                int currentCount = longestUsageCounts.get(binding) + 1;
+//                longestUsageCounts.put(binding, currentCount);
+//                usageOffsets.get(binding).add(node.getStartPosition());
+//
+//                // Print the declaration node if it exists
+//                ASTNode declaringNode = cu.findDeclaringNode(binding);
+//                System.out.println("[DBG] declaringNode: " + declaringNode);
+//            }
+//            return true;
+//        }
+//    }
+//
+//    // Method to print only the variable with the highest longest usage sequence, along with all its offsets
+//    public void printLongestUsageSequence() {
+//        IBinding maxBinding = null;
+//        int maxUsageCount = 0;
+//
+//        // Find the variable with the maximum usage count
+//        for (Map.Entry<IBinding, Integer> entry : longestUsageCounts.entrySet()) {
+//            IBinding binding = entry.getKey();
+//            int usageCount = entry.getValue();
+//            if (usageCount > maxUsageCount) {
+//                maxUsageCount = usageCount;
+//                maxBinding = binding;
+//            }
+//        }
+//
+//        // Print the highest longest usage sequence variable with all offsets
+//        if (maxBinding != null) {
+//            System.out.println("Variable '" + maxBinding.getName() + "' has longest usage sequence: " +
+//                               maxUsageCount + " with offsets: " + usageOffsets.get(maxBinding));
+//        }
+//    }
+//
+//    // Method to mask the variable with the highest longest usage sequence
+//    public void maskVariableWithLongestUsageSequence(String javaFilePath) throws IOException {
+//        IBinding maxBinding = null;
+//        int maxUsageCount = 0;
+//
+//        // Find the variable with the maximum usage count
+//        for (Map.Entry<IBinding, Integer> entry : longestUsageCounts.entrySet()) {
+//            IBinding binding = entry.getKey();
+//            int usageCount = entry.getValue();
+//            if (usageCount > maxUsageCount) {
+//                maxUsageCount = usageCount;
+//                maxBinding = binding;
+//            }
+//        }
+//
+//        // Read original code
+//        String code = new String(Files.readAllBytes(Paths.get(javaFilePath)));
+//
+//        // Mask the variable with the highest usage sequence
+//        if (maxBinding != null) {
+//            List<Integer> offsets = usageOffsets.getOrDefault(maxBinding, Collections.emptyList());
+//            String variableName = maxBinding.getName();
+//
+//            // Sort offsets in descending order to prevent re-indexing issues during replacement
+//            offsets.sort(Collections.reverseOrder());
+//
+//            StringBuilder maskedCode = new StringBuilder(code);
+//            for (int offset : offsets) {
+//                int endOffset = offset + variableName.length();
+//                maskedCode.replace(offset, endOffset, "[MASK]");
+//            }
+//
+//            // Ensure the output directory exists
+//            Path outputDir = Paths.get("output");
+//            if (!Files.exists(outputDir)) {
+//                Files.createDirectories(outputDir);
+//            }
+//
+//            // Write the masked code to a .txt file
+//            Files.write(Paths.get("output/MaskedClassA.txt"), maskedCode.toString().getBytes());
+//            System.out.println("\nMasked code saved to output/MaskedClassA.txt");
+//        } else {
+//            System.out.println("No variable with maximum sequence found to mask.");
+//        }
+//    }
+//}

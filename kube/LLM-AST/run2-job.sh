@@ -1,11 +1,5 @@
 
 
-
-# # kubectl exec  --stdin --tty shradha-llmast-gp-engine-unoselab01-pod02 -- /bin/bash
-
-#!/bin/bash
-
-
 # POD_NAME="shradha-llmast-gp-engine-unoselab02-pod02-new-01"
 # SCRIPT_PATH="/datamid"
 # JOB_YAML="./3-kube-job-llm-ast.yml"
@@ -29,11 +23,17 @@
 # echo "----------------------------------------------------------------------------"
 
 
-# POD_NAME="shradha-llmast-gp-engine-unoselab02-pod02-new-02"
-# SCRIPT_PATH="/datalargeSB"
+# # kubectl exec  --stdin --tty shradha-llmast-gp-engine-unoselab01-pod02 -- /bin/bash
+
+#!/bin/bash
+
+
+
+# POD_NAME="shradha-llmast-gp-engine-unoselab02-pod02-new-ea"
+# SCRIPT_PATH="/datalarge"
 # JOB_YAML="./3-kube-job-llm-ast-v2.yml"
 # #JOB_YAML="./3-kube-job-llm-ast-v3.yml"
-# TAR_File="/home/user1-selab3/Documents/llm_ast_nongen_PR_test.tar.gz"
+# TAR_File="/home/user1-selab3/Documents/llm_ast_nongen_SB_test.tar.gz"
 # # PYTHON_PROGRAM=""
 # # PYTHON_PROGRAM="py_ver.py"
 

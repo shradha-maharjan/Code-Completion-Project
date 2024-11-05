@@ -401,6 +401,9 @@
 //         }
 //     }
 // }
+
+
+// Correct IMp1
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -415,21 +418,24 @@ public class DefUseSimpleNameMain_correct {
 
     //Input 1 and Input 2 file paths
     static final String DIR = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/";
-    static final String INPUT1_FILE_PATH = DIR + "input/input_raw.txt";
-    static final String INPUT2_FILE_PATH = DIR + "input/input_pred.txt";
-    static final String OUTPUT_FILE_PATH = DIR + "output/output1.txt";
+    // static final String INPUT1_FILE_PATH = DIR + "input/input_raw.txt";
+    // static final String INPUT2_FILE_PATH = DIR + "input/input_pred.txt";
+    // static final String OUTPUT_FILE_PATH = DIR + "output/output1.txt";
 
-    // static final String INPUT1_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/raw_methods_valid.txt";
-    // static final String INPUT2_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/source_methods_valid.txt";
-    // static final String OUTPUT_FILE_PATH = "output/valid_targettype_output_new.txt";
+    static final String INPUT1_FILE_PATH =  "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/raw_methods_train.txt";
+    static final String INPUT2_FILE_PATH =  "/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/source_methods_train.txt";
+    static final String OUTPUT_FILE_PATH = DIR + "output/train_targettype_output_new1.txt";
+    static final String OUTPUT_FILE_PRED_NULL_PATH = DIR + "output/null_targettype_output_newTrain.txt";
+    static int counterNullPred = 0;
 
     public static void main(String[] args) throws IOException {
 
         // Step 1: Read both Input 1 and Input 2 line by line
         try (BufferedReader reader1 = new BufferedReader(new FileReader(INPUT1_FILE_PATH));
              BufferedReader reader2 = new BufferedReader(new FileReader(INPUT2_FILE_PATH));
-             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH)) {
-
+             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);
+             FileWriter writer4PredNull = new FileWriter(OUTPUT_FILE_PRED_NULL_PATH);
+             ) {
             String lineInput1;
             String lineInput2;
 
@@ -454,6 +460,7 @@ public class DefUseSimpleNameMain_correct {
                 String wrappedInput1Code = formatCode(lineInput1);
                 ASTParser parser1 = UtilAST.parseSrcCode(wrappedInput1Code, UNIT_NAME + ".java");
                 cuInput1 = (CompilationUnit) parser1.createAST(null);
+               
 
                 // Step 4: Parse Input 2 (Source input with PRED)
                 String wrappedInput2Code = formatCode(lineInput2);
@@ -463,10 +470,16 @@ public class DefUseSimpleNameMain_correct {
                 // Step 5: Use PredOffsetFinder to check for 'PRED' in Input 2
                 PredOffsetFinder predFinder = new PredOffsetFinder(predOffset, writer);
                 cuInput2.accept(predFinder);
+                if (predFinder.getPredOffset() == -1) {
+                    writer4PredNull.write(lineInput2 + "\n");
+                    counterNullPred++;
+                }
 
                 // Step 6: Use AllASTVisitor to check all node types and match the PRED offset
                 AllASTVisitor allASTVisitor = new AllASTVisitor(writer, predFinder.getPredOffset());
                 cuInput1.accept(allASTVisitor);
+
+                System.out.println("predFinder.getPredOffset(): " + predFinder.getPredOffset());
 
                 String separator = "[DBG] ------------------------------------------------------";
                 System.out.println(separator);
@@ -474,7 +487,9 @@ public class DefUseSimpleNameMain_correct {
 
                 lineNum++;
             }
+            writer.close();
         }
+        System.out.println("[DBG] Total Number of Null PRED: " + counterNullPred);
     }
 
     private static final String UNIT_NAME = "DummyClass";
@@ -485,7 +500,7 @@ public class DefUseSimpleNameMain_correct {
 }
 
 class PredOffsetFinder extends ASTVisitor {
-    private int targetOffset;
+    private int targetOffset = -1;
     private int predOffset;
     private FileWriter writer;
 

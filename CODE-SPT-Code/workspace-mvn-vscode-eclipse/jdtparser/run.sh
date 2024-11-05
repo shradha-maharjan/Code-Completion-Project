@@ -83,8 +83,10 @@ echo "Running MainParserJavaSmallJson with parameters: $@"
 # java -cp "$CLASSPATH" rawmethod.genast.TokenCounter "$@" -recent
 
 # java -cp "$CLASSPATH" dataflow.MainDataFlowAnalysis "$@"
-# java -cp "$CLASSPATH" dataflow.SimpleExampleDefUseImp2 "$@"
-java -cp "$CLASSPATH" DefUseSimpleNameMain_correct "$@"
+java -cp "$CLASSPATH" dataflow.SimpleExampleDefUseImp2 "$@"
+# java -cp "$CLASSPATH" DefUseSimpleNameMain_correct "$@"
+#java -cp "$CLASSPATH" DefUseSimpleNameMain_correctImp2 "$@"
+# java -cp "$CLASSPATH" IfElseMatcher "$@"
 
 #java -cp "$CLASSPATH" rawmethod.genast.ExtractNL "$@"
 #java -cp "$CLASSPATH" rawmethod.gentraindata.MainParserJavaSmallJson "$@"

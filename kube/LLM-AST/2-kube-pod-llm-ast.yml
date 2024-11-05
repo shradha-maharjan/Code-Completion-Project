@@ -2,7 +2,7 @@
 # apiVersion: v1
 # kind: Pod
 # metadata:
-#   name: shradha-llmast-gp-engine-unoselab02-pod02-new-02
+#   name: shradha-llmast-gp-engine-unoselab02-pod02-new-ea
 # spec:
 #   automountServiceAccountToken: false
 #   affinity:
@@ -26,7 +26,7 @@
 #         memory: 10Gi
 #         cpu: 2
 #     volumeMounts:
-#     - mountPath: /datalargeSB
+#     - mountPath: /datalarge
 #       name: data-shra-llmast-gp-engine-unoselab02-ea
 #   volumes:
 #     - name: data-shra-llmast-gp-engine-unoselab02-ea

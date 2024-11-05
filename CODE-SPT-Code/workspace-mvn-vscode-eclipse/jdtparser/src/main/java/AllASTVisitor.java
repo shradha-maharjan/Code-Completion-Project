@@ -9,10 +9,12 @@ public class AllASTVisitor extends ASTVisitor {
     private FileWriter writer;
     private int predOffset;  
     private List<String> nodeTypes = new ArrayList<>();
+    private List<int[]> loopBounds; 
 
-    public AllASTVisitor(FileWriter writer, int predOffset) {
+    public AllASTVisitor(FileWriter writer, int predOffset){//}, List<int[]> loopBounds) {
         this.writer = writer;
         this.predOffset = predOffset;
+       // this.loopBounds = loopBounds;
     }
 
     private void log(String message) {
@@ -38,7 +40,15 @@ public class AllASTVisitor extends ASTVisitor {
       nodeTypes.clear();  
    }
 
-
+    private boolean isWithinLoopBounds(ASTNode node) {
+        int start = node.getStartPosition();
+        for (int[] bounds : loopBounds) {
+            if (start >= bounds[0] && start <= bounds[1]) {
+                return true;
+            }
+        }
+        return false;
+}
     @Override
     public boolean visit(MethodDeclaration node) {
         SimpleName methodName = node.getName();
@@ -66,7 +76,7 @@ public class AllASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(MethodInvocation node) {
-        if (isMatchingPred(node)) {
+        if (isMatchingPred(node)) {//&& isWithinLoopBounds(node)) {
             log("[DBG] MethodInvocation: " + node.getName());
         }
         return super.visit(node);
@@ -98,6 +108,7 @@ public class AllASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(SimpleName node) {
+        // System.out.println("[DBG]" + node.getStartPosition() + ": " + node.toString());
         if (isMatchingPred(node)) {
             log("[DBG] SimpleName: " + node);
         }
@@ -248,13 +259,13 @@ public class AllASTVisitor extends ASTVisitor {
         return super.visit(node);
     }
 
-    @Override
-    public boolean visit(CompilationUnit node) {
-        if (isMatchingPred(node)) {
-            log("[DBG] CompilationUnit: " + node);
-        }
-        return super.visit(node);
-    }
+    // @Override
+    // public boolean visit(CompilationUnit node) {
+    //     if (isMatchingPred(node)) {
+    //         log("[DBG] CompilationUnit: " + node);
+    //     }
+    //     return super.visit(node);
+    // }
 
     @Override
     public boolean visit(ConditionalExpression node) {
@@ -314,7 +325,7 @@ public class AllASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(EnhancedForStatement node) {
-        if (isMatchingPred(node)) {
+        if (isMatchingPred(node) || isWithinLoopBounds(node)) {
             log("[DBG] EnhancedForStatement: " + node);
         }
         // node.getParameter().accept(this);
@@ -356,7 +367,7 @@ public class AllASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(ForStatement node) {
-        if (isMatchingPred(node)) {
+        if (isMatchingPred(node)) { //|| isWithinLoopBounds(node)) {
             log("[DBG] ForStatement: " + node);
         }
         // node.getExpression().accept(this);
@@ -382,7 +393,7 @@ public class AllASTVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(PostfixExpression node) {
-        if (isMatchingPred(node)) {
+        if (isMatchingPred(node)) {//|| isWithinLoopBounds(node)) {
             log("[DBG] PostfixExpression: " + node);//.getLeftOperand() + " " + node.getOperator() + " " + node.getRightOperand());
         }
         return super.visit(node);
