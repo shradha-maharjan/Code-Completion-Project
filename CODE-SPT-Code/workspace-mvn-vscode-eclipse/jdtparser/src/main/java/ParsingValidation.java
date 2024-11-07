@@ -8,17 +8,15 @@ import util.UtilAST;
 
 public class ParsingValidation {
     private static final String UNIT_NAME = "DummyClass";
-    private static final String INPUT_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/spt-code/sources/data/asts/ast_jdt/pretrain_nongen.txt";
+    private static final String INPUT_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/preprocess/pretrain_code_tokens.txt";
     private static final String OUTPUT_FILE_PATH = "output1/pretraining_code_tokens_output_nongen.txt";
-    private static final String NO_USAGE_FILE_PATH = "output1/others.txt";
 
     int counterSimpleNameVisit = 0;
     boolean isChecking = true;
 
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));
-             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);
-             FileWriter noUsageWriter = new FileWriter(NO_USAGE_FILE_PATH)) {
+             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);) {
 
             String line;
             int index = 1;
@@ -44,6 +42,12 @@ public class ParsingValidation {
                         writer.write(" - Not Counted (Number)\n");
                         continue; // Skip counting this token
                     }
+
+                    if (token.matches("0x[0-9A-Fa-f]+")) {
+                        writer.write(" - Not Counted (Hexadecimal)\n");
+                        continue;
+                    }
+
                     
                     if (!Set.of(
                             // Java keywords
