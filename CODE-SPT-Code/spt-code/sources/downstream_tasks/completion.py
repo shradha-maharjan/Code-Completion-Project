@@ -17,6 +17,7 @@ from eval.metrics import bleu, meteor, rouge_l, avg_ir_metrics, accuracy_for_seq
 from utils.callbacks import LogStateCallBack
 from utils.trainer import CodeTrainer
 from data.data_collator import collate_fn
+from convert import tokenize_source
 
 logger = logging.getLogger(__name__)
 
@@ -82,29 +83,29 @@ def run_completion(
             logger.info(f'The size of ast vocabulary: {len(ast_vocab)}')
             logger.info('The size of loaded vocabulary')
 
-            logger.info('Updating vocabularies from the dataset')
+            # logger.info('Updating vocabularies from the dataset')
 
-            code_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
-                                    name=args.code_vocab_name,
-                                    method=args.code_tokenize_method,
-                                    vocab_size=args.code_vocab_size,
-                                    datasets=[datasets['train'].codes, datasets['train'].targets],
-                                    ignore_case=True,
-                                    save_root=args.vocab_root)
-            nl_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
-                                  name=args.nl_vocab_name,
-                                  method=args.nl_tokenize_method,
-                                  vocab_size=args.nl_vocab_size,
-                                  datasets=[datasets['train'].names],
-                                  ignore_case=True,
-                                  save_root=args.vocab_root,
-                                  index_offset=len(code_vocab))
-            ast_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
-                                   name=args.ast_vocab_name,
-                                   method='word',
-                                   datasets=[datasets['train'].asts],
-                                   save_root=args.vocab_root,
-                                   index_offset=len(code_vocab) + len(nl_vocab))
+            # code_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
+            #                         name=args.code_vocab_name,
+            #                         method=args.code_tokenize_method,
+            #                         vocab_size=args.code_vocab_size,
+            #                         datasets=[datasets['train'].codes, datasets['train'].targets],
+            #                         ignore_case=True,
+            #                         save_root=args.vocab_root)
+            # nl_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
+            #                       name=args.nl_vocab_name,
+            #                       method=args.nl_tokenize_method,
+            #                       vocab_size=args.nl_vocab_size,
+            #                       datasets=[datasets['train'].names],
+            #                       ignore_case=True,
+            #                       save_root=args.vocab_root,
+            #                       index_offset=len(code_vocab))
+            # ast_vocab = init_vocab(vocab_save_dir=args.vocab_save_dir,
+            #                        name=args.ast_vocab_name,
+            #                        method='word',
+            #                        datasets=[datasets['train'].asts],
+            #                        save_root=args.vocab_root,
+            #                        index_offset=len(code_vocab) + len(nl_vocab))
     else:
         # Otherwise, builds vocabularies for code, abstract syntax tree (AST), and natural language (NL).
         logger.info('Building vocabularies')
@@ -147,7 +148,7 @@ def run_completion(
         else:
             logger.info('Loading the model from file')
             config = BartConfig.from_json_file(os.path.join(trained_model, 'config.json'))
-            model = BartForClassificationAndGeneration.from_pretrained(os.path.join(trained_model, 'pytorch_model.bin'),
+            model = BartForClassificationAndGeneration.from_pretrained(os.path.join(trained_model, 'model.safetensors'),#'pytorch_model.bin'),
                                                                        config=config)
     else:
         # Otherwise, builds a new BART model for code completion.
@@ -225,14 +226,16 @@ def run_completion(
 
     # Sets up the training arguments using Seq2SeqTrainingArguments.
     training_args = Seq2SeqTrainingArguments(output_dir=os.path.join(args.checkpoint_root, enums.TASK_COMPLETION),
+                                             hub_model_id="shradha01/code-completion",
+                                             push_to_hub=True,
                                              overwrite_output_dir=True,
                                              do_train=True,
                                              do_eval=True,
                                              do_predict=True,
                                              evaluation_strategy=IntervalStrategy.STEPS,#IntervalStrategy.EPOCH,
                                              prediction_loss_only=False,
-                                             per_device_train_batch_size=args.batch_size,
-                                             per_device_eval_batch_size=args.eval_batch_size,
+                                             per_device_train_batch_size=args.batch_size, #128
+                                             per_device_eval_batch_size=args.eval_batch_size, #128-fails
                                              gradient_accumulation_steps=args.gradient_accumulation_steps,
                                              learning_rate=args.learning_rate,
                                              weight_decay=args.lr_decay_rate,
@@ -298,123 +301,146 @@ def run_completion(
         # Logs and saves the training metrics.
         trainer.log_metrics(split='train', metrics=metrics)
         trainer.save_metrics(split='train', metrics=metrics)
+
+        # Push the model to Hugging Face Hub
+        logger.info('-' * 100)
+        logger.info('Pushing model to Hugging Face Hub')
+        trainer.push_to_hub(commit_message="Add fine-tuned code completion model")
+        logger.info('Model successfully pushed to Hugging Face Hub')
        # save_metrics(metrics,split='train')
     # --------------------------------------------------
     # predict
     # --------------------------------------------------
     logger.info('-' * 100)
     logger.info('Start testing')
+    # Computes evaluation metrics for the test set.
     trainer.compute_metrics = compute_test_metrics
-
-    # Creating a DataLoader for the test dataset with a smaller batch size
-    test_loader = torch.utils.data.DataLoader(
-        dataset=datasets['test'],
-        batch_size=args.test_batch_size,  
-        collate_fn=lambda batch: collate_fn(batch, args=args, task=enums.TASK_COMPLETION, 
-                                            code_vocab=code_vocab, nl_vocab=nl_vocab, ast_vocab=ast_vocab),
-        shuffle=False
-    )
-
-# Use trainer's prediction loop for making predictions
-    predict_results = trainer.prediction_loop(test_loader, description="prediction")
-    # predict_results = trainer.predict(test_dataset=datasets['test'],
-    #                                   metric_key_prefix='test',
-    #                                   max_length=args.max_code_len,
-    #                                   num_beams=args.beam_width)
+    predict_results = trainer.predict(test_dataset=datasets['test'],
+                                      metric_key_prefix='test',
+                                      max_length=args.max_code_len,
+                                      num_beams=args.beam_width)
     predict_metrics = predict_results.metrics
-    references = predict_metrics.pop('test_references', None)
-    candidates = predict_metrics.pop('test_candidates', None)
-
-    filtered_metrics = {key: value for key, value in predict_metrics.items() if not isinstance(value, list)}
-
-    # Log the filtered metrics (scalar values only)
-    trainer.log_metrics(split='test', metrics=filtered_metrics)
-
-    # Save the testing results and metrics
+    references = predict_metrics.pop('test_references')
+    candidates = predict_metrics.pop('test_candidates')
+    trainer.log_metrics(split='test', metrics=predict_metrics)
+    # Saves the testing results and metrics.
     trainer.save_metrics(split='test', metrics=predict_metrics)
-    # trainer.log_metrics(split='test', metrics=predict_metrics)
-    # # Saves the testing results and metrics.
-    # trainer.save_metrics(split='test', metrics=predict_metrics)
     # save testing results
-    # with open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_results.txt'),
-    #           mode='w', encoding='utf-8') as result_f, \
-    #         open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_refs.txt'),
-    #              mode='w', encoding='utf-8') as refs_f, \
-    #         open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_cans.txt'),
-    #              mode='w', encoding='utf-8') as cans_f:
-    #     sample_id = 0
-    #     for reference, candidate in zip(references, candidates):
-    #         result_f.write(f'sample {sample_id}:\n')
-    #         sample_id += 1
-    #         result_f.write(f'reference: {reference}\n')
-    #         result_f.write(f'candidate: {candidate}\n')
-    #         result_f.write('\n')
-    #         refs_f.write(reference + '\n')
-    #         cans_f.write(candidate + '\n')
-    #     for name, score in predict_metrics.items():
-    #         result_f.write(f'{name}: {score}\n')
-    # logger.info('Testing finished')
-    # for name, score in predict_metrics.items():
-    #     logger.info(f'{name}: {score}')
-
-
-# Save references and candidates if they exist
-    if references and candidates:
-        with open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_results.txt'),
-                mode='w', encoding='utf-8') as result_f, \
-                open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_refs.txt'),
-                    mode='w', encoding='utf-8') as refs_f, \
-                open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_cans.txt'),
-                    mode='w', encoding='utf-8') as cans_f:
-            sample_id = 0
-            for reference, candidate in zip(references, candidates):
-                result_f.write(f'sample {sample_id}:\n')
-                sample_id += 1
-                result_f.write(f'reference: {reference}\n')
-                result_f.write(f'candidate: {candidate}\n')
-                result_f.write('\n')
-                refs_f.write(reference + '\n')
-                cans_f.write(candidate + '\n')
-
-    # Log the test results
+    with open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_results.txt'),
+              mode='w', encoding='utf-8') as result_f, \
+            open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_refs.txt'),
+                 mode='w', encoding='utf-8') as refs_f, \
+            open(os.path.join(args.output_root, f'{enums.TASK_COMPLETION}_test_cans.txt'),
+                 mode='w', encoding='utf-8') as cans_f:
+        sample_id = 0
+        for reference, candidate in zip(references, candidates):
+            result_f.write(f'sample {sample_id}:\n')
+            sample_id += 1
+            result_f.write(f'reference: {reference}\n')
+            result_f.write(f'candidate: {candidate}\n')
+            result_f.write('\n')
+            refs_f.write(reference + '\n')
+            cans_f.write(candidate + '\n')
+        for name, score in predict_metrics.items():
+            result_f.write(f'{name}: {score}\n')
     logger.info('Testing finished')
-    for name, score in filtered_metrics.items():
+    for name, score in predict_metrics.items():
         logger.info(f'{name}: {score}')
-        # Tests the accuracy of the model's predictions against the ground truth at the top K predictions.
-        logger.info('-' * 100)
-        logger.info('Start testing accuracy at 5')
-        model.eval()
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        model = model.to(device)
-        torch.cuda.empty_cache()
-        test_dataloader = torch.utils.data.DataLoader(dataset=datasets['test'],
-                                                    batch_size=args.eval_batch_size,
-                                                    collate_fn=lambda batch: collate_fn(batch,
-                                                                                        args=args,
-                                                                                        task=enums.TASK_COMPLETION,
-                                                                                        code_vocab=code_vocab,
-                                                                                        nl_vocab=nl_vocab,
-                                                                                        ast_vocab=ast_vocab))
-        predictions = []
-        references = []
-        for step, batch in enumerate(tqdm(test_dataloader)):
-            batch_size = batch['input_ids'].size(0)
-            batch_outputs = model.generate(
-                input_ids=batch['input_ids'].to(device),
-                attention_mask=batch['attention_mask'].to(device),
-                max_length=args.completion_max_len,
-                min_length=3,
-                early_stopping=True,
-                num_beams=args.beam_width,
-                num_return_sequences=5
-            )
-            batch_outputs = batch_outputs.view(batch_size, -1, batch_outputs.size(-1))
-            for outputs in batch_outputs:
-                decoded = code_vocab.decode_batch(outputs.cpu().numpy())
-                predictions.append(decoded)
 
-            labels = code_vocab.decode_batch(batch['labels'].numpy())
-            references += labels
+    # class UserInputDataset(datasets):
+    #     """
+    #     A simple dataset for wrapping user-provided input code snippets.
+    #     """
+    #     def __init__(self, input_code, code_vocab, max_length):
+    #         # Ensure the vocabulary has a token-to-ID mapping
+    #         if not hasattr(code_vocab, 'token_to_id'):
+    #             raise AttributeError("The 'Vocab' object must have a 'token_to_id' attribute or similar for token mapping.")
+
+    #         # Tokenize input and map tokens to IDs
+    #         self.input_ids = [code_vocab.token_to_id.get(token, Vocab.START_VOCAB.index(Vocab.UNK_TOKEN))
+    #                         for token in input_code.split()]
+
+    #         # Generate attention mask (1 for valid tokens, 0 for padding)
+    #         self.attention_mask = [1] * len(self.input_ids)
+
+    #         # Pad to max_length
+    #         pad_id = Vocab.START_VOCAB.index(Vocab.PAD_TOKEN)
+    #         self.input_ids += [pad_id] * (max_length - len(self.input_ids))
+    #         self.attention_mask += [0] * (max_length - len(self.attention_mask))
+
+    #     def __len__(self):
+    #         return 1  # Single input case
+
+    #     def __getitem__(self, idx):
+    #         return {
+    #             "input_ids": torch.tensor(self.input_ids, dtype=torch.long),
+    #             "attention_mask": torch.tensor(self.attention_mask, dtype=torch.long)
+    #         }
+
+    # while True:
+    #     logger.info("Enter an incomplete code snippet for prediction (or type 'exit' to quit):")
+    #     input_code = input("Input Code: ").strip()
+    #     if input_code.lower() == 'exit':
+    #         logger.info("Exiting user input loop.")
+    #         break
+
+    #     logger.info(f"Processing input: {input_code}")
+    #     try:
+    #         # Wrap the user input into a temporary dataset
+    #         temp_dataset = UserInputDataset(input_code=input_code, code_vocab=code_vocab, max_length=args.max_code_len)
+
+    #         # Use the trainer's predict API
+    #         predict_results = trainer.predict(test_dataset=temp_dataset,
+    #                                         metric_key_prefix='user_input',
+    #                                         max_length=args.max_code_len,
+    #                                         num_beams=args.beam_width)
+
+    #         # Extract predictions
+    #         generated_predictions = predict_results.predictions
+
+    #         # Decode and log generated completions
+    #         logger.info("Generated code completions:")
+    #         for idx, sequence in enumerate(generated_predictions):
+    #             decoded_sequence = code_vocab.decode(sequence)
+    #             logger.info(f"Candidate {idx + 1}: {decoded_sequence}")
+    #     except Exception as e:
+    #         logger.error(f"Error during prediction: {e}")
+
+    # Tests the accuracy of the model's predictions against the ground truth at the top K predictions.
+    logger.info('-' * 100)
+    logger.info('Start testing accuracy at 5')
+    model.eval()
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
+    torch.cuda.empty_cache()
+    test_dataloader = torch.utils.data.DataLoader(dataset=datasets['test'],
+                                                  batch_size=args.eval_batch_size,
+                                                  collate_fn=lambda batch: collate_fn(batch,
+                                                                                      args=args,
+                                                                                      task=enums.TASK_COMPLETION,
+                                                                                      code_vocab=code_vocab,
+                                                                                      nl_vocab=nl_vocab,
+                                                                                      ast_vocab=ast_vocab))
+    predictions = []
+    references = []
+    for step, batch in enumerate(tqdm(test_dataloader)):
+        batch_size = batch['input_ids'].size(0)
+        batch_outputs = model.generate(
+            input_ids=batch['input_ids'].to(device),
+            attention_mask=batch['attention_mask'].to(device),
+            max_length=args.completion_max_len,
+            min_length=3,
+            early_stopping=True,
+            num_beams=args.beam_width,
+            num_return_sequences=5
+        )
+        batch_outputs = batch_outputs.view(batch_size, -1, batch_outputs.size(-1))
+        for outputs in batch_outputs:
+            decoded = code_vocab.decode_batch(outputs.cpu().numpy())
+            predictions.append(decoded)
+
+        labels = code_vocab.decode_batch(batch['labels'].numpy())
+        references += labels
 
     assert len(predictions) == len(references)
     scores = accuracy_top_k_for_sequence(references=references, candidates=predictions)

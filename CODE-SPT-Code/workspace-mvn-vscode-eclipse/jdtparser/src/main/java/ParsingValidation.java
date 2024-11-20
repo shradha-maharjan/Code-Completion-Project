@@ -2,21 +2,28 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.eclipse.jdt.core.dom.*;
 import util.UtilAST;
 
 public class ParsingValidation {
     private static final String UNIT_NAME = "DummyClass";
-    private static final String INPUT_FILE_PATH = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/preprocess/pretrain_code_tokens.txt";
-    private static final String OUTPUT_FILE_PATH = "output1/pretraining_code_tokens_output_nongen.txt";
+    private static final String INPUT_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_cleaned/tokenized_train_gen.txt";
+    private static final String OUTPUT_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/output3/pretraining_train_validation_gen.txt";
+    private static final String OKAY_METHODS_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/output3/okay_train_methods.txt";
+    private static final String NOT_OKAY_LINES_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/output3/not_okay_train_lines.txt";
 
     int counterSimpleNameVisit = 0;
     boolean isChecking = true;
 
     public static void main(String[] args) {
+        List<String> okayMethods = new ArrayList<>();  // List to store "okay" methods
+        List<Integer> notOkayLines = new ArrayList<>();  // List to store line numbers of "Not Okay" methods
+
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE_PATH));
-             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH);) {
+             FileWriter writer = new FileWriter(OUTPUT_FILE_PATH)) {
 
             String line;
             int index = 1;
@@ -24,9 +31,9 @@ public class ParsingValidation {
             // Read each line from the input file and process it
             while ((line = reader.readLine()) != null) {
                 writer.write("\nProcessing line " + index + ": " + line + "\n");
-                String formattedCode = formatCode(line);
+                //String formattedCode = formatCode(line);
 
-                ASTParser parser = UtilAST.parseSrcCode(formattedCode, UNIT_NAME + ".java");
+                ASTParser parser = UtilAST.parseSrcCode(line, UNIT_NAME + ".java");
                 CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
                 ParseResultChecker checker = new ParseResultChecker();
@@ -34,51 +41,48 @@ public class ParsingValidation {
 
                 int counterToken = 0;
                 String[] tokens = line.split("\\s+");
-                //writer.write("[DBG] Tokens in line:\n");
+                
                 for (String token : tokens) {
                     token = token.trim();
-                    //writer.write("  Token: " + token);
-                    if (token.matches("\\d+")) {
-                        writer.write(" - Not Counted (Number)\n");
-                        continue; // Skip counting this token
-                    }
-
-                    if (token.matches("0x[0-9A-Fa-f]+")) {
-                        writer.write(" - Not Counted (Hexadecimal)\n");
-                        continue;
-                    }
-
-                    
+                    // if (token.matches("\\d+")) {
+                    //     writer.write(" - Not Counted (Number)\n");
+                    //     continue;
+                    // }
+                    // if (token.matches("0x[0-9A-Fa-f]+")) {
+                    //     writer.write(" - Not Counted (Hexadecimal)\n");
+                    //     continue;
+                    // }
                     if (!Set.of(
-                            // Java keywords
-                            "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", 
-                            "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if", 
-                            "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "null", "package", 
-                            "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", 
-                            "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "sealed", "permits",
-                            
-                            // Literals
-                            "true", "false",
+                        // Java keywords
+                        "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", 
+                        "default", "do", "double", "else", "enum", "extends", "final", "finally", "float", "for", "goto", "if", 
+                        "implements", "import", "instanceof", "int", "interface", "long", "native", "new", "null", "package", 
+                        "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch", "synchronized", 
+                        "this", "throw", "throws", "transient", "try", "void", "volatile", "while", "sealed", "permits",
+                        
+                        // Literals
+                        "true", "false",
 
-                            // Operators and special characters
-                            "+", "-", "*", "/", "%", "++", "--", "!", "~", "?", ":", 
-                            "==", "!=", ">", "<", ">=", "<=", 
-                            "&&", "||", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", ">>>=",
-                            "&", "|", "^", "<<", ">>", ">>>",
-                            ".", ";", ",", "(", ")", "{", "}", "[", "]"
-                        ).contains(token)) {
-                        counterToken++;
-                        //writer.write(" - Counted\n");
-                    } else {
-                        //writer.write(" - Not Counted\n");
-                    }
+                        // Operators and special characters
+                        "+", "-", "*", "/", "%", "++", "--", "!", "~", "?", ":", 
+                        "==", "!=", ">", "<", ">=", "<=", 
+                        "&&", "||", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", ">>>=",
+                        "&", "|", "^", "<<", ">>", ">>>",
+                        ".", ";", ",", "(", ")", "{", "}", "[", "]"
+                    ).contains(token)) {
+                    counterToken++;
+                    //writer.write(" - Counted\n");
+                } else {
+                    //writer.write(" - Not Counted\n");
                 }
+            }
 
                 writer.write("[DBG] counterToken: " + counterToken + "\n");
                 writer.write("[DBG] tokens.length: " + tokens.length + "\n");
 
                 if (counterToken == checker.getCounterSimpleNameVisit()) {
                     writer.write("[DBG] Okay\n");
+                    okayMethods.add(line);  // Add the "okay" method to the list
                 } else {
                     int largerValue = Math.max(counterToken, checker.getCounterSimpleNameVisit());
                     int smallerValue = Math.min(counterToken, checker.getCounterSimpleNameVisit());
@@ -88,14 +92,29 @@ public class ParsingValidation {
 
                     if (ratio > 0.7) {
                         writer.write("[DBG] Okay\n");
+                        okayMethods.add(line);  // Add the "okay" method to the list
                     } else {
                         writer.write("[DBG] Not Okay\n");
+                        notOkayLines.add(index);  // Record the line number for "Not Okay" methods
                     }
                 }
                 
-                // Reset counter for next line
                 checker.resetCounter();
                 index++;
+            }
+
+            // Write all "okay" methods to the output file
+            try (FileWriter okayWriter = new FileWriter(OKAY_METHODS_FILE_PATH)) {
+                for (String method : okayMethods) {
+                    okayWriter.write(method + "\n");
+                }
+            }
+
+            // Write all "Not Okay" line numbers to the output file
+            try (FileWriter notOkayWriter = new FileWriter(NOT_OKAY_LINES_FILE_PATH)) {
+                for (int lineNumber : notOkayLines) {
+                    notOkayWriter.write(lineNumber + ",");
+                }
             }
 
         } catch (IOException e) {
@@ -103,24 +122,38 @@ public class ParsingValidation {
         }
     }
 
-    private static String formatCode(String codeSnippet) {
-        return "public class " + UNIT_NAME + " {\n" + codeSnippet + "\n}";
-    }
+    // private static String formatCode(String codeSnippet) {
+    //     return "public class " + UNIT_NAME + " {\n" + codeSnippet + "\n}";
+    // }
 
-    // Static Inner Class
     static class ParseResultChecker extends ASTVisitor {
         private int counterSimpleNameVisit = 0;
 
         @Override
         public boolean visit(SimpleName node) {
             counterSimpleNameVisit++;
-            //System.out.println("[DBG] SimpleName node visited: " + node.getIdentifier()); // Log each SimpleName
             return super.visit(node);
         }
+
+        public boolean visit(NumberLiteral node) {
+            counterSimpleNameVisit++;
+            return super.visit(node);
+        }
+
+        // public boolean visit(BooleanLiteral node) {
+        //     counterSimpleNameVisit++;
+        //     return super.visit(node);
+        // }
+
+        // public boolean visit(NullLiteral node) {
+        //     counterSimpleNameVisit++;
+        //     return super.visit(node);
+        // }
 
         public int getCounterSimpleNameVisit() {
             return counterSimpleNameVisit;
         }
+
         public void resetCounter() {
             counterSimpleNameVisit = 0;
         }

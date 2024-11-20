@@ -38,15 +38,15 @@ public class DefUseModel {
       this.vdf = vdf;
       this.compilationUnit = compilationUnit;
    }
-   
+
    public DefUseModel(SingleVariableDeclaration svd, CompilationUnit compilationUnit) {
-       this.svd = svd;
-       this.compilationUnit = compilationUnit;
+      this.svd = svd;
+      this.compilationUnit = compilationUnit;
    }
 
    // Getter for method parameters
    public SingleVariableDeclaration getSingleVarDecl() {
-       return this.svd;
+      return this.svd;
    }
 
    public VariableDeclarationStatement getVarDeclStmt() {
@@ -64,40 +64,41 @@ public class DefUseModel {
    public void addUsedVars(SimpleName v) {
       usedVars.add(v);
    }
-   
-   public List<MethodInvocation> getMethodInvocations() { 
-	      return methodInvocations;
-	   }
 
-	   public void addMethodInvocation(MethodInvocation method) { 
-	      methodInvocations.add(method);
-	   }
+   public List<MethodInvocation> getMethodInvocations() {
+      return methodInvocations;
+   }
 
-	   public List<FieldAccess> getFieldAccesses() { 
-	      return fieldAccesses;
-	   }
+   public void addMethodInvocation(MethodInvocation method) {
+      methodInvocations.add(method);
+   }
 
-	   public void addFieldAccess(FieldAccess fieldAccess) {
-	      fieldAccesses.add(fieldAccess);
-	   }
-	   
-	// Method to add qualified names
-	    public void addQualifiedName(String qualifiedName) {
-	        qualifiedNames.add(qualifiedName);
-	    }
+   public List<FieldAccess> getFieldAccesses() {
+      return fieldAccesses;
+   }
 
-	    public List<String> getQualifiedNames() {
-	        return qualifiedNames;
-	    }
-      // Add getter and setter for localVarUsages
-      public void addLocalVarUsage(SimpleName var) {
-         localVarUsages.add(var);
+   public void addFieldAccess(FieldAccess fieldAccess) {
+      fieldAccesses.add(fieldAccess);
+   }
+
+   // Method to add qualified names
+   public void addQualifiedName(String qualifiedName) {
+      qualifiedNames.add(qualifiedName);
+   }
+
+   public List<String> getQualifiedNames() {
+      return qualifiedNames;
+   }
+
+   // Add getter and setter for localVarUsages
+   public void addLocalVarUsage(SimpleName var) {
+      localVarUsages.add(var);
    }
 
    public List<SimpleName> getLocalVarUsages() {
-         return localVarUsages;
+      return localVarUsages;
    }
-	    
+
    public CompilationUnit getCompilationUnit() {
       return compilationUnit;
    }

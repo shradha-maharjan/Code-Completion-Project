@@ -212,11 +212,9 @@ LICENSE
 
 deploy-spt-code/
 kubectl outputs/
-
-checkpoints/
-models/
-runs/
-vocabs/
+*.json
+*.pk
+*.bin
 
 
 

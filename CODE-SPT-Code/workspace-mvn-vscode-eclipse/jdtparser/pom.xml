@@ -35,7 +35,7 @@ mvn clean compile assembly:single
 		===============================================================================
 		-->		
 		<workspace.dir>
-			/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/
+			/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/
 		</workspace.dir>
 			
 		<eclipse.lib.dir>
@@ -51,7 +51,12 @@ mvn clean compile assembly:single
 		Jars.
 		===============================================================================
 		-->
-
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.26.0</version> <!-- Adjust to the latest available version -->
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

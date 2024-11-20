@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job05-llmast-shradha-gp-engine-unoselab02-a6000
+  name: job01-llmast-shradha-gp-engine-unoselab02-a6000-v3
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -23,9 +23,9 @@ spec:
               pip check;
               pip install tree_sitter==0.21.0; 
               pip install antlr4-python3-runtime==4.9.2;
-              tar xf llm_ast_nongen_PR_test.tar.gz;
+              tar xf llm_ast_code_gen.tar.gz;
               cd deploy-spt-code/spt-code/sources;
-              python main.py --do-pre-train --pre-train-tasks cap --batch-size 128 --eval-batch-size 128 --test-batch-size 128 --cuda-visible-devices 0,1,2 --fp16 --model-name pre_train --n-epoch 30 --n-epoch-pre-train 30 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
+              python main.py --do-pre-train --train-from-scratch --pre-train-tasks cap --batch-size 128 --eval-batch-size 128 --cuda-visible-devices 0,1,2,3 --fp16 --model-name pre_train --n-epoch 30 --n-epoch-pre-train 30 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
           volumeMounts:
             - name: pvc-shra-llmast-gp-engine-unoselab02-03
               mountPath: /datasmall
@@ -33,12 +33,12 @@ spec:
             limits:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/rtxa6000: 3 #nvidia.com/gpu: 8
+              nvidia.com/rtxa6000: 4 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
             requests:
               memory: 48Gi
               cpu: "4"
-              nvidia.com/rtxa6000: 3 #nvidia.com/gpu: 8
+              nvidia.com/rtxa6000: 4 #nvidia.com/gpu: 8
               ephemeral-storage: 48Gi
           securityContext:
             allowPrivilegeEscalation: false

@@ -79,11 +79,6 @@ class RuntimeArguments:
         metadata={'help': 'Batch size for evaluation on each device'}
     )
 
-    test_batch_size: int = field(
-        default=16,
-        metadata={'help': 'Batch size for evaluation on each device'}
-    )
-
     beam_width: int = field(
         default=5,
         metadata={'help': 'Beam width when using beam decoding, 1 to greedy decode'}
@@ -152,23 +147,18 @@ class DatasetArguments:
         metadata={'help': 'Ratio of pre-train subset to parse'}
     )
 
-    jdt_file_path: str = field(
-        default='../../asts/pretrain/ast_jdt_output_file.txt',
-        metadata={'help': 'Path to JDT AST file'}
-    )
-
-    pretrain_asts_nl_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/pretrain',
-        metadata={'help': 'Path to JDT AST file'}
+    pretrain_file_path: str = field(
+        default='../../pretrain_dataset_cleaned/',
+        metadata={'help': 'Path to pretraining file'}
     )
 
     source_target_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune/tokenized_methods_with_javakw',
+        default='../../data_shradha/fine-tune/gen',
         metadata={'help': 'Path to JDT AST file'}
     )
 
     asts_nl_file_path: str = field(
-        default='/home/user1-selab3/Documents/research-shradha/data_shradha/fine-tune',
+        default='../../data_shradha/fine-tune',
         metadata={'help': 'Path to JDT AST file'}
     )
 
@@ -306,7 +296,7 @@ class OptimizerArguments:
     )
 
     early_stop_patience: int = field(
-        default=20,
+        default=0, #20,
         metadata={'help': 'Stop training if performance does not improve in n epoch, 0 to disable'}
     )
 

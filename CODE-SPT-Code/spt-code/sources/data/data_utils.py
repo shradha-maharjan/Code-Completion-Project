@@ -8,7 +8,7 @@ from tqdm import tqdm
 from antlr4 import InputStream
 import nltk
 
-from .asts.ast_parser import generate_single_ast_nl, split_identifier,parse_ast, extract_nl_from_code
+from .asts.ast_parser import generate_single_ast_nl, split_identifier
 import enums
 from data.vocab import Vocab
 from data.antlr_parsers.go.GoLexer import GoLexer
@@ -255,8 +255,6 @@ def parse_json_file(file, lang):
             source = remove_comments_and_docstrings(source, lang)
             source = replace_string_literal(source)
             code = replace_string_literal(' '.join(data['code_tokens']))
-            # source = source
-            # code = ' '.join(data['code_tokens'])
 
             sources.append(source)
             codes.append(code)
@@ -311,6 +309,9 @@ def iter_pre_train_dataset_files(lang_dir, lang):
     if lang in [enums.LANG_GO, enums.LANG_JAVA, enums.LANG_PYTHON, enums.LANG_JAVASCRIPT, enums.LANG_PHP,
                 enums.LANG_RUBY]:
         return [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
+        # files = [file for file in iter_all_files(base=lang_dir) if file.endswith('.jsonl')]
+        # files.sort(key=lambda x: os.path.getsize(x))  # Sort by file size
+        # return files
     return []
 
 
@@ -335,24 +336,6 @@ def load_pre_train_dataset(file, lang):
                 enums.LANG_JAVASCRIPT, enums.LANG_PHP, enums.LANG_RUBY]:
         sources, codes, names, codes_wo_name, docs = parse_json_file(file, lang=lang)
         return sources, codes, names, codes_wo_name, docs
-
-# def handle_error(error_message, context, index=None, file_path=None, source=None):
-#     # error_log_path = "error_sources.txt"  # Change to store sources
-#     if context == 'load_dataset':
-#         error_log_path = "error_sources.txt"
-
-#     # Format the source to remove newlines, carriage returns, and tabs
-#     formatted_source = source.replace('\n', '').replace('\r', '').replace('\t', '') if source else "No source available"
-
-#     # Log the error with formatted source information
-#     logger.error(f"Error at index {index} in file {file_path}: {formatted_source}\nError Message: {error_message}")
-
-#     # Write the error index and formatted source to a file if not already logged
-#     with open(error_log_path, 'a') as f:
-#         if index is not None:
-#             f.write(f"{formatted_source}\n")
-
-#     return formatted_source  # Return the formatted source for further processing or logging
 
 def load_dataset_from_dir(dataset_dir, lang=None):
     """
@@ -428,6 +411,7 @@ def load_dataset_from_dir(dataset_dir, lang=None):
                         ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
                     else:
                         ast, nl, nl_wo_name = None, None, None
+                    ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
                     new_sources.append(source)
                     new_codes.append(code)
                     new_codes_wo_name.append(code_wo_name)
@@ -437,8 +421,6 @@ def load_dataset_from_dir(dataset_dir, lang=None):
                     only_names.append(name)
 
                 except Exception as e:
-                    # handle_error(str(e), context="load_dataset", index=idx, file_path=dataset_file_path, source=source)
-                    # logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
                     continue
 
             all_sources += new_sources
@@ -463,175 +445,6 @@ def load_dataset_from_dir(dataset_dir, lang=None):
     
     return paths, languages, all_sources, all_codes, all_asts, all_names, all_codes_wo_name, all_names_wo_name, \
            all_only_names, all_docs
-
-# def load_dataset_from_dir(dataset_dir):
-#     """
-#     Load all files in the given dir, only for pre-training.
-
-#     Args:
-#         dataset_dir (str): Root directory
-
-#     Returns:
-#         (dict, list[str], list[str], list[str], List[str], list[str], list[str], list[str], list[str], list[str]):
-#             - Dict of paths: key is the dataset group, value is the path
-#             - List of str: languages for each line
-#             - List of str: source code
-#             - List of str: tokenized code string
-#             - List of ast: linearized ast string
-#             - List of str: split method name string
-#             - List of str:
-#             - List of str:
-#             - List of str:
-#             - List of str: List of docs
-
-#     """
-#     paths = {}
-#     languages = []
-#     all_sources = []
-#     all_asts = []
-#     all_codes = []
-#     all_codes_wo_name = []
-#     all_names = []
-#     all_names_wo_name = []
-#     all_only_names = []
-#     all_docs = []
-
-#     if not os.path.exists(dataset_dir):
-#         logger.info('-' * 100)
-#         full_path_dataset_dir = os.path.abspath(dataset_dir)
-#         check_exist = os.path.exists(full_path_dataset_dir)
-#         logger.info('Directory Not Exist: %s', dataset_dir)
-#         logger.info('-' * 100)
-#         sys.exit()
-#     if main_args.ast_type == "jdt":
-#     # Directly set the path for Java if ast_type is jdt
-#         path = os.path.join(dataset_dir, 'java')
-#         if not os.path.exists(path):
-#             logger.error(f'Java directory not found in {dataset_dir}')
-#             sys.exit()
-        
-#         dataset_files = iter_pre_train_dataset_files(path, lang=enums.LANG_JAVA)
-#         if len(dataset_files) > 0:
-#             logger.info(f'  Language: Java')
-#             paths['java'] = dataset_files
-#             n_sample = 0
-#             for dataset_file_path in dataset_files:
-#                 sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path, lang=enums.LANG_JAVA)
-                
-#                 new_sources = []
-#                 new_codes = []
-#                 new_codes_wo_name = []
-#                 new_names = []
-#                 new_names_wo_name = []
-#                 only_names = []
-#                 asts = []
-
-#                 for idx, (source, code, name, code_wo_name) in enumerate(tqdm(zip(sources, codes, names, codes_wo_name),
-#                                                             desc=f'Parsing {os.path.basename(dataset_file_path)}',
-#                                                             leave=False,
-#                                                             total=len(sources))):
-                    
-#                     try:
-#                         root = parse_ast(source=source, lang=enums.LANG_JAVA)
-#                         ast = None  # Explicitly set ast to None when JDT is enabled
-#                         nl, nl_wo_name = extract_nl_from_code(source=source, root=root, lang=enums.LANG_JAVA, name=name, replace_method_name=True)
-
-#                         new_sources.append(source)
-#                         new_codes.append(code)
-#                         new_codes_wo_name.append(code_wo_name)
-#                         new_names.append(nl)
-#                         new_names_wo_name.append(nl_wo_name)
-#                         asts.append(ast)
-#                         only_names.append(name)
-#                     except Exception as e:
-#                         handle_error(str(e), context="load_dataset", index=idx, file_path=dataset_file_path, source=source)
-#                         logger.info(f"Skipping due to error at index {idx}, source formatted as: {source}")
-#                         continue
-
-#                 all_sources += new_sources
-#                 all_codes += new_codes
-#                 all_codes_wo_name += new_codes_wo_name
-#                 all_names += new_names
-#                 all_names_wo_name += new_names_wo_name
-#                 all_only_names += only_names
-#                 all_asts += asts
-#                 all_docs += docs
-
-#                 n_line = len(new_sources)
-#                 languages += ['java' for _ in range(n_line)]
-#                 n_sample += n_line
-
-#                 logger.info(f'    File: {dataset_file_path}, {n_line} samples')
-
-#             logger.info(f'  Java dataset size: {n_sample}')
-
-#     else:
-#         # Iterate over all directories in dataset_dir if ast_type is not jdt
-#         for file in os.listdir(dataset_dir):
-#             path = os.path.join(dataset_dir, file)
-
-#             if os.path.isfile(path):  # Skip if it's a file, we want directories
-#                 continue
-
-#             # Determine the language
-#             lang = file
-#             if lang in MAPPING_LANG_LEXER:
-#                 dataset_files = iter_pre_train_dataset_files(path, lang=lang)
-#                 if len(dataset_files) > 0:
-#                     logger.info(f'  Language: {lang}')
-#                     paths[lang] = dataset_files
-#                     n_sample = 0
-#                     for dataset_file_path in dataset_files:
-#                         sources, codes, names, codes_wo_name, docs = load_pre_train_dataset(file=dataset_file_path, lang=lang)
-                        
-#                         new_sources = []
-#                         new_codes = []
-#                         new_codes_wo_name = []
-#                         new_names = []
-#                         new_names_wo_name = []
-#                         only_names = []
-#                         asts = []
-
-#                         for source, code, name, code_wo_name in tqdm(zip(sources, codes, names, codes_wo_name),
-#                                                                     desc=f'Parsing {os.path.basename(dataset_file_path)}',
-#                                                                     leave=False,
-#                                                                     total=len(sources)):
-
-#                             try:
-#                                 ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
-
-#                                 new_sources.append(source)
-#                                 new_codes.append(code)
-#                                 new_codes_wo_name.append(code_wo_name)
-#                                 new_names.append(nl)
-#                                 new_names_wo_name.append(nl_wo_name)
-#                                 asts.append(ast)
-#                                 only_names.append(name)
-#                             except Exception as e:
-#                                 continue
-
-#                         all_sources += new_sources
-#                         all_codes += new_codes
-#                         all_codes_wo_name += new_codes_wo_name
-#                         all_names += new_names
-#                         all_names_wo_name += new_names_wo_name
-#                         all_only_names += only_names
-#                         all_asts += asts
-#                         all_docs += docs
-
-#                         n_line = len(new_sources)
-#                         languages += [lang for _ in range(n_line)]
-#                         n_sample += n_line
-
-#                         logger.info(f'    File: {dataset_file_path}, {n_line} samples')
-
-#                     logger.info(f'  {lang} dataset size: {n_sample}')
-
-#     assert len(languages) == len(all_sources) == len(all_codes) == len(all_codes_wo_name) == len(all_asts) ==\
-#            len(all_names) == len(all_names_wo_name) == len(all_only_names)
-#     return paths, languages, all_sources, all_codes, all_asts, all_names, all_codes_wo_name, all_names_wo_name, \
-#            all_only_names, all_docs
-
 
 def trim_spaces(string):
     """
@@ -1142,6 +955,21 @@ def parse_for_completion(source_path, target_path):
     target_lines = load_lines(target_path)
     assert len(source_lines) == len(target_lines)
 
+    # #######################################################################
+    # Updated to reduce the time to parse, myoungkyu song, 03/31/2024
+    # if main_args.parse_subset_ratio:
+    #     line_counter = 0
+    #     lines_to_extract = int(len(source_lines) * main_args.parse_subset_ratio)
+
+    #     # if len(source_lines) > 10_000:
+    #     #     lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+    #     if len(source_lines) > 100_000:
+    #         lines_to_extract = int(lines_to_extract * main_args.parse_subset_ratio)
+
+    #     logger.info('*' * 100)
+    #     logger.info(f'The size of trimmed / original fine tunning completion set to parse: {lines_to_extract} / {len(source_lines)}')
+    # #######################################################################
+
     codes = []
     asts = []
     names = []
@@ -1149,16 +977,17 @@ def parse_for_completion(source_path, target_path):
 
     for source, target in tqdm(zip(source_lines, target_lines), desc='Parsing', total=len(source_lines)):
         try:
-            if main_args.ast_type != "jdt":
-                source = restore_source(source)
-                target = restore_source(target)
-                ast, nl = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA, replace_method_name=False)
-            else:
-                ast = None
-                nl = None
+            # if main_args.parse_subset_ratio: # myoungkyu song, 03/31/2024
+            #     if line_counter > lines_to_extract:
+            #         break
+            #     line_counter += 1
+
+            source = restore_source(source)
+            target = restore_source(target)
+            ast, name = generate_single_ast_nl(source=source, lang=enums.LANG_JAVA)
             codes.append(source)
             asts.append(ast)
-            names.append(nl)
+            names.append(name)
             targets.append(target)
         except Exception:
             continue

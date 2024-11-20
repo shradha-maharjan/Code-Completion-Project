@@ -47,7 +47,7 @@ java -version
 
 #BASE_PATH="/home/user1-selab3/Documents/research-spt-code-data/workspace-mvn-vscode-eclipse/jdtparser-sptcode-data/"
 #BASE_PATH="/home/user1-selab3/work-dream/research-dream/CODE/research-dream-spt-code-data/workspace-mvn-vscode-eclipse/jdtparser-sptcode-data"
-BASE_PATH="/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser"
+BASE_PATH="/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser"
 if [ ! -d "$BASE_PATH" ]; then
   echo "Error: Base path '$BASE_PATH' does not exist."
   exit 1

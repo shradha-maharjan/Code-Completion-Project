@@ -4,6 +4,7 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,8 +33,7 @@ public class UtilFile {
       do {
          contents.append(buffer, 0, read);
          read = in.read(buffer);
-      }
-      while (read >= 0);
+      } while (read >= 0);
       in.close();
       return contents.toString();
    }
@@ -85,13 +85,14 @@ public class UtilFile {
 
    // @SuppressWarnings("unchecked")
    // public static List<JavaSmallJsonExtract> loadFileSer(String filePath) {
-   //    List<JavaSmallJsonExtract> listJavaSmallJson = null;
-   //    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-   //       listJavaSmallJson = (List<JavaSmallJsonExtract>) ois.readObject();
-   //    } catch (IOException | ClassNotFoundException e) {
-   //       e.printStackTrace();
-   //    }
-   //    return listJavaSmallJson;
+   // List<JavaSmallJsonExtract> listJavaSmallJson = null;
+   // try (ObjectInputStream ois = new ObjectInputStream(new
+   // FileInputStream(filePath))) {
+   // listJavaSmallJson = (List<JavaSmallJsonExtract>) ois.readObject();
+   // } catch (IOException | ClassNotFoundException e) {
+   // e.printStackTrace();
+   // }
+   // return listJavaSmallJson;
    // }
 
    public static boolean checkFile(String f) {
@@ -104,12 +105,14 @@ public class UtilFile {
       return true;
    }
 
-   // public static void saveFileSer(List<JavaSmallJsonExtract> listJavaSmallJson, String filePath) {
-   //    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-   //       oos.writeObject(listJavaSmallJson);
-   //    } catch (IOException e) {
-   //       e.printStackTrace();
-   //    }
+   // public static void saveFileSer(List<JavaSmallJsonExtract> listJavaSmallJson,
+   // String filePath) {
+   // try (ObjectOutputStream oos = new ObjectOutputStream(new
+   // FileOutputStream(filePath))) {
+   // oos.writeObject(listJavaSmallJson);
+   // } catch (IOException e) {
+   // e.printStackTrace();
+   // }
    // }
 
    public static void saveFile(String filePath, List<String> contents) throws IOException {
@@ -119,6 +122,15 @@ public class UtilFile {
          printWriter.print(str + System.lineSeparator());
       }
       printWriter.close();
+   }
+
+   public static void saveToFile(String filePath, List<String> contents) throws Exception {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+         for (String line : contents) {
+            writer.write(line);
+            writer.newLine();
+         }
+      }
    }
 
    public static void checkCreateDir(String dirName) {
@@ -139,7 +151,7 @@ public class UtilFile {
       int lineNumber = 1;
       int currentOffset = 0;
       int charRead;
-      
+
       while ((charRead = reader.read()) != -1) {
          if (currentOffset >= offset) {
             break;

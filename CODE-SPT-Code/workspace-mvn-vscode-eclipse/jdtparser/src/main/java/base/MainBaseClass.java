@@ -13,6 +13,13 @@ public class MainBaseClass {
 		timeNow(ZonedDateTime.now(), "Start Time: ");
 	}
 
+    public MainBaseClass(boolean flag) {
+       if (flag) {
+          startTime = Instant.now();
+          timeNow(ZonedDateTime.now(), "Start Time: ");
+       }
+    }
+
 	public void timeNow(ZonedDateTime zonedDateTime, String msg) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 		String formattedTime = formatter.format(zonedDateTime);

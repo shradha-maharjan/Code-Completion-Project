@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # Rot for tensorboard
     main_args.tensor_board_root = os.path.join(main_args.output_root, 'runs')
     for d in [main_args.checkpoint_root, main_args.model_root, main_args.vocab_root, main_args.tensor_board_root,
-              main_args.dataset_save_dir, main_args.vocab_save_dir, main_args.jdt_file_path]:
+              main_args.dataset_save_dir, main_args.vocab_save_dir]:
         if not os.path.exists(d):
             os.makedirs(d)
 

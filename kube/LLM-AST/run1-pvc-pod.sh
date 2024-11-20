@@ -1,4 +1,4 @@
-# # # # # !/bin/bash
+# # # # # # !/bin/bash
 
 #Namespace to clean up
 NAMESPACE="pvc-shra-llmast-gp-engine-unoselab02"
@@ -22,10 +22,10 @@ echo "Cleanup completed."
 kubectl get ns | grep uno
 echo "----------------------------------------------------------------------------"
 # kubectl apply -f 1-kube-pvc-llm-ast.yml
-kubectl apply -f 1-kube-pvc-llm-ast.yml --kubeconfig ~/kube2/config
+kubectl apply -f 1-kube-pvc-llm-ast.yml #--kubeconfig ~/kube2/config
 kubectl get pvc
 echo "----------------------------------------------------------------------------"
-kubectl apply -f 2-kube-pod-llm-ast.yml --kubeconfig ~/kube2/config
+kubectl apply -f 2-kube-pod-llm-ast.yml #--kubeconfig ~/kube2/config
 kubectl get pods
 echo "----------------------------------------------------------------------------"
 
@@ -37,7 +37,7 @@ echo "--------------------------------------------------------------------------
 
 # # !/bin/bash
 
-# # Namespace to clean up
+# Namespace to clean up
 # NAMESPACE="pvc-shra-llmast-gp-engine-unoselab02-ea"
 
 # # echo "Deleting all jobs in namespace $NAMESPACE..."
@@ -59,10 +59,10 @@ echo "--------------------------------------------------------------------------
 # kubectl get ns | grep uno
 # echo "----------------------------------------------------------------------------"
 # # kubectl apply -f 1-kube-pvc-llm-ast.yml
-# kubectl apply -f 1-kube-pvc-llm-ast.yml --kubeconfig ~/kube2/config
+# kubectl apply -f 1-kube-pvc-llm-ast.yml #--kubeconfig ~/kube2/config
 # kubectl get pvc
 # echo "----------------------------------------------------------------------------"
-# kubectl apply -f 2-kube-pod-llm-ast.yml --kubeconfig ~/kube2/config
+# kubectl apply -f 2-kube-pod-llm-ast.yml #--kubeconfig ~/kube2/config
 # kubectl get pods
 # echo "----------------------------------------------------------------------------"
 
@@ -75,9 +75,9 @@ echo "--------------------------------------------------------------------------
 # kubectl get ns | grep uno
 # echo "----------------------------------------------------------------------------"
 # # kubectl apply -f 1-kube-pvc-llm-ast.yml
-# kubectl apply -f 1-kube-pvc-llm-ast.yml --kubeconfig ~/kube2/config
+# kubectl apply -f 1-kube-pvc-llm-ast.yml #--kubeconfig ~/kube2/config
 # kubectl get pvc
 # echo "----------------------------------------------------------------------------"
-# kubectl apply -f 2-kube-pod-llm-ast.yml --kubeconfig ~/kube2/config
+# kubectl apply -f 2-kube-pod-llm-ast.yml #--kubeconfig ~/kube2/config
 # kubectl get pods
 # echo "----------------------------------------------------------------------------"

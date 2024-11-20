@@ -11,8 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_lines_from_file, load_ast_from_file_jdt, compare_and_save_sources,load_files_for_completion, load_files_for_pretrain,compare_similarity #, compare_and_save_sources_completion
-from eval.bleu.google_bleu import avg_bleu
+from .data_util_jdt import load_files_for_completion, load_files_for_pretrain
 from data.vocab import Vocab
 
 logger = logging.getLogger(__name__)
@@ -51,12 +50,15 @@ class CodeDataset(Dataset):
         if self.mode == 'pre_train':
             set_args(args=args)
             print("Loading dataset from directory:", self.dataset_dir)
-            self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
+            if args.ast_type == "tree-sitter":
+                self.paths, self.languages, self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_dataset_from_dir(dataset_dir=self.dataset_dir, lang='java')
             if args.ast_type == "jdt":
-                self.pretrain_asts_nl_file_path = args.pretrain_asts_nl_file_path
-                self.asts,self.names,self.names_wo_name = load_files_for_pretrain(self.pretrain_asts_nl_file_path )
-                # compare_and_save_sources(self, sources_from_file, self.asts, 'sources', 'mismatched_sources.txt')
+                print("jdt")
+                self.pretrain_file_path = args.pretrain_file_path
+                self.paths, self.languages = None, 'java'
+                self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
+                self.names_wo_name, self.only_names, self.docs = load_files_for_pretrain(self.pretrain_file_path)
             sample_ratio = self.get_sample_ratio(args.dataset_size)
             if sample_ratio < 1.0: 
                 sample_size = int(len(self.codes) * sample_ratio)
@@ -67,26 +69,24 @@ class CodeDataset(Dataset):
                 self.codes_wo_name = [self.codes_wo_name[i] for i in sample_indices]
                 self.names_wo_name = [self.names_wo_name[i] for i in sample_indices]
                 self.only_names = [self.only_names[i] for i in sample_indices]
-                # self.docs = [self.docs[i] for i in sample_indices]
-                # self.languages = [self.languages[i] for i in sample_indices]
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
             self.size = len(self.codes)
 
-            # print(f"\nSample of Loaded Sources (up to 5):\n{self.sources[:5]}")
-            # print(f"\nSample of Loaded Codes (up to 5):\n{self.codes[:5]}")
-            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.asts[:5]}")
-            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.names[:5]}")
-            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.codes_wo_name[:5]}")
-            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.names_wo_name[:5]}")
+            print(f"\nSample of Loaded Sources (up to 5):\n{self.sources[:1]}")
+            print(f"\nSample of Loaded Codes (up to 5):\n{self.codes[:1]}")
+            print(f"\nSample of Loaded ASTs (up to 5):\n{self.asts[:1]}")
+            print(f"\nSample of Loaded names (up to 5):\n{self.names[:1]}")
+            print(f"\nSample of Loaded codes_wo_name (up to 5):\n{self.codes_wo_name[:1]}")
+            print(f"\nSample of Loaded names_wo_name (up to 5):\n{self.names_wo_name[:1]}")
 
         # load fine-tuning dataset
         else:
             assert split
             logger.info(f'  Loading {split} set')
-            self.dataset_dir = os.path.join(self.dataset_dir, task)
             # code summarization
             if task == enums.TASK_SUMMARIZATION:
+                self.dataset_dir = os.path.join(self.dataset_dir, task)
                 assert language, '\'Language\' must be specific if downstream task is code summarization'
                 assert split in ['train', 'valid', 'test']
                 self.dataset_dir = os.path.join(self.dataset_dir, language, split)
@@ -104,6 +104,7 @@ class CodeDataset(Dataset):
                 self.size = len(self.codes)
             # code translation
             elif task == enums.TASK_TRANSLATION:
+                self.dataset_dir = os.path.join(self.dataset_dir, task)
                 assert split in ['train', 'valid', 'test']
                 assert language in ['java-c_sharp', 'c_sharp-java']
                 source_lang, target_lang = language.split('-')
@@ -125,6 +126,7 @@ class CodeDataset(Dataset):
                 self.size = len(self.codes)
             # code search
             elif task == enums.TASK_SEARCH:
+                self.dataset_dir = os.path.join(self.dataset_dir, task)
                 assert language, '``Language`` must be specific if downstream task is code search'
                 assert split in ['codebase', 'train', 'valid', 'test']
                 self.dataset_dir = os.path.join(self.dataset_dir, language)
@@ -148,6 +150,7 @@ class CodeDataset(Dataset):
                     self.size = len(self.urls)
             # code clone detection
             elif task == enums.TASK_CLONE_DETECTION:
+                self.dataset_dir = os.path.join(self.dataset_dir, task)
                 assert split in ['train', 'valid', 'test']
                 assert clone_mapping
                 path = os.path.join(self.dataset_dir, f'{split}.txt')
