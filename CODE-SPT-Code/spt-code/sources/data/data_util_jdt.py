@@ -60,6 +60,19 @@ def load_files_for_pretrain(pretrain_file_path):
 
     return sources, codes, asts, names, codes_wo_name, names_wo_name, only_name, docs
 
+
+def load_files_for_pretrain(pretrain_file_path):
+
+    source_path = os.path.join(pretrain_file_path, f'pretrain-fun-mask.txt')
+
+    if not pretrain_file_path:
+        raise ValueError("path must be provided when ast_type is 'jdt'.")
+    
+    source_lines = load_lines(source_path)
+    sources  = source_lines[:100]
+
+    return sources
+
 def load_lines_from_file(file_path):
     lines = []
     with open(file_path, 'r') as file:

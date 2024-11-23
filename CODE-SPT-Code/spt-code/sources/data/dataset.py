@@ -80,6 +80,15 @@ class CodeDataset(Dataset):
             print(f"\nSample of Loaded codes_wo_name (up to 5):\n{self.codes_wo_name[:1]}")
             print(f"\nSample of Loaded names_wo_name (up to 5):\n{self.names_wo_name[:1]}")
 
+            if self.task == enums.TASK_MASS:
+            # Load pre-masked dataset from file
+                logger.info(f"Loading pre-masked dataset from: {args.pretrain_file_path}")
+                pre_masked_data = load_files_for_pretrain(self.pretrain_file_path)
+                self.input_tokens = [item['input_tokens'] for item in pre_masked_data]
+                self.mask_tokens = [item['mask_tokens'] for item in pre_masked_data]
+                self.size = len(self.input_tokens)
+                logger.info(f"Pre-masked dataset loaded with {self.size} samples.")
+
         # load fine-tuning dataset
         else:
             assert split
@@ -238,16 +247,18 @@ class CodeDataset(Dataset):
         # mass
         elif self.task == enums.TASK_MASS:
             print(f'[DBG] index: {index}')
-
-            code_tokens = self.codes[index].split()
-            mask_len = int(self.args.mass_mask_ratio * len(code_tokens))
-            mask_start = random.randint(0, len(code_tokens) - mask_len)
-            mask_tokens = code_tokens[mask_start: mask_start + mask_len]
-            input_tokens = code_tokens[:mask_start] + [Vocab.MSK_TOKEN] + code_tokens[mask_start + mask_len:]
-            print(f'[DBG] code {code_tokens}')
-            print(f'[DBG] input {input_tokens}')
-            print(f'[DBG] mask {mask_tokens}')
-            return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
+            if self.task == enums.TASK_MASS and hasattr(self, 'input_tokens'):
+                return self.input_tokens[index], self.asts[index], self.names[index], self.mask_tokens[index]
+            # else:
+            #     code_tokens = self.codes[index].split()
+            #     mask_len = int(self.args.mass_mask_ratio * len(code_tokens))
+            #     mask_start = random.randint(0, len(code_tokens) - mask_len)
+            #     mask_tokens = code_tokens[mask_start: mask_start + mask_len]
+            #     input_tokens = code_tokens[:mask_start] + [Vocab.MSK_TOKEN] + code_tokens[mask_start + mask_len:]
+            #     print(f'[DBG] code {code_tokens}')
+            #     print(f'[DBG] input {input_tokens}')
+            #     print(f'[DBG] mask {mask_tokens}')
+            #     return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
         # mnp
         elif self.task == enums.TASK_METHOD_NAME_PREDICTION:
             return self.codes_wo_name[index], self.asts[index], self.names_wo_name[index], self.names[index]

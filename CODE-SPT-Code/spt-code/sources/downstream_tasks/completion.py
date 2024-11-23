@@ -17,9 +17,16 @@ from eval.metrics import bleu, meteor, rouge_l, avg_ir_metrics, accuracy_for_seq
 from utils.callbacks import LogStateCallBack
 from utils.trainer import CodeTrainer
 from data.data_collator import collate_fn
-from convert import tokenize_source
+from huggingface_hub import login
 
 logger = logging.getLogger(__name__)
+
+
+def authenticate_huggingface():
+    login(token="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")
+    print("Authenticated with Hugging Face successfully.")
+
+authenticate_huggingface()
 
 def run_completion(
         args,
@@ -226,7 +233,7 @@ def run_completion(
 
     # Sets up the training arguments using Seq2SeqTrainingArguments.
     training_args = Seq2SeqTrainingArguments(output_dir=os.path.join(args.checkpoint_root, enums.TASK_COMPLETION),
-                                             hub_model_id="shradha01/code-completion",
+                                             hub_model_id="shradha01/code-completion-01",
                                              push_to_hub=True,
                                              overwrite_output_dir=True,
                                              do_train=True,
