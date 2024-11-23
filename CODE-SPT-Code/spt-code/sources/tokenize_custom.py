@@ -79,8 +79,8 @@ def tokenize_source(source, lang):
     
     tokens = reassemble_tokens(tokens)
     
-    # code = ' '.join(tokens)
-    code = replace_string_literal(' '.join(tokens))
+    code = ' '.join(tokens)
+    #code = replace_string_literal(' '.join(tokens))
     return trim_spaces(code)
 
 def read_and_tokenize_file(input_file_path, method_names_file_path, tokenized_output_file_path, code_wo_name_output_file_path):
