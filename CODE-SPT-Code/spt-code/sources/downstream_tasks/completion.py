@@ -17,16 +17,16 @@ from eval.metrics import bleu, meteor, rouge_l, avg_ir_metrics, accuracy_for_seq
 from utils.callbacks import LogStateCallBack
 from utils.trainer import CodeTrainer
 from data.data_collator import collate_fn
-from huggingface_hub import login
+#from huggingface_hub import login
 
 logger = logging.getLogger(__name__)
 
 
-def authenticate_huggingface():
-    login(token="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")
-    print("Authenticated with Hugging Face successfully.")
+# def authenticate_huggingface():
+#     login(token="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")
+#     print("Authenticated with Hugging Face successfully.")
 
-authenticate_huggingface()
+# authenticate_huggingface()
 
 def run_completion(
         args,
@@ -233,8 +233,8 @@ def run_completion(
 
     # Sets up the training arguments using Seq2SeqTrainingArguments.
     training_args = Seq2SeqTrainingArguments(output_dir=os.path.join(args.checkpoint_root, enums.TASK_COMPLETION),
-                                             hub_model_id="shradha01/code-completion-01",
-                                             push_to_hub=True,
+                                            #  hub_model_id="shradha01/code-completion-01",
+                                            #  push_to_hub=True,
                                              overwrite_output_dir=True,
                                              do_train=True,
                                              do_eval=True,
@@ -310,10 +310,10 @@ def run_completion(
         trainer.save_metrics(split='train', metrics=metrics)
 
         # Push the model to Hugging Face Hub
-        logger.info('-' * 100)
-        logger.info('Pushing model to Hugging Face Hub')
-        trainer.push_to_hub(commit_message="Add fine-tuned code completion model")
-        logger.info('Model successfully pushed to Hugging Face Hub')
+        # logger.info('-' * 100)
+        # logger.info('Pushing model to Hugging Face Hub')
+        # trainer.push_to_hub(commit_message="Add fine-tuned code completion model")
+        # logger.info('Model successfully pushed to Hugging Face Hub')
        # save_metrics(metrics,split='train')
     # --------------------------------------------------
     # predict
@@ -322,6 +322,11 @@ def run_completion(
     logger.info('Start testing')
     # Computes evaluation metrics for the test set.
     trainer.compute_metrics = compute_test_metrics
+    # small_test_dataset = torch.utils.data.Subset(datasets['test'], range(100))
+    # predict_results = trainer.predict(test_dataset=small_test_dataset, #datasets['test'],
+    #                                 metric_key_prefix='test',
+    #                                 max_length=args.max_code_len,
+    #                                 num_beams=args.beam_width)
     predict_results = trainer.predict(test_dataset=datasets['test'],
                                       metric_key_prefix='test',
                                       max_length=args.max_code_len,

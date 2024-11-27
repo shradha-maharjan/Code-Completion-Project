@@ -11,7 +11,7 @@ import enums
 from .data_utils import load_dataset_from_dir, set_args, \
     parse_for_summarization, parse_for_translation, parse_for_search, parse_for_clone, parse_for_completion, \
     parse_for_bug_fix
-from .data_util_jdt import load_files_for_completion, load_files_for_pretrain
+from .data_util_jdt import load_files_for_completion, load_files_for_pretrain,load_files_for_mask
 from data.vocab import Vocab
 
 logger = logging.getLogger(__name__)
@@ -45,6 +45,8 @@ class CodeDataset(Dataset):
 
         # dataset dir for files, all files in this dir meeting the filename will be used as dataset files
         self.dataset_dir = os.path.join(args.dataset_root, self.mode)
+
+        self.ast_type = args.ast_type if hasattr(args, 'ast_type') else None
             
         # load pre-training dataset
         if self.mode == 'pre_train':
@@ -59,6 +61,7 @@ class CodeDataset(Dataset):
                 self.paths, self.languages = None, 'java'
                 self.sources, self.codes, self.asts, self.names, self.codes_wo_name, \
                 self.names_wo_name, self.only_names, self.docs = load_files_for_pretrain(self.pretrain_file_path)
+                self.sources_masked = load_files_for_mask(self.pretrain_file_path)
             sample_ratio = self.get_sample_ratio(args.dataset_size)
             if sample_ratio < 1.0: 
                 sample_size = int(len(self.codes) * sample_ratio)
@@ -71,23 +74,15 @@ class CodeDataset(Dataset):
                 self.only_names = [self.only_names[i] for i in sample_indices]
                 self.sources = [self.sources[i] for i in sample_indices]
                 self.asts = [self.asts[i] for i in sample_indices]
+                self.sources_masked = [self.sources_masked[i] for i in sample_indices]
             self.size = len(self.codes)
 
-            print(f"\nSample of Loaded Sources (up to 5):\n{self.sources[:1]}")
-            print(f"\nSample of Loaded Codes (up to 5):\n{self.codes[:1]}")
-            print(f"\nSample of Loaded ASTs (up to 5):\n{self.asts[:1]}")
-            print(f"\nSample of Loaded names (up to 5):\n{self.names[:1]}")
-            print(f"\nSample of Loaded codes_wo_name (up to 5):\n{self.codes_wo_name[:1]}")
-            print(f"\nSample of Loaded names_wo_name (up to 5):\n{self.names_wo_name[:1]}")
-
-            if self.task == enums.TASK_MASS:
-            # Load pre-masked dataset from file
-                logger.info(f"Loading pre-masked dataset from: {args.pretrain_file_path}")
-                pre_masked_data = load_files_for_pretrain(self.pretrain_file_path)
-                self.input_tokens = [item['input_tokens'] for item in pre_masked_data]
-                self.mask_tokens = [item['mask_tokens'] for item in pre_masked_data]
-                self.size = len(self.input_tokens)
-                logger.info(f"Pre-masked dataset loaded with {self.size} samples.")
+            # print(f"\nSample of Loaded Sources (up to 5):\n{self.sources[:1]}")
+            # print(f"\nSample of Loaded Codes (up to 5):\n{self.codes[:1]}")
+            # print(f"\nSample of Loaded ASTs (up to 5):\n{self.asts[:1]}")
+            # print(f"\nSample of Loaded names (up to 5):\n{self.names[:1]}")
+            # print(f"\nSample of Loaded codes_wo_name (up to 5):\n{self.codes_wo_name[:1]}")
+            # print(f"\nSample of Loaded names_wo_name (up to 5):\n{self.names_wo_name[:1]}")
 
         # load fine-tuning dataset
         else:
@@ -246,19 +241,24 @@ class CodeDataset(Dataset):
                 return self.codes[index], other_ast, self.names[index], 0
         # mass
         elif self.task == enums.TASK_MASS:
-            print(f'[DBG] index: {index}')
-            if self.task == enums.TASK_MASS and hasattr(self, 'input_tokens'):
-                return self.input_tokens[index], self.asts[index], self.names[index], self.mask_tokens[index]
-            # else:
-            #     code_tokens = self.codes[index].split()
-            #     mask_len = int(self.args.mass_mask_ratio * len(code_tokens))
-            #     mask_start = random.randint(0, len(code_tokens) - mask_len)
-            #     mask_tokens = code_tokens[mask_start: mask_start + mask_len]
-            #     input_tokens = code_tokens[:mask_start] + [Vocab.MSK_TOKEN] + code_tokens[mask_start + mask_len:]
-            #     print(f'[DBG] code {code_tokens}')
-            #     print(f'[DBG] input {input_tokens}')
-            #     print(f'[DBG] mask {mask_tokens}')
-            #     return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
+            if self.ast_type == "jdt":
+                #self.sources_masked = load_files_for_mask(self.pretrain_file_path)
+                masked_code_tokens = self.sources_masked[index].split()
+                code_tokens = self.codes[index].split()
+                mask_indices = [i for i, token in enumerate(masked_code_tokens) if token == Vocab.MSK_TOKEN]
+                mask_tokens = [code_tokens[i] for i in mask_indices]        
+                input_tokens = masked_code_tokens
+                print(f'[DBG] code {code_tokens}')
+                print(f'[DBG] input {input_tokens}')
+                print(f'[DBG] mask {mask_tokens}')
+                return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
+            if self.ast_type == "tree-sitter":
+                code_tokens = self.codes[index].split()
+                mask_len = int(self.args.mass_mask_ratio * len(code_tokens))
+                mask_start = random.randint(0, len(code_tokens) - mask_len)
+                mask_tokens = code_tokens[mask_start: mask_start + mask_len]
+                input_tokens = code_tokens[:mask_start] + [Vocab.MSK_TOKEN] + code_tokens[mask_start + mask_len:]
+                return ' '.join(input_tokens), self.asts[index], self.names[index], ' '.join(mask_tokens)
         # mnp
         elif self.task == enums.TASK_METHOD_NAME_PREDICTION:
             return self.codes_wo_name[index], self.asts[index], self.names_wo_name[index], self.names[index]

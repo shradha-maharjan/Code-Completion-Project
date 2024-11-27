@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job02-llmast-shradha-gp-engine-unoselab02-a6000-v3
+  name: job04-llmast-shradha-gp-engine-unoselab02-a6000-v3
 spec:
   ttlSecondsAfterFinished: 86400 # a day
   template:
@@ -23,9 +23,9 @@ spec:
               pip check;
               pip install tree_sitter==0.21.0; 
               pip install antlr4-python3-runtime==4.9.2;
-              tar xf llm_ast_gen01_code.tar.gz;
+              tar xf llm_ast_code_first.tar.gz;
               cd deploy-spt-code-01/spt-code/sources;
-              python main.py --do-pre-train --train-from-scratch --pre-train-tasks cap --batch-size 128 --eval-batch-size 128 --cuda-visible-devices 0,1,2,3 --fp16 --model-name pre_train --n-epoch 30 --n-epoch-pre-train 30 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
+              python main.py --do-pre-train --train-from-scratch --pre-train-tasks cap --batch-size 96 --eval-batch-size 96 --cuda-visible-devices 0,1,2,3 --fp16 --model-name pre_train --n-epoch 50 --n-epoch-pre-train 50 --task completion --remove-existing-saved-file pre_train:fine_tune --ast-type \"jdt\" --dataset-size \"small\""]
           volumeMounts:
             - name: pvc-shra-llmast-gp-engine-unoselab02-03
               mountPath: /datasmall

@@ -33,14 +33,14 @@ def load_files_for_completion(source_target_file_path, asts_nl_file_path, split)
 
 def load_files_for_pretrain(pretrain_file_path):
 
-    source_path = os.path.join(pretrain_file_path, f'pretrain-orgstr-singleline-combined.txt')
+    source_path = os.path.join(pretrain_file_path, f'pretrain-fun.txt')
     code_path = os.path.join(pretrain_file_path, f'Tokenized_Code/pretrain_tokenized_gen.txt')
-    ast_path = os.path.join(pretrain_file_path, f'Asts/pretrain_asts_gen.txt')
+    ast_path = os.path.join(pretrain_file_path, f'Asts/pretrain_asts_gen_PR.txt')
     nl_path = os.path.join(pretrain_file_path, f'NL/NL_pretrain_source_wname_gen.txt')
     codes_wo_name_path = os.path.join(pretrain_file_path, f'Tokenized_Code/pretrain_code_wo_name_gen.txt')
     nl_wo_name_path = os.path.join(pretrain_file_path, f'NL/NL_pretrain_source_wo_name_gen.txt')
     only_names_path = os.path.join(pretrain_file_path, f'Only_Names/pretrain_onlynames.txt')
-    docs_path = os.path.join(pretrain_file_path, f'Docstrings/pretrain_docstrings.txt')
+    docs_path = os.path.join(pretrain_file_path, f'Docstrings/pretrain-docs.txt')
 
     if not pretrain_file_path:
         raise ValueError("path must be provided when ast_type is 'jdt'.")
@@ -61,9 +61,9 @@ def load_files_for_pretrain(pretrain_file_path):
     return sources, codes, asts, names, codes_wo_name, names_wo_name, only_name, docs
 
 
-def load_files_for_pretrain(pretrain_file_path):
+def load_files_for_mask(pretrain_file_path):
 
-    source_path = os.path.join(pretrain_file_path, f'pretrain-fun-mask.txt')
+    source_path = os.path.join(pretrain_file_path, f'Masked_tokenized/pretrain-fun-masked-gen.txt')
 
     if not pretrain_file_path:
         raise ValueError("path must be provided when ast_type is 'jdt'.")

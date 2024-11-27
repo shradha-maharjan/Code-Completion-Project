@@ -407,10 +407,10 @@ def load_dataset_from_dir(dataset_dir, lang=None):
                                                                          leave=False,
                                                                          total=len(sources))):
                 try:
-                    if main_args.ast_type != "jdt":
-                        ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
-                    else:
-                        ast, nl, nl_wo_name = None, None, None
+                    # if main_args.ast_type != "jdt":
+                    #     ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
+                    # else:
+                    #     ast, nl, nl_wo_name = None, None, None
                     ast, nl, nl_wo_name = generate_single_ast_nl(source=source, lang=lang, name=name, replace_method_name=True)
                     new_sources.append(source)
                     new_codes.append(code)

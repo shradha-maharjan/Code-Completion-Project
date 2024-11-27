@@ -148,7 +148,7 @@ class DatasetArguments:
     )
 
     pretrain_file_path: str = field(
-        default='../../pretrain_dataset_cleaned/',
+        default='../../pretrain_dataset_2ndVersion/',
         metadata={'help': 'Path to pretraining file'}
     )
 
