@@ -242,7 +242,6 @@ class CodeDataset(Dataset):
         # mass
         elif self.task == enums.TASK_MASS:
             if self.ast_type == "jdt":
-                #self.sources_masked = load_files_for_mask(self.pretrain_file_path)
                 masked_code_tokens = self.sources_masked[index].split()
                 code_tokens = self.codes[index].split()
                 mask_indices = [i for i, token in enumerate(masked_code_tokens) if token == Vocab.MSK_TOKEN]
