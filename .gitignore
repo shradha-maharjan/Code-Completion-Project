@@ -218,3 +218,5 @@ kubectl outputs/
 *.bin
 *.png
 
+kube/
+
