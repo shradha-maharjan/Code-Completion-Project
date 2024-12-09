@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class IfElseMatcher {
+public class FineTuneIfStmtVisitor {
    public static void main(String[] args) {
       String DIR = "/home/user1-selab3/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/";
       String inputFilePath = DIR + "output/Train_methods_without_ForLoop.txt";

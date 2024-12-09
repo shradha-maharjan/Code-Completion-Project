@@ -412,7 +412,7 @@ import org.eclipse.jdt.core.dom.*;
 
 import util.UtilAST;
 
-public class DefUseSimpleNameMain_correct {
+public class MainFineTuneClassifier_backup {
 
     static CompilationUnit cuInput1, cuInput2;
 

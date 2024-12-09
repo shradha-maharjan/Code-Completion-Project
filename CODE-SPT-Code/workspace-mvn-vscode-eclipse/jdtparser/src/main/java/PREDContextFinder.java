@@ -41,7 +41,6 @@ public class PREDContextFinder {
         int index = 0;
         boolean foundPRED = false;
     
-        // Regex to match ";PRED;" or cases with whitespace between PRED and semicolons, e.g., "; PRED ;"
         Pattern predPattern = Pattern.compile(";\\s*PRED\\s*;");
     
         while (index < method.length()) {
@@ -69,12 +68,10 @@ public class PREDContextFinder {
                 // Identify context for PRED token
                 String context;
                 if (contextStack.isEmpty()) {
-                    // Use regex to check if PRED is strictly between two semicolons, possibly with whitespace
                     Matcher matcher = predPattern.matcher(method.substring(Math.max(index - 1, 0), Math.min(index + 5, method.length())));
                     if (matcher.find()) {
                         context = "standalone PRED statement between semicolons (with possible whitespace)";
                     } else {
-                        // Check for variable declaration or assignment preceding PRED
                         int prevStatementEnd = findPreviousStatementStart(method, index);
                         if (prevStatementEnd >= 0 && method.substring(prevStatementEnd, index)
                                 .matches(".*\\b(int|double|String|boolean|float|char)\\b.*=.*;.*")) {
@@ -99,8 +96,6 @@ public class PREDContextFinder {
         }
     }
     
-
-    // Helper method to find the end of a single statement or block, accounting for no-brace scenarios
     public static int findStatementEnd(String method, int startIndex) {
         int openBraceIndex = method.indexOf("{", startIndex);
         int semicolonIndex = method.indexOf(";", startIndex);
@@ -112,7 +107,6 @@ public class PREDContextFinder {
         return semicolonIndex != -1 ? semicolonIndex + 1 : method.length();
     }
 
-    // Helper method to find the start of the previous statement
     public static int findPreviousStatementStart(String method, int index) {
         int semicolonIndex = method.lastIndexOf(";", index - 1);
         return (semicolonIndex != -1) ? semicolonIndex + 1 : 0;
