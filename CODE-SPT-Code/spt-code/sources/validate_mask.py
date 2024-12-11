@@ -68,7 +68,7 @@ class DatasetValidator:
 
 if __name__ == "__main__":
 
-    original_file_path = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_2ndVersion/Test/pretrain_tokenized_gen.txt"
+    original_file_path = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_2ndVersion/pretrain_tokenized_updated_arti/pretrain_tokenized_gen.txt"
     masked_file_path = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_2ndVersion/Masked_tokenized/pretrain-fun-masked-gen.txt"
     # original_file_path = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_2ndVersion/Tokenized_Code/pretrain_tokenized_gen.txt"
     # masked_file_path = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/pretrain_dataset_2ndVersion/Masked_tokenized/pretrain-fun-masked-gen.txt"

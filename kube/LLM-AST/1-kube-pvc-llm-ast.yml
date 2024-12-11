@@ -11,22 +11,10 @@
 #     requests:
 #       storage: 50Gi
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-shra-llmast-gp-engine-unoselab02
-spec:
-  storageClassName: rook-cephfs-central
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 50Gi
-
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
-#   name: pvc-shra-llmast-gp-engine-unoselab02-03
+#   name: pvc-shra-llmast-gp-engine-unoselab02
 # spec:
 #   storageClassName: rook-cephfs-central
 #   accessModes:
@@ -34,3 +22,15 @@ spec:
 #   resources:
 #     requests:
 #       storage: 50Gi
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-shra-llmast-gp-engine-unoselab02-03
+spec:
+  storageClassName: rook-cephfs-central
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi

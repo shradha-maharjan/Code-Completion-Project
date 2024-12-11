@@ -347,8 +347,9 @@ public class MainClassifyMethodCalls extends MainBaseClass implements GlobalInfo
          }
          // Step 3. Replace the target variable with [MASK]
          String varNameInsert = transformer.getVarNameInsert();
-         String funcMasked = modifiedOuterMostMethod.replaceAll(varNameInsert, MASK_TOKEN);
-         int numMaskKWord = funcMasked.split("\\[MASK\\]").length - 1;
+         String funcMasked = modifiedOuterMostMethod.replaceAll(varNameInsert, "PKI_RPLC");
+         //int numMaskKWord = funcMasked.split("\\[MASK\\]").length - 1;
+         int numMaskKWord = funcMasked.split("PKI_RPLC").length - 1;
          if (numMaskKWord > 1) {
             // Step 3a. Replace `variable` with [MASK]
             funcMaskedVarList.add(funcMasked);
@@ -456,45 +457,73 @@ public class MainClassifyMethodCalls extends MainBaseClass implements GlobalInfo
       occurrences.forEach((key, value) -> System.out.println(String.format("[DBG] %-" + width + "s: `%d` occurs %d", "# of occurrence: ", key, value)));
       // System.out.println("'" + key + "' occurs " + value));
    }
-
+   
    String replaceMaskFirstParm(String input, String methodCallName, String parameter, int[] firstParamPosition) {
       String result = null;
       String pattern = methodCallName + "\\d+\\(" + parameter + "\\)";
-
+  
       Pattern regex = Pattern.compile(pattern);
       Matcher matcher = regex.matcher(input);
-
+  
       if (matcher.find()) {
-         int matchStart = matcher.start();
-         String matchedSubstring = matcher.group();
-
-         int openParenOffset = matchedSubstring.indexOf('(') + matchStart;
-         int closeParenOffset = matchedSubstring.indexOf(')') + matchStart;
-
-         // System.out.println("Match: " + matchedSubstring);
-         // System.out.println("Offset of '(': " + openParenOffset);
-         // System.out.println("Offset of ')': " + closeParenOffset);
-
-         // ** Replace a method call
-         String bgnPart = input.substring(0, openParenOffset + 1);
-         String endPart = input.substring(closeParenOffset);
-         String replacedMethodCall = bgnPart + MASK_TOKEN + endPart;
-
-         // ** Replace the first parameter of the method
-         bgnPart = replacedMethodCall.substring(0, firstParamPosition[0]);
-         endPart = replacedMethodCall.substring(bgnPart.length() + firstParamPosition[1]);
-         result = bgnPart + MASK_TOKEN + endPart;
-
-         // System.out.println("[DBG] " + input);
-         // System.out.println("[DBG] " + bgnPart + MASK_TOKEN + endPart);
-         // System.out.println("Match found.");
-      }
-      else {
-         System.out.println("[DBG] " + input);
-         throw new RuntimeException("[ERR] Data Integrity Error!!!");
+          int matchStart = matcher.start();
+          String matchedSubstring = matcher.group();
+  
+          int openParenOffset = matchedSubstring.indexOf('(') + matchStart;
+          int closeParenOffset = matchedSubstring.indexOf(')') + matchStart;
+  
+          // Display the parameter instead of replacing it
+          String paramToDisplay = input.substring(firstParamPosition[0], firstParamPosition[0] + firstParamPosition[1]);
+          System.out.println("Parameter Found: " + paramToDisplay);
+  
+          // Construct the result without modifying the input
+          result = input;
+  
+      } else {
+          System.out.println("[DBG] " + input);
+          throw new RuntimeException("[ERR] Data Integrity Error!!!");
       }
       return result;
-   }
+  }  
+
+   // String replaceMaskFirstParm(String input, String methodCallName, String parameter, int[] firstParamPosition) {
+   //    String result = null;
+   //    String pattern = methodCallName + "\\d+\\(" + parameter + "\\)";
+
+   //    Pattern regex = Pattern.compile(pattern);
+   //    Matcher matcher = regex.matcher(input);
+
+   //    if (matcher.find()) {
+   //       int matchStart = matcher.start();
+   //       String matchedSubstring = matcher.group();
+
+   //       int openParenOffset = matchedSubstring.indexOf('(') + matchStart;
+   //       int closeParenOffset = matchedSubstring.indexOf(')') + matchStart;
+
+   //       // System.out.println("Match: " + matchedSubstring);
+   //       // System.out.println("Offset of '(': " + openParenOffset);
+   //       // System.out.println("Offset of ')': " + closeParenOffset);
+
+   //       // ** Replace a method call
+   //       String bgnPart = input.substring(0, openParenOffset + 1);
+   //       String endPart = input.substring(closeParenOffset);
+   //       String replacedMethodCall = bgnPart + MASK_TOKEN + endPart;
+
+   //       // ** Replace the first parameter of the method
+   //       bgnPart = replacedMethodCall.substring(0, firstParamPosition[0]);
+   //       endPart = replacedMethodCall.substring(bgnPart.length() + firstParamPosition[1]);
+   //       result = bgnPart + MASK_TOKEN + endPart;
+
+   //       // System.out.println("[DBG] " + input);
+   //       // System.out.println("[DBG] " + bgnPart + MASK_TOKEN + endPart);
+   //       // System.out.println("Match found.");
+   //    }
+   //    else {
+   //       System.out.println("[DBG] " + input);
+   //       throw new RuntimeException("[ERR] Data Integrity Error!!!");
+   //    }
+   //    return result;
+   // }
 
    String replaceTokensWithMask(String theLineOfFunction, List<Integer> offsets, String targetToken, String mask) {
       StringBuilder result = new StringBuilder(theLineOfFunction);

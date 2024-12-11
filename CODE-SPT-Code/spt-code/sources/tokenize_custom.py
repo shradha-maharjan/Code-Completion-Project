@@ -113,7 +113,7 @@ def tokenize_source(source, lang):
     
     tokens = []
     parts = source.split("[MSK]")
-    for i, part in enumerate(parts):
+    for i, part in enumerate(source):
         if part.strip():
             input_stream = InputStream(part)
             lexer_class = MAPPING_LANG_LEXER[lang]
