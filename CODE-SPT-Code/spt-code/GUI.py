@@ -35,20 +35,13 @@ class CodeCompletionApp:
         self.tokenizer_name = "shradha01/llm-coding-tasks-tokenizer"
         self.load_model_and_tokenizer()
 
-        self.main_frame = tk.Frame(self.scrollable_frame)
-        self.main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # Replace the main_frame with a PanedWindow for resizable borders
+        self.paned_window = tk.PanedWindow(self.scrollable_frame, orient=tk.HORIZONTAL, sashwidth=5)
+        self.paned_window.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.left_frame = tk.Frame(self.main_frame, width=450)
-        self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-        # self.input_label = tk.Label(self.left_frame, text="Input Code:", font=("Arial", 12))
-        # self.input_label.pack(anchor="w", pady=(0, 5))
-
-        # self.input_text = tk.Text(self.left_frame, height=25, wrap=tk.WORD, font=("Arial", 12))
-        # self.input_text.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
-
-        # self.extract_button = ttk.Button(self.left_frame, text="Extract Masked Methods", command=self.extract_masked_methods)
-        # self.extract_button.pack(pady=10)
+        # Left frame inside the paned window
+        self.left_frame = tk.Frame(self.paned_window, width=450)
+        self.paned_window.add(self.left_frame)
 
         self.input_frame = tk.Frame(self.left_frame)
         self.input_frame.pack(fill=tk.BOTH, expand=True)
@@ -62,41 +55,44 @@ class CodeCompletionApp:
             height=25,
             wrap=tk.WORD,
             font=("Arial", 12),
-            yscrollcommand=self.input_scrollbar.set  
+            yscrollcommand=self.input_scrollbar.set
         )
-        self.input_scrollbar.config(command=self.input_text.yview)  # Configure scrollbar to scroll the text widget
-        self.input_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)  # Pack scrollbar to the right
-        self.input_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)  # Pack text widget to the left
+        self.input_scrollbar.config(command=self.input_text.yview)
+        self.input_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.input_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self.extract_button = ttk.Button(self.left_frame, text="Extract Masked Methods", command=self.extract_masked_methods)
-        self.extract_button.pack(pady=10)
+        # self.extract_button = ttk.Button(self.left_frame, text="Extract Masked Methods", command=self.extract_masked_methods)
+        # self.extract_button.pack(pady=10)
 
-        self.right_frame = tk.Frame(self.main_frame, width=450)
-        self.right_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        # Add a nested PanedWindow for the right frame with vertical resizing
+        self.right_paned_window = tk.PanedWindow(self.paned_window, orient=tk.VERTICAL, sashwidth=5)
+        self.paned_window.add(self.right_paned_window)
+        
+        # Frame with border and grey background for "Select an Option:"
+        # Add a label for "Select an Option:"
+        self.options_label = tk.Label(
+            self.right_paned_window,
+            text="Select an Option:",
+            font=("Arial", 12),
+            fg="black",
+            anchor="w"
+        )
+        self.right_paned_window.add(self.options_label)
 
-        # self.options_label = tk.Label(self.right_frame, text="Select an Option:", font=("Arial", 12))
-        # self.options_label.pack(anchor="w", pady=(0, 5))
+        self.options_frame_box = tk.Frame(self.right_paned_window, bg="#f6f6f6", bd=0, relief="flat")
+        self.right_paned_window.add(self.options_frame_box)
 
-        # self.options_frame = tk.Frame(self.right_frame)
-        # self.options_frame.pack(anchor="w", fill=tk.X)
-
-        self.options_frame_with_scroll = tk.Frame(self.right_frame)
-        self.options_frame_with_scroll.pack(fill=tk.BOTH, expand=True)
-
-        self.options_label = tk.Label(self.options_frame_with_scroll, text="Select an Option:", font=("Arial", 12))
-        self.options_label.pack(anchor="w", pady=(0, 5))
-
-        self.options_canvas = tk.Canvas(self.options_frame_with_scroll)
-        self.options_scrollbar = tk.Scrollbar(self.options_frame_with_scroll, orient=tk.VERTICAL, command=self.options_canvas.yview)
-        self.options_frame = tk.Frame(self.options_canvas)
+        self.options_canvas = tk.Canvas(self.options_frame_box, bg="#f6f6f6", highlightthickness=0)
+        self.options_scrollbar = tk.Scrollbar(self.options_label, orient=tk.VERTICAL, command=self.options_canvas.yview)
+        self.options_inner_frame = tk.Frame(self.options_canvas, bg="#f6f6f6")
 
         self.options_canvas.configure(yscrollcommand=self.options_scrollbar.set)
         self.options_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.options_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self.options_canvas_window = self.options_canvas.create_window((0, 0), window=self.options_frame, anchor="nw")
+        self.options_canvas_window = self.options_canvas.create_window((0, 0), window=self.options_inner_frame, anchor="nw")
 
-        self.options_frame.bind(
+        self.options_inner_frame.bind(
             "<Configure>",
             lambda e: self.options_canvas.configure(scrollregion=self.options_canvas.bbox("all"))
         )
@@ -105,8 +101,9 @@ class CodeCompletionApp:
         self.options = {}
         self.option_buttons = []
 
-        self.output_frame = tk.Frame(self.right_frame)
-        self.output_frame.pack(fill=tk.BOTH, expand=True)
+        # Bottom section of the right frame (output)
+        self.output_frame = tk.Frame(self.right_paned_window)
+        self.right_paned_window.add(self.output_frame)
 
         self.output_label = tk.Label(self.output_frame, text="Generated Candidates:", font=("Arial", 12))
         self.output_label.pack(anchor="w", pady=(10, 5))
@@ -117,12 +114,12 @@ class CodeCompletionApp:
             height=15,
             wrap=tk.WORD,
             font=("Arial", 12),
-            state=tk.DISABLED,  
-            yscrollcommand=self.output_scrollbar.set  
+            state=tk.DISABLED,
+            yscrollcommand=self.output_scrollbar.set
         )
-        self.output_scrollbar.config(command=self.output_text.yview)  
-        self.output_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)  # Pack scrollbar to the right
-        self.output_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)  # Pack text widget to the left
+        self.output_scrollbar.config(command=self.output_text.yview)
+        self.output_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.output_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # self.output_label = tk.Label(self.right_frame, text="Generated Candidates:", font=("Arial", 12))
         # self.output_label.pack(anchor="w", pady=(10, 5))
@@ -133,12 +130,11 @@ class CodeCompletionApp:
         self.bottom_frame = tk.Frame(self.scrollable_frame)
         self.bottom_frame.pack(fill=tk.X, padx=10, pady=10)
 
-        self.bottom_frame.columnconfigure(0, weight=1)
-        self.bottom_frame.columnconfigure(1, weight=2)
-        self.bottom_frame.columnconfigure(2, weight=1)
+        self.extract_button = ttk.Button(self.bottom_frame, text="Extract Masked Methods", command=self.extract_masked_methods)
+        self.extract_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
         self.model_info_button = ttk.Button(self.bottom_frame, text="Model Info", command=self.show_model_info)
-        self.model_info_button.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
+        self.model_info_button.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
         self.model_name_dropdown = ttk.Combobox(
             self.bottom_frame,
@@ -146,10 +142,18 @@ class CodeCompletionApp:
             values=["shradha01/llm-coding-tasks-model", "other-model-1"]
         )
         self.model_name_dropdown.set(self.model_name)
-        self.model_name_dropdown.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+        self.model_name_dropdown.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
         self.generate_candidate_button = ttk.Button(self.bottom_frame, text="Generate Candidates", command=self.generate_candidates)
-        self.generate_candidate_button.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
+        self.generate_candidate_button.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
+
+        # Adjust the column configuration for even spacing
+        self.bottom_frame.columnconfigure(0, weight=1)
+        self.bottom_frame.columnconfigure(1, weight=1)
+        self.bottom_frame.columnconfigure(2, weight=2)
+        self.bottom_frame.columnconfigure(3, weight=1)
+        #self.model_name_dropdown.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+
 
     def load_model_and_tokenizer(self):
         try:
@@ -160,7 +164,7 @@ class CodeCompletionApp:
             print(f"Error loading model or tokenizer: {e}")
             self.model = None
             self.tokenizer = None
-
+    
     def extract_masked_methods(self):
         input_code = self.input_text.get("1.0", tk.END).strip()
         if not input_code:
@@ -185,7 +189,7 @@ class CodeCompletionApp:
         self.options.clear()
         all_methods = []  
         masked_methods = [] 
-        for widget in self.options_frame.winfo_children():
+        for widget in self.options_inner_frame.winfo_children():
             widget.destroy()
         self.option_buttons = []
 
@@ -199,11 +203,13 @@ class CodeCompletionApp:
                 masked_methods.append(method_code)
 
                 button = tk.Radiobutton(
-                    self.options_frame,
+                    self.options_inner_frame,
                     text=method_code,
                     variable=self.selected_option,
                     value=option_name,
                     font=("Arial", 10),
+                    bg="#f6f6f6",
+                    anchor="w",
                     justify=tk.LEFT,
                     wraplength=400
                 )
@@ -256,7 +262,7 @@ class CodeCompletionApp:
 
             result_text = ""
             for idx, (candidate, prob) in enumerate(zip(decoded_candidates, probs)):
-                result_text += f"Candidate {idx + 1}:\n{candidate.strip()}\nProbability: {prob:.4f}\n\n"
+                result_text += f"Candidate {idx + 1}: Probability: {prob:.4f}, {candidate.strip()}\n"
 
             self.display_output(result_text)
 
@@ -264,6 +270,7 @@ class CodeCompletionApp:
             self.display_output(f"Error during prediction: {e}")
 
     def display_output(self, text):
+        print(text)
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert(tk.END, text)

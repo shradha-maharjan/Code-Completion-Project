@@ -7,7 +7,7 @@ clusters:
 contexts:
 - context:
     cluster: nautilus
-    namespace: gp-engine-unoselab01
+    namespace: gp-engine-unoselab02
     user: http://cilogon.org/serverE/users/158304
   name: nautilus
 current-context: nautilus
