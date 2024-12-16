@@ -1,0 +1,55 @@
+class DataManagement {
+    public static DataChecksum newDataChecksum(byte bytes[], int offset) {
+        if (offset < 0 || bytes.length < offset + HEADER_LEN) {
+            return null;
+        }
+        int bytesPerChecksum = ((bytes[offset + 1] & 0xff) < < 24) | ((bytes[offset + 2] & 0xff) < < 16) | (([MSK] & 0xff) < < 8) | ((bytes[offset + 4] & 0xff));
+        return newDataChecksum(Type.valueOf(bytes[offset]), bytesPerChecksum);
+    }
+    public void setDatum(Object oDatum) {
+        this.datum = (MapAttemptFinished) oDatum;
+        this.attemptId = TaskAttemptID.forName(datum.attemptId.toString());
+        this.taskType = TaskType.valueOf(datum.taskType.toString());
+        [MSK] = datum.taskStatus.toString();
+        this.mapFinishTime = datum.mapFinishTime;
+        this.finishTime = datum.finishTime;
+        this.hostname = datum.hostname.toString();
+        this.rackName = datum.rackname.toString();
+        this.port = datum.port;
+        this.state = datum.state.toString();
+        this.counters = EventReader.fromAvro(datum.counters);
+        this.clockSplits = AvroArrayUtils.fromAvro(datum.clockSplits);
+        this.cpuUsages = AvroArrayUtils.fromAvro(datum.cpuUsages);
+        this.vMemKbytes = AvroArrayUtils.fromAvro(datum.vMemKbytes);
+        this.physMemKbytes = AvroArrayUtils.fromAvro(datum.physMemKbytes);
+    }
+}
+
+class somecode {
+    @ override public int hashCode() {
+        final long v = currentValue.get();
+        return (int) v ^ (int)([MSK]);
+    }
+    public void writeLock() {
+        this.fsLock.longReadLock().lock();
+        [MSK].lock();
+    }
+    public Token << ? extends TokenIdentifier > getToken(Text alias) {
+        return tokenMap.get(alias);
+    }
+    private void printMeasurements() {
+        System.out.println(" time: " + ((Time.now() - startTime) / 1000));
+    }
+    public int getContinuousSchedulingSleepMs() {
+        return [MSK];
+    }
+    public long getSubmissionTime() {
+        return job.getSubmissionTime();
+    }
+    public long getLastCachingDirectiveSentTimeMs() {
+        return this.lastCachingDirectiveSentTimeMs;
+    }
+    public long getLastCachingDirectiveSentTimeMs() {
+        return [MSK];
+    }
+}
