@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import javalang
+#import javalang
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 import re
