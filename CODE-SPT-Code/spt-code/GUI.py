@@ -83,7 +83,7 @@ class CodeCompletionApp:
         self.right_paned_window.add(self.options_frame_box)
 
         self.options_canvas = tk.Canvas(self.options_frame_box, bg="#f6f6f6", highlightthickness=0)
-        self.options_scrollbar = tk.Scrollbar(self.options_label, orient=tk.VERTICAL, command=self.options_canvas.yview)
+        self.options_scrollbar = tk.Scrollbar(self.options_frame_box, orient=tk.VERTICAL, command=self.options_canvas.yview)
         self.options_inner_frame = tk.Frame(self.options_canvas, bg="#f6f6f6")
 
         self.options_canvas.configure(yscrollcommand=self.options_scrollbar.set)
@@ -165,6 +165,66 @@ class CodeCompletionApp:
             self.model = None
             self.tokenizer = None
     
+    # def extract_masked_methods(self):
+    #     input_code = self.input_text.get("1.0", tk.END).strip()
+    #     if not input_code:
+    #         self.display_output("Please enter Java code in the input field.")
+    #         return
+
+    #     try:
+    #         # Parse the Java code into an AST
+    #         tree = javalang.parse.parse(input_code)
+    #     except javalang.parser.JavaSyntaxError as e:
+    #         self.display_output(f"Syntax error in Java code: {e}")
+    #         return
+    #     except Exception as e:
+    #         self.display_output(f"Error parsing Java code: {e}")
+    #         return
+
+    #     self.options.clear()
+    #     for widget in self.options_frame.winfo_children():
+    #         widget.destroy()
+    #     self.option_buttons = []
+
+    #     idx = 0
+    #     for path, node in tree:
+    #         if isinstance(node, javalang.tree.MethodDeclaration):
+    #             # Construct the method signature
+    #             modifiers = " ".join(node.modifiers)
+    #             return_type = node.return_type.name if node.return_type else "void"
+    #             parameters = ", ".join(
+    #                 f"{p.type.name} {p.name}" for p in node.parameters
+    #             )
+    #             method_signature = f"{modifiers} {return_type} {node.name}({parameters})"
+
+    #             # Check for [MSK] in the method body
+    #             if node.body:
+    #                 method_body = "".join(token.value for token in node.body if hasattr(node, 'body'))
+    #                 if "[MSK]" in method_body:
+    #                     idx += 1
+    #                     option_name = f"Option {idx}"
+    #                     method_code = f"{method_signature} {{ {method_body} }}"
+    #                     self.options[option_name] = method_code.strip()
+
+    #                     # Add a radio button for the method
+    #                     button = tk.Radiobutton(
+    #                         self.options_frame,
+    #                         text=f"{method_signature}...",
+    #                         variable=self.selected_option,
+    #                         value=option_name,
+    #                         font=("Arial", 10),
+    #                         justify=tk.LEFT,
+    #                         wraplength=400
+    #                     )
+    #                     button.pack(anchor="w", pady=5)
+    #                     self.option_buttons.append(button)
+
+    #     if self.options:
+    #         self.selected_option.set(next(iter(self.options)))  # Select the first option by default
+    #         self.display_output(f"Extracted {len(self.options)} method(s) with '[MSK]'.")
+    #     else:
+    #         self.display_output("No masked methods found in the input code.")
+
     def extract_masked_methods(self):
         input_code = self.input_text.get("1.0", tk.END).strip()
         if not input_code:
