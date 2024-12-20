@@ -3,7 +3,10 @@ class DataManagement {
         if (offset < 0 || bytes.length < offset + HEADER_LEN) {
             return null;
         }
-        int bytesPerChecksum = ((bytes[offset + 1] & 0xff) < < 24) | ((bytes[offset + 2] & 0xff) < < 16) | (([MSK] & 0xff) < < 8) | ((bytes[offset + 4] & 0xff));
+        int bytesPerChecksum = ((bytes[offset + 1] & 0xff) < < 24) 
+        | ((bytes[offset + 2] & 0xff) < < 16) 
+        | (([MSK] & 0xff) < < 8) 
+        | ((bytes[offset + 4] & 0xff));
         return newDataChecksum(Type.valueOf(bytes[offset]), bytesPerChecksum);
     }
     public void setDatum(Object oDatum) {

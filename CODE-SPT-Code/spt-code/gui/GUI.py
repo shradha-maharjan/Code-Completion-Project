@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-#import javalang
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
 import re
@@ -41,7 +40,7 @@ class CodeCompletionApp:
 
         # Left frame inside the paned window
         self.left_frame = tk.Frame(self.paned_window, width=450)
-        self.paned_window.add(self.left_frame)
+        self.paned_window.add(self.left_frame,minsize=500)
 
         self.input_frame = tk.Frame(self.left_frame)
         self.input_frame.pack(fill=tk.BOTH, expand=True)
@@ -232,8 +231,8 @@ class CodeCompletionApp:
             return
 
         method_pattern = re.compile(
-            r'(?:@\w+(?:\s*\([^)]*\))?\s*)*'  # Annotations
-            r'((?:public|private|protected|static|final|synchronized|abstract|native|strictfp|transient|volatile)?\s*'  # Modifiers
+            r'((?:@\w+(?:\s*\([^)]*\))?\s*)*'  # Annotations
+            r'(?:public|private|protected|static|final|synchronized|abstract|native|strictfp|transient|volatile)?\s*'  # Modifiers
             r'(?:<[^>]+>\s*)?'  # Generic types
             r'(?:[\w\[\]]+\s+)+'  # Return type
             r'\w+\s*\(.*?\)\s*'  # Method name and parameters
@@ -255,6 +254,8 @@ class CodeCompletionApp:
 
         for match in matches:
             method_code = match.group(1).strip()
+            method_code = re.sub(r'\n\s*\n', '\n', method_code)  
+            method_code = method_code.strip() 
             all_methods.append(method_code)  
 
             if "[MSK]" in method_code:
