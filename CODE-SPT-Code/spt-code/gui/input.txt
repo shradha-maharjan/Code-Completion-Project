@@ -29,7 +29,7 @@ class DataManagement {
 }
 
 class somecode {
-    @ override public int hashCode() {
+    @override public int hashCode() {
         final long v = currentValue.get();
         return (int) v ^ (int)([MSK]);
     }
