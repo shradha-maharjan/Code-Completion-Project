@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jdt.core.dom.*;
 
@@ -18,12 +20,13 @@ public class MainFineTuneClassifier {
     static final String DIR = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/workspace-mvn-vscode-eclipse/jdtparser/";
     static final String INPUT1_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/data_shradha/fine-tune/raw_methods_train.txt";
     static final String INPUT2_FILE_PATH = "/home/user1-system11/Documents/research-shradha/CODE-SPT-Code/data_shradha/fine-tune/source_methods_train.txt";
-    static final String OUTPUT_FILE_PATH = DIR + "output_finetune/Train/train_targettype_output_1.txt";
-    static final String OUTPUT_FILE_PRED_NULL_PATH = DIR + "output_finetune/Train/null_targettype_output_newTrain.txt";
-    static final String OUTPUT_FOR_WITH_PRED = DIR + "output_finetune/Train/Train_methods_with_ForLoop.txt";
-    static final String OUTPUT_FOR_WITHOUT_PRED = DIR + "output_finetune/Train/Train_methods_without_ForLoop.txt";
-    static final String OUTPUT_IF_WITH_PRED = DIR + "output_finetune/Train/Train_methods_with_IfElseIf.txt";
-    static final String OUTPUT_IF_WITHOUT_PRED = DIR + "output_finetune/Train/Train_methods_without_IfElseIf.txt";
+    static final String OUTPUT_FILE_PATH = DIR + "output_finetune/Train1/Train_targettype_output_1.txt";
+    static final String OUTPUT_FILE_PRED_NULL_PATH = DIR + "output_finetune/Train1/null_targettype_output_newTrain.txt";
+    static final String OUTPUT_FOR_WITH_PRED = DIR + "output_finetune/Train1/Train_methods_with_ForLoop.txt";
+    static final String OUTPUT_FOR_WITHOUT_PRED = DIR + "output_finetune/Train1/Train_methods_without_ForLoop.txt";
+    static final String OUTPUT_IF_WITH_PRED = DIR + "output_finetune/Train1/Train_methods_with_IfElseIf.txt";
+    static final String OUTPUT_IF_WITHOUT_PRED = DIR + "output_finetune/Train1/Train_methods_without_IfElseIf.txt";
+    static final String OUTPUT_CLASSIFICATION = DIR + "output_finetune/Train1/Train_methods_classification.txt";
 
     public static void main(String[] args) {
         try {
@@ -39,6 +42,8 @@ public class MainFineTuneClassifier {
         processFineTuneVisitor();
         processFineTuneForStmtVisitor();
         processFineTuneIfStmtVisitor();
+        //processClassification();
+        findPREDContexts();
         System.out.println("Processing completed.");
     }
 
@@ -85,6 +90,7 @@ public class MainFineTuneClassifier {
 
                 AllASTVisitor allASTVisitor = new AllASTVisitor(writer, predFinder.getPredOffset());
                 cuInput1.accept(allASTVisitor);
+                allASTVisitor.logHighestPriorityNode();
 
                 writer.write("[DBG] ------------------------------------------------------\n");
                 lineNum++;
@@ -247,6 +253,146 @@ class PredOffsetFinder extends ASTVisitor {
         }
         return -1;
     }
+
+    // Step 4: Process Classification
+    
+    public static void findPREDContexts() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(OUTPUT_IF_WITHOUT_PRED));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT_CLASSIFICATION))) {
+
+            String line;
+            StringBuilder methodBuilder = new StringBuilder();
+
+            while ((line = reader.readLine()) != null) {
+                methodBuilder.append(line).append(" ");
+                if (line.contains("}")) { // End of a method detected
+                    String method = methodBuilder.toString();
+                    analyzePREDContexts(method, writer);
+                    methodBuilder.setLength(0); // Reset for the next method
+                }
+            }
+
+            System.out.println("PRED contexts saved to " + OUTPUT_CLASSIFICATION);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void analyzePREDContexts(String method, BufferedWriter writer) throws IOException {
+        // Define regex patterns for different constructs
+        Pattern ifPattern = Pattern.compile("if\\s*\\(.*?\\).*?PRED", Pattern.DOTALL);
+        Pattern elsePattern = Pattern.compile("else\\s*(if\\s*\\(.*?\\))?.*?PRED", Pattern.DOTALL);
+        Pattern whilePattern = Pattern.compile("while\\s*\\(.*?\\).*?PRED", Pattern.DOTALL);
+        Pattern forPattern = Pattern.compile("for\\s*\\(.*?\\).*?PRED", Pattern.DOTALL);
+        Pattern tryCatchPattern = Pattern.compile("try\\s*\\{.*?PRED.*?\\}|catch\\s*\\(.*?\\).*?PRED", Pattern.DOTALL);
+        Pattern switchPattern = Pattern.compile("switch\\s*\\(.*?\\).*?PRED", Pattern.DOTALL);
+        Pattern throwsPattern = Pattern.compile("throws\\s+.*?PRED", Pattern.DOTALL);
+        Pattern returnPattern = Pattern.compile("return\\s+.*?PRED", Pattern.DOTALL);
+
+        // Match the method text against patterns
+        if (matchesPattern(method, ifPattern)) {
+            writer.write("PRED found in context: if\n");
+        } else if (matchesPattern(method, elsePattern)) {
+            writer.write("PRED found in context: else\n");
+        } else if (matchesPattern(method, whilePattern)) {
+            writer.write("PRED found in context: while\n");
+        } else if (matchesPattern(method, forPattern)) {
+            writer.write("PRED found in context: for\n");
+        } else if (matchesPattern(method, tryCatchPattern)) {
+            writer.write("PRED found in context: try-catch\n");
+        } else if (matchesPattern(method, switchPattern)) {
+            writer.write("PRED found in context: switch\n");
+        } else if (matchesPattern(method, throwsPattern)) {
+            writer.write("PRED found in context: throws\n");
+        } else if (matchesPattern(method, returnPattern)) {
+            writer.write("PRED found in context: return\n");
+        } else {
+            writer.write("PRED found in context: unclassified\n");
+        }
+    }
+
+    private static boolean matchesPattern(String method, Pattern pattern) {
+        Matcher matcher = pattern.matcher(method);
+        return matcher.find();
+    }
+
+    // public static void analyzePREDContexts(String method, BufferedWriter writer) throws IOException {
+    //     Stack<String> contextStack = new Stack<>();
+    //     int index = 0;
+    //     boolean foundPRED = false;
+    
+    //     Pattern predPattern = Pattern.compile(";\\s*PRED\\s*;");
+    
+    //     while (index < method.length()) {
+    //         if (method.startsWith("if (", index) || method.startsWith("else if (", index)) {
+    //             int endIndex = findStatementEnd(method, index);
+    //             contextStack.push("if/else block");
+    //             index = endIndex;
+    //         } else if (method.startsWith("else", index)) {
+    //             int endIndex = findStatementEnd(method, index);
+    //             contextStack.push("else block");
+    //             index = endIndex;
+    //         } else if (method.startsWith("try {", index)) {
+    //             contextStack.push("try-catch block");
+    //             index += 4;
+    //         } else if (method.startsWith("while (", index)) {
+    //             int endIndex = findStatementEnd(method, index);
+    //             contextStack.push("while loop");
+    //             index = endIndex;
+    //         } else if (method.startsWith("}", index)) {
+    //             if (!contextStack.isEmpty()) {
+    //                 contextStack.pop();
+    //             }
+    //             index++;
+    //         } else if (method.startsWith("PRED", index)) {
+    //             // Identify context for PRED token
+    //             String context;
+    //             if (contextStack.isEmpty()) {
+    //                 Matcher matcher = predPattern.matcher(method.substring(Math.max(index - 1, 0), Math.min(index + 5, method.length())));
+    //                 if (matcher.find()) {
+    //                     context = "standalone PRED statement between semicolons (with possible whitespace)";
+    //                 } else {
+    //                     int prevStatementEnd = findPreviousStatementStart(method, index);
+    //                     if (prevStatementEnd >= 0 && method.substring(prevStatementEnd, index)
+    //                             .matches(".*\\b(int|double|String|boolean|float|char)\\b.*=.*;.*")) {
+    //                         context = "variable declaration or assignment";
+    //                     } else {
+    //                         context = "No enclosing context";
+    //                     }
+    //                 }
+    //             } else {
+    //                 context = contextStack.peek();
+    //             }
+    //             writer.write("PRED found in context: " + context + "\n");
+    //             foundPRED = true;
+    //             index += 4;
+    //         } else {
+    //             index++;
+    //         }
+    //     }
+    
+    //     if (!foundPRED) {
+    //         writer.write("No PRED token found in this method.\n");
+    //     }
+    // }
+    
+    // public static int findStatementEnd(String method, int startIndex) {
+    //     int openBraceIndex = method.indexOf("{", startIndex);
+    //     int semicolonIndex = method.indexOf(";", startIndex);
+
+    //     if (openBraceIndex != -1 && (semicolonIndex == -1 || openBraceIndex < semicolonIndex)) {
+    //         return openBraceIndex + 1;
+    //     }
+
+    //     return semicolonIndex != -1 ? semicolonIndex + 1 : method.length();
+    // }
+
+    // public static int findPreviousStatementStart(String method, int index) {
+    //     int semicolonIndex = method.lastIndexOf(";", index - 1);
+    //     return (semicolonIndex != -1) ? semicolonIndex + 1 : 0;
+    // }
+
 
     private String formatCode(String codeLine) {
         return "public class DummyClass {\n" + codeLine + "\n}";
